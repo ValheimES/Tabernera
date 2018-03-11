@@ -1,0 +1,9 @@
+{
+   "token": "",
+   "ownerID": ,
+   "mysql": {"host": "localhost",
+	     "user": "",
+	     "password": "",
+	     "database": ""
+             }
+}
