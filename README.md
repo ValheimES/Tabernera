@@ -8,17 +8,17 @@ Tabernera es un bot para Discord, por el momento sus funciones son de carácter 
 
 ## Comandos:
 ### Administración:
-- `aceptar`: Responde a una sugerencia.
-- `advertir`: Añade un aviso al usuario mencionado e infractor de alguna normativa impuesta por el servidor.
-- `quitar-adv`: Elimina un aviso al usuario mencionado.
-- `eliminar-adv`: Elimina todas las advertencias del usuario mencionado.
-- `encuesta`: Genera una encuesta en el canal predefinido.
-- `estado`: Cambia el estado del bot.
-- `verificar`: Añade el rol correspondiente al usuario.
+- `+aceptar`: Responde a una sugerencia.
+- `+advertir`: Añade un aviso al usuario mencionado e infractor de alguna normativa impuesta por el servidor.
+- `+quitar-adv`: Elimina un aviso al usuario mencionado.
+- `+eliminar-adv`: Elimina todas las advertencias del usuario mencionado.
+- `+encuesta`: Genera una encuesta en el canal predefinido.
+- `+estado`: Cambia el estado del bot.
+- `+verificar`: Añade el rol correspondiente al usuario.
 
 ### Usuario:
-- `sugerencia`: Añade una sugerencia en el canal predefinido.
-- `ver-advertencias`: Muestras las advertencias del usuario mencionado.
+- `+sugerencia`: Añade una sugerencia en el canal predefinido.
+- `+ver advertencias`: Muestras las advertencias del usuario mencionado.
 
 ## Únete a nuesta comunidad.
 Si estás interesado en un chat de voz donde se publican noticias y además puedes pasarte un buen rato. ¿A qué esperas? Unete haciendo click [aquí](https://discord.gg/enjYrQt). 
