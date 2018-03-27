@@ -18,6 +18,7 @@ Tabernera es un bot para Discord, por el momento sus funciones son de carácter 
 
 ### Usuario:
 - `+sugerencia`: Añade una sugerencia en el canal predefinido.
+- `+reporte`: Avisa a moderación de que hay un fallo o un usuario ha incumplido las normas.
 - `+ver advertencias`: Muestras las advertencias del usuario mencionado.
 
 ## Únete a nuesta comunidad.
