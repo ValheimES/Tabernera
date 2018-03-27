@@ -16,13 +16,9 @@ module.exports = class extends Comando {
         }
 
 	async run(msg, [user, rol, ...nombre]) {
-
+nombre = nombre.join(' ');
 		var taberna = this.client.channels.get("375828283704475649");
 
-		if(!nombre)
-		{
-			nombre = user.name;
-		}
 		const MySql = await this.client.providers.get('MySQL');
 		
 		let member = msg.mentions.members.first();
@@ -32,13 +28,18 @@ module.exports = class extends Comando {
 			member.addRole(msg.guild.roles.find('name', 'Pionero'));
 			member.addRole(msg.guild.roles.find('name', 'Fundador'));
 			member.addRole(msg.guild.roles.find('name', 'Insider'));
+			member.addRole(msg.guild.roles.find('name', 'Verificado'));
 		} else if(rol == "Fundador")
 		{
 			member.addRole(msg.guild.roles.find('name', 'Fundador'));
 			member.addRole(msg.guild.roles.find('name', 'Insider'));
+			member.addRole(msg.guild.roles.find('name', 'Verificado'));
 		} else if(rol == "Insider")
 		{
 			member.addRole(msg.guild.roles.find('name', 'Insider'));
+			member.addRole(msg.guild.roles.find('name', 'Verificado'));
+		} else if(rol == "Verificado") {
+			member.addRole(msg.guild.roles.find('name', 'Verificado'));
 		} else {
 			return msg.channel.send("Has escrito mal el nombre de el rol");
 		}
