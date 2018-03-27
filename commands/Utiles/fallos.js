@@ -21,25 +21,25 @@ module.exports = class extends Comando {
     }
 
 
-    async run(msg, [hora, hora3, usuario, ...titulodesc]) {
+    async run(msg, [fecha, hora, usuario, ...descripcion]) {
         const canal = msg.guild.channels.get(msg.guild.configs.reportes);
 
-	var hora2 = hora.split("/");
-	if(hora2.length != 3) {
+	var horaSeparada = fecha.split("/");
+	if(horaSeparada.length != 3) {
 		return msg.send("Error de formato, dd/mm/yyyy");
 	}
-        if (!hora2[0].length == 2 || !hora2[1].length == 2 || !hora2[2].length == 4 ) {
+        if (!horaSeparada[0].length == 2 || !horaSeparada[1].length == 2 || !horaSeparada[2].length == 4 ) {
 		return msg.send("Error de formato, dd/mm/yyyy");
 	}
-	var hora4 = hora3.split(":");
-	if(hora4.length != 2) {
+	var horaSeparada = hora.split(":");
+	if(horaSeparada.length != 2) {
 		return msg.send("Error de formato, hh:mm");
 	}
-        if (!hora4[0].length == 2 || !hora4[1].length == 2) {
+        if (!horaSeparada[0].length == 2 || !horaSeparada[1].length == 2) {
 		return msg.send("Error de formato, hh:mm");
 	}
 
-        titulodesc = `${titulodesc.join(' ')}`;
+        descripcion = `${descripcion.join(' ')}`;
 
         if (!canal || canal.postable === false)
             return msg.send('Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.');
@@ -47,7 +47,7 @@ module.exports = class extends Comando {
             const embedReporte = new Discord.MessageEmbed()
             .setColor(0x3785df)
             .setAuthor(msg.author.username, msg.author.avatarURL)
-	    .addField("**Usuario reportado:** " + usuario.tag, "**Descripción:** " + titulodesc)
+	    .addField("**Usuario reportado:** " + usuario.tag, "**Descripción:** " + descripcion)
             .addField("**Fecha y hora:** " + hora +" a las " + hora3, "**ID del reporte:** " + msg.id);
             
             msg.send("Tu reporte se ha subido, ahora tiene que ser evaluado");
