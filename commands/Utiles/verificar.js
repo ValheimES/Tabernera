@@ -25,21 +25,21 @@ nombre = nombre.join(' ');
 		
 		if (rol == "Pionero")
 		{
-			member.addRole(msg.guild.roles.find('name', 'Pionero'));
-			member.addRole(msg.guild.roles.find('name', 'Fundador'));
-			member.addRole(msg.guild.roles.find('name', 'Insider'));
-			member.addRole(msg.guild.roles.find('name', 'Verificado'));
+			member.addRole(await msg.guild.roles.find('name', 'Pionero'));
+			member.addRole(await msg.guild.roles.find('name', 'Fundador'));
+			member.addRole(await msg.guild.roles.find('name', 'Insider'));
+			member.addRole(await msg.guild.roles.find('name', 'Verificado'));
 		} else if(rol == "Fundador")
 		{
-			member.addRole(msg.guild.roles.find('name', 'Fundador'));
-			member.addRole(msg.guild.roles.find('name', 'Insider'));
-			member.addRole(msg.guild.roles.find('name', 'Verificado'));
+			member.addRole(await msg.guild.roles.find('name', 'Fundador'));
+			member.addRole(await msg.guild.roles.find('name', 'Insider'));
+			member.addRole(await msg.guild.roles.find('name', 'Verificado'));
 		} else if(rol == "Insider")
 		{
-			member.addRole(msg.guild.roles.find('name', 'Insider'));
-			member.addRole(msg.guild.roles.find('name', 'Verificado'));
+			member.addRole(await msg.guild.roles.find('name', 'Insider'));
+			member.addRole(await msg.guild.roles.find('name', 'Verificado'));
 		} else if(rol == "Verificado") {
-			member.addRole(msg.guild.roles.find('name', 'Verificado'));
+			member.addRole(await msg.guild.roles.find('name', 'Verificado'));
 		} else {
 			return msg.channel.send("Has escrito mal el nombre de el rol");
 		}
