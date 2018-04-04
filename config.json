@@ -1,9 +1,10 @@
 {
-   "token": "",
-   "ownerID": ,
-   "mysql": {"host": "localhost",
-	     "user": "",
-	     "password": "",
-	     "database": ""
-             }
+    "token": "",
+    "ownerID": "",
+    "mysql": {
+        "host": "localhost",
+        "user": "",
+        "password": "",
+        "database": ""
+    }
 }
