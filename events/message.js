@@ -5,7 +5,7 @@ module.exports = class extends Event {
 
 	async run(msg) {
 const MySql = await this.client.providers.get('MySQL');
-		if (msg.channel.name != "comandos")
+		if (msg.channel.name != "comandos" && msg.guild.name == 'Sea of Thieves ES' && !msg.author.bot)
 		{
 			const limpia = '```fix\nSISTEMA DE NIVELES\n```\n<:flechaarriba:406932788256702474> **' + msg.author + ' ha subido de nivel.**\n\n<:garfio:407239812873977857> **Nivel ';
 			const canal = msg.guild.channels.get('425298298446807041');
