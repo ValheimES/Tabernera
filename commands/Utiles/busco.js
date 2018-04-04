@@ -5,7 +5,7 @@ module.exports = class extends Comando {
 
 constructor(...args) {
         super(...args, {
-	    permlevel: 4,
+	    permlevel: 3,
             cooldown: 15,
 	    requiredSettings: ['busco'],
             description: "Por añadir",
