@@ -17,9 +17,7 @@ module.exports = class extends Comando {
 	async run(msg, [piece]) {
 		piece.enable();
 		if (this.client.shard) {
-			await this.client.shard.broadcastEval(`
-				if (this.shard.id !== ${this.client.shard.id}) this.${piece.store}.get('${piece.name}').enable();
-			`);
+			await this.client.shard.broadcastEval(`if (this.shard.id !== ${this.client.shard.id}) this.${piece.store}.get('${piece.name}').enable();`);
 		}
 		return msg.sendCode('diff', msg.language.get('COMMAND_ENABLE', piece.type, piece.name));
 	}

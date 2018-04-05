@@ -15,22 +15,14 @@ module.exports = class MySQL extends Provider {
 
 	async init() {
 		this.db = await mysql.createConnection(config.mysql);
-		console.log("conectado");
+		console.log('conectado');
 		this.heartBeatInterval = setInterval(() => {
 			this.db.query('SELECT 1=1')
-				// .then(() => this.client.emit('log', 'MySQL Heartbeat sent', 'verbose'))
+			// .then(() => this.client.emit('log', 'MySQL Heartbeat sent', 'verbose'))
 				.catch(error => this.client.emit('error', error));
 		}, 10000);
 	}
 
-	/* Table methods */
-
-	/**
-	 * @param {string} table Check if a table exists
-	 * @returns {Promise<boolean>}
-	 * @name MySQL#hasTable
-	 * @since 2.0.0
-	 */
 	hasTable(table) {
 		requestType('MySQL#hasTable', 'table', 'string', table);
 		return this.run(`SHOW TABLES LIKE '${table}';`)
@@ -38,54 +30,23 @@ module.exports = class MySQL extends Provider {
 			.catch(() => false);
 	}
 
-	/**
-	 * @param {string} table The name of the table to create
-	 * @param {string} rows The rows with their respective datatypes
-	 * @returns {Promise<Object[]>}
-	 * @name MySQL#createTable
-	 * @since 2.0.0
-	 */
 	createTable(table, rows) {
 		requestType('MySQL#createTable', 'table', 'string', table);
 		requestType('MySQL#createTable', 'rows', 'string', rows);
 		return this.runAll(`CREATE TABLE ${sanitizeKeyName(table)} (${rows});`);
 	}
 
-	/**
-	 * @param {string} table The name of the table to drop
-	 * @returns {Promise<Object[]>}
-	 * @name MySQL#deleteTable
-	 * @since 2.0.0
-	 */
 	deleteTable(table) {
 		requestType('MySQL#deleteTable', 'table', 'string', table);
 		return this.exec(`DROP TABLE ${sanitizeKeyName(table)};`);
 	}
 
-	/**
-	 * @param {string} table The table with the rows to count
-	 * @returns {Promise<number>}
-	 * @name MySQL#countRows
-	 * @since 2.0.0
-	 */
 	countRows(table) {
 		requestType('MySQL#deleteTable', 'table', 'string', table);
 		return this.run(`SELECT COUNT(*) FROM ${sanitizeKeyName(table)};`)
 			.then(result => result['COUNT(*)']);
 	}
 
-	/* Row methods */
-
-	/**
-	 * @param {string} table The name of the table to get the data from
-	 * @param {string} [key] The key to filter the data from. Requires the value parameter
-	 * @param {any}    [value] The value to filter the data from. Requires the key parameter
-	 * @param {number} [limitMin] The minimum range. Must be higher than zero
-	 * @param {number} [limitMax] The maximum range. Must be higher than the limitMin parameter
-	 * @returns {Promise<Object[]>}
-	 * @name MySQL#getAll
-	 * @since 2.0.0
-	 */
 	getAll(table, key, value, limitMin, limitMax) {
 		requestType('MySQL#getAll', 'table', 'string', table);
 		if (typeof key !== 'undefined' && typeof value !== 'undefined') {
@@ -95,21 +56,13 @@ module.exports = class MySQL extends Provider {
 
 		return this.runAll(`SELECT * FROM ${sanitizeKeyName(table)} ${parseRange(limitMin, limitMax)};`);
 	}
-	
+
 	getAll2(table, key) {
 		requestType('MySQL#getAll', 'table', 'string', table);
-			requestType('MySQL#getAll', 'key', 'string', key);
-			return this.runAll(`SELECT * FROM ${sanitizeKeyName(table)} ORDER BY ${sanitizeKeyName(key)};`);
+		requestType('MySQL#getAll', 'key', 'string', key);
+		return this.runAll(`SELECT * FROM ${sanitizeKeyName(table)} ORDER BY ${sanitizeKeyName(key)};`);
 	}
 
-	/**
-	 * @param {string} table The name of the table to get the data from
-	 * @param {string} key The key to filter the data from
-	 * @param {any}    [value] The value of the filtered key
-	 * @returns {Promise<Object>}
-	 * @name MySQL#get
-	 * @since 2.0.0
-	 */
 	get(table, key, value) {
 		requestType('MySQL#get', 'table', 'string', table);
 
@@ -124,13 +77,6 @@ module.exports = class MySQL extends Provider {
 			.catch(throwError);
 	}
 
-	/**
-	 * @param {string} table The name of the table to get the data from
-	 * @param {string} id    The value of the id
-	 * @returns {Promise<boolean>}
-	 * @name MySQL#has
-	 * @since 2.0.0
-	 */
 	has(table, id) {
 		requestType('MySQL#has', 'table', 'string', table);
 		requestType('MySQL#has', 'id', 'string', id);
@@ -145,52 +91,32 @@ module.exports = class MySQL extends Provider {
 			.then(row => !!row);
 	}
 
-	/**
-	 * @param {string} table The name of the table to get the data from
-	 * @returns {Promise<Object>}
-	 * @name MySQL#getRandom
-	 * @since 2.0.0
-	 */
+	has3(table, id) {
+		requestType('MySQL#has', 'table', 'string', table);
+		requestType('MySQL#has', 'id', 'string', id);
+		return this.run(`SELECT ID FROM ${sanitizeKeyName(table)} WHERE ID = ${sanitizeString(id)} LIMIT 1;`)
+			.then(row => !!row);
+	}
+
 	getRandom(table) {
 		requestType('MySQL#getRandom', 'table', 'string', table);
 		return this.run(`SELECT * FROM ${sanitizeKeyName(table)} ORDER BY RAND() LIMIT 1;`);
 	}
 
-	/**
-	 * @param {string} table The name of the table to get the data from
-	 * @param {string} key The key to sort by
-	 * @param {('ASC'|'DESC')} [order='DESC'] Whether the order should be ascendent or descendent
-	 * @param {number} [limitMin] The minimum range
-	 * @param {number} [limitMax] The maximum range
-	 * @returns {Promise<Object[]>}
-	 * @name MySQL#getSorted
-	 * @since 2.0.0
-	 */
 	async getSorted(table, key, order = 'DESC', limitMin, limitMax) {
 		requestType('MySQL#getSorted', 'table', 'string', table);
 		requestType('MySQL#getSorted', 'key', 'string', key);
-		if (order !== 'DESC' && order !== 'ASC')
-			throw new TypeError(`MySQL#getSorted 'order' parameter expects either 'DESC' or 'ASC'. Got: ${order}`);
+		if (order !== 'DESC' && order !== 'ASC') { throw new TypeError(`MySQL#getSorted 'order' parameter expects either 'DESC' or 'ASC'. Got: ${order}`); }
 
 		return this.runAll(`SELECT * FROM ${sanitizeKeyName(table)} ORDER BY ${sanitizeKeyName(key)} ${order} ${parseRange(limitMin, limitMax)};`);
 	}
 
-	/**
-	 * @param {string} table The name of the table to insert the new data
-	 * @param {string} id The id of the new row to insert
-	 * @param {string[]} keys The keys to insert
-	 * @param {any[]} values The values to insert
-	 * @returns {Promise<any[]>}
-	 * @name MySQL#insert
-	 * @since 2.0.0
-	 */
 	insert(table, id, keys, values) {
 		requestType('MySQL#insert', 'table', 'string', table);
 		requestType('MySQL#insert', 'id', 'string', id);
 		requestType('MySQL#insert', 'keys', 'object', keys);
 		requestType('MySQL#insert', 'values', 'object', values);
-		if (Array.isArray(keys) === false || Array.isArray(values) === false || keys.length !== values.length)
-			throw new TypeError(`MySQL#insert expects the parameters 'keys' and 'values' to be arrays with the same length`);
+		if (Array.isArray(keys) === false || Array.isArray(values) === false || keys.length !== values.length) { throw new TypeError(`MySQL#insert expects the parameters 'keys' and 'values' to be arrays with the same length`); }
 
 		// Push the id to the inserts.
 		keys.push('id');
@@ -202,22 +128,12 @@ module.exports = class MySQL extends Provider {
 		requestType('MySQL#insert', 'table', 'string', table);
 		requestType('MySQL#insert', 'keys', 'object', keys);
 		requestType('MySQL#insert', 'values', 'object', values);
-		if (Array.isArray(keys) === false || Array.isArray(values) === false || keys.length !== values.length)
-			throw new TypeError(`MySQL#insert expects the parameters 'keys' and 'values' to be arrays with the same length`);
+		if (Array.isArray(keys) === false || Array.isArray(values) === false || keys.length !== values.length) { throw new TypeError(`MySQL#insert expects the parameters 'keys' and 'values' to be arrays with the same length`); }
 
 		// Push the id to the inserts.
 		return this.exec(`INSERT INTO ${sanitizeKeyName(table)} (${keys.map(sanitizeKeyName).join(', ')}) VALUES (${values.map(sanitizeInput).join(', ')});`);
 	}
 
-	/**
-	 * @param {string} table The name of the table to update the data from
-	 * @param {string} id The id of the row to update
-	 * @param {string} key The key to update
-	 * @param {any} value The new value for the key
-	 * @returns {Promise<any[]>}
-	 * @name MySQL#update
-	 * @since 2.0.0
-	 */
 	update(table, id, key, value) {
 		requestType('MySQL#update', 'table', 'string', table);
 		requestType('MySQL#update', 'id', 'number', id);
@@ -242,53 +158,34 @@ module.exports = class MySQL extends Provider {
 		return this.exec(`UPDATE ${sanitizeKeyName(table)} SET ${sanitizeKeyName(key)} = ${sanitizeInput(value)} WHERE UserID = ${sanitizeInteger(id)};`);
 	}
 
-	/**
-	 * @param {string} table The name of the table to update the data from
-	 * @param {string} id The id of the row to update
-	 * @param {string} key The key to update
-	 * @param {number} [amount=1] The value to increase
-	 * @returns {Promise<any[]>}
-	 * @name MySQL#incrementValue
-	 * @since 2.0.0
-	 */
+	update4(table, id, key, value) {
+		requestType('MySQL#update', 'table', 'string', table);
+		requestType('MySQL#update', 'id', 'string', id);
+		requestType('MySQL#update', 'key', 'string', key);
+		requestValue('MySQL#update', 'value', value);
+		return this.exec(`UPDATE ${sanitizeKeyName(table)} SET ${sanitizeKeyName(key)} = ${sanitizeInput(value)} WHERE ID = ${sanitizeString(id)};`);
+	}
+
 	incrementValue(table, id, key, amount = 1) {
 		requestType('MySQL#incrementValue', 'table', 'string', table);
 		requestType('MySQL#incrementValue', 'id', 'string', id);
 		requestType('MySQL#incrementValue', 'key', 'string', key);
 		requestType('MySQL#incrementValue', 'amount', 'number', amount);
-		if (amount < 0 || isNaN(amount) || Number.isInteger(amount) === false || Number.isSafeInteger(amount) === false)
-			throw new TypeError(`MySQL#incrementValue expects the parameter 'amount' to be an integer greater or equal than zero. Got: ${amount}`);
+		if (amount < 0 || isNaN(amount) || Number.isInteger(amount) === false || Number.isSafeInteger(amount) === false) { throw new TypeError(`MySQL#incrementValue expects the parameter 'amount' to be an integer greater or equal than zero. Got: ${amount}`); }
 
 		return this.exec(`UPDATE ${sanitizeKeyName(table)} SET ${key} = ${key} + ${amount} WHERE id = ${sanitizeString(id)};`);
 	}
 
-	/**
-	 * @param {string} table The name of the table to update the data from
-	 * @param {string} id The id of the row to update
-	 * @param {string} key The key to update
-	 * @param {number} [amount=1] The value to decrease
-	 * @returns {Promise<any[]>}
-	 * @name MySQL#decrementValue
-	 * @since 2.0.0
-	 */
 	decrementValue(table, id, key, amount = 1) {
 		requestType('MySQL#decrementValue', 'table', 'string', table);
 		requestType('MySQL#decrementValue', 'id', 'string', id);
 		requestType('MySQL#decrementValue', 'key', 'string', key);
 		requestType('MySQL#decrementValue', 'amount', 'number', amount);
-		if (amount < 0 || isNaN(amount) || Number.isInteger(amount) === false || Number.isSafeInteger(amount) === false)
-			throw new TypeError(`MySQL#incrementValue expects the parameter 'amount' to be an integer greater or equal than zero. Got: ${amount}`);
+		if (amount < 0 || isNaN(amount) || Number.isInteger(amount) === false || Number.isSafeInteger(amount) === false) { throw new TypeError(`MySQL#incrementValue expects the parameter 'amount' to be an integer greater or equal than zero. Got: ${amount}`); }
 
 		return this.exec(`UPDATE ${sanitizeKeyName(table)} SET ${key} = GREATEST(0, ${key} - ${amount}) WHERE id = ${sanitizeString(id)};`);
 	}
 
-	/**
-	 * @param {string} table The name of the table to update
-	 * @param {string} id The id of the row to delete
-	 * @returns {Promise<any[]>}
-	 * @name MySQL#delete
-	 * @since 2.0.0
-	 */
 	delete(table, id) {
 		requestType('MySQL#delete', 'table', 'string', table);
 		return this.exec(`DELETE FROM ${sanitizeKeyName(table)} WHERE id = ${sanitizeString(id)};`);
@@ -303,39 +200,19 @@ module.exports = class MySQL extends Provider {
 		requestType('MySQL#delete', 'table', 'string', table);
 		return this.exec(`DELETE FROM ${sanitizeKeyName(table)} WHERE nombre = ${sanitizeString(nombre)};`);
 	}
-	/**
-	 * Get a row from an arbitrary SQL query.
-	 * @param {string} sql The query to execute.
-	 * @returns {Promise<Object>}
-	 * @name MySQL#run
-	 * @since 2.0.0
-	 */
+
 	run(sql) {
 		return this.db.query(sql)
 			.then(([rows]) => rows[0])
 			.catch(throwError);
 	}
 
-	/**
-	 * Get all rows from an arbitrary SQL query.
-	 * @param {string} sql The query to execute.
-	 * @returns {Promise<Object[]>}
-	 * @name MySQL#runAll
-	 * @since 2.0.0
-	 */
 	runAll(sql) {
 		return this.db.query(sql)
 			.then(([rows]) => rows)
 			.catch(throwError);
 	}
 
-	/**
-	 * 
-	 * @param {string} sql The query to execute
-	 * @returns {Promise<Object[]>}
-	 * @name MySQL#exec
-	 * @since 2.0.0
-	 */
 	exec(sql) {
 		return this.db.query(sql)
 			.catch(throwError);
@@ -343,99 +220,51 @@ module.exports = class MySQL extends Provider {
 
 };
 
-/**
- * @param {number} [min] The minimum value
- * @param {number} [max] The maximum value
- * @returns {string}
- * @private
- */
 function parseRange(min, max) {
 	// Min value validation
 	if (typeof min === 'undefined') return '';
-	if (isNaN(min) || Number.isInteger(min) === false || Number.isSafeInteger(min) === false)
-		throw new TypeError(`%MySQL.parseRange 'min' parameter expects an integer or undefined, got ${min}`);
-	if (min < 0)
-		throw new TypeError(`%MySQL.parseRange 'min' parameter expects to be equal or greater than zero, got ${min}`);
+	if (isNaN(min) || Number.isInteger(min) === false || Number.isSafeInteger(min) === false) { throw new TypeError(`%MySQL.parseRange 'min' parameter expects an integer or undefined, got ${min}`); }
+	if (min < 0) { throw new TypeError(`%MySQL.parseRange 'min' parameter expects to be equal or greater than zero, got ${min}`); }
 
 	// Max value validation
 	if (typeof max !== 'undefined') {
-		if (typeof max !== 'number' || isNaN(max) || Number.isInteger(max) === false || Number.isSafeInteger(max) === false)
-			throw new TypeError(`%MySQL.parseRange 'max' parameter expects an integer or undefined, got ${max}`);
-		if (max <= min)
-			throw new TypeError(`%MySQL.parseRange 'max' parameter expects ${max} to be greater than ${min}. Got: ${max} <= ${min}`);
+		if (typeof max !== 'number' || isNaN(max) || Number.isInteger(max) === false || Number.isSafeInteger(max) === false) { throw new TypeError(`%MySQL.parseRange 'max' parameter expects an integer or undefined, got ${max}`); }
+		if (max <= min) { throw new TypeError(`%MySQL.parseRange 'max' parameter expects ${max} to be greater than ${min}. Got: ${max} <= ${min}`); }
 	}
 
 	return `LIMIT ${min}${typeof max === 'number' ? `,${max}` : ''}`;
 }
 
-/**
- * @param {string} method The name of the method
- * @param {string} parameter The parameter name
- * @param {string} type The expected primitive type of the parameter
- * @param {any} value The value to test
- * @private
- */
 function requestType(method, parameter, type, value) {
 	const currentType = typeof value;
 	if (currentType !== type) throw new TypeError(`${method} '${parameter}' parameter expects type of ${type}. Got: ${currentType}`);
 }
 
-/**
- * @param {string} method The name of the method
- * @param {string} parameter The parameter name
- * @param {any} value The value to test if undefined
- * @private
- */
 function requestValue(method, parameter, value) {
 	const currentType = typeof value;
 	if (currentType === 'undefined') throw new TypeError(`${method} '${parameter}' parameter expects a value. Got: undefined`);
 }
 
-/**
- * @param {number} value The number to sanitize
- * @returns {string}
- * @private
- */
 function sanitizeInteger(value) {
-	if (isNaN(value) || Number.isInteger(value) === false || Number.isSafeInteger(value) === false)
-		throw new TypeError(`%MySQL.sanitizeNumber expects an integer, got ${value}`);
-	if (value < 0)
-		throw new TypeError(`%MySQL.sanitizeNumber expects a positive integer, got ${value}`);
+	if (isNaN(value) || Number.isInteger(value) === false || Number.isSafeInteger(value) === false) { throw new TypeError(`%MySQL.sanitizeNumber expects an integer, got ${value}`); }
+	if (value < 0) { throw new TypeError(`%MySQL.sanitizeNumber expects a positive integer, got ${value}`); }
 
 	return String(value);
 }
 
-/**
- * @param {string} value The string to sanitize
- * @returns {string}
- * @private
- */
 function sanitizeString(value) {
-	if (value.length === 0)
-		throw new TypeError('%MySQL.sanitizeString expects a string with a length bigger than 0.');
+	if (value.length === 0) { throw new TypeError('%MySQL.sanitizeString expects a string with a length bigger than 0.'); }
 
 	return `'${value.replace(/'/g, "''")}'`;
 }
 
-/**
- * @param {string} value The string to sanitize as a key
- * @returns {string}
- * @private
- */
 function sanitizeKeyName(value) {
-	if (typeof value !== 'string')
-		throw new TypeError(`%MySQL.sanitizeString expects a string, got: ${typeof value}`);
-	if (/`/.test(value))
-		throw new TypeError(`Invalid input (${value}).`);
+	if (typeof value !== 'string') { throw new TypeError(`%MySQL.sanitizeString expects a string, got: ${typeof value}`); }
+	if (/`/.test(value)) { throw new TypeError(`Invalid input (${value}).`); }
 
 	return `\`${value}\``;
 }
 
-/**
- * @param {Object} value The object to sanitize
- * @returns {string}
- * @private
- */
 function sanitizeObject(value) {
 	if (value === null) return 'NULL';
 	if (Array.isArray(value)) return JSON.stringify(value.map(sanitizeInput));
@@ -444,12 +273,6 @@ function sanitizeObject(value) {
 	throw new TypeError(`%MySQL.sanitizeObject expects NULL, an array, or an object. Got: ${type}`);
 }
 
-/**
- * 
- * @param {any} value The value to sanitize
- * @returns {string}
- * @private
- */
 function sanitizeInput(value) {
 	const type = typeof value;
 	switch (type) {

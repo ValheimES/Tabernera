@@ -24,7 +24,6 @@ module.exports = class extends Comando {
 		const nombreboteh = this.client.emojis.get(Emojis[1]);
 		const nombrebotconfundido = this.client.emojis.get(Emojis[2]);
 
-
 		const ayuda1 = ['```fix',
 			'AYUDA: 2. SISTEMA — ¿AYUDA?',
 			'```',
@@ -160,7 +159,6 @@ module.exports = class extends Comando {
 					if (!help.hasOwnProperty(command.category)) help[command.category] = {};
 					if (!help[command.category].hasOwnProperty(command.subCategory)) help[command.category][command.subCategory] = [];
 					help[command.category][command.subCategory].push(`${command.name.padEnd(1)}`);
-					return;
 				})
 				.catch(() => {
 					// noop
