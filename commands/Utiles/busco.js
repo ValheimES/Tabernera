@@ -12,8 +12,8 @@ module.exports = class extends Comando {
 			requiredSettings: ['busco'],
 			usage: '[Descripcion:str] [...]',
 			description: 'Pide que se unan a tu tripulación, con el parámetro opcional de descripción, puedes añadir más información.',
-			extendedHelp: '+busco [Descripción]',
-			comando: '+busco En esta partida de 15:00 a 16:30 vamos a hacer una incursión y a grabar un directo mientras jugamos, así que buscamos a alguien disponible durante ese horario y que de su consentimiento a la grabación.'
+			extendedHelp: '+busco En esta partida de 15:00 a 16:30 vamos a hacer una incursión y a grabar un directo mientras jugamos, así que buscamos a alguien disponible durante ese horario y que de su consentimiento a la grabación.',
+			comando: '+busco [Descripción]'
 		});
 	}
 
@@ -36,7 +36,7 @@ module.exports = class extends Comando {
 			.setDescription(`Busco **${usuariosNecesarios}** ${usuariosNecesarios === 1 ? 'pirata' : 'piratas'} en el barco **${voiceChannel.name}** para zarpar.`);
 
 		if (descripcion !== '')
-			embedBarco.addField('Descripción', `_${descripcion}_`);
+			embedBarco.addField('Descripción', `__${descripcion}__`);
 
 		canal.send(embedBarco);
 		msg.delete(1000);
