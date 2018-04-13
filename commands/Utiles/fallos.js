@@ -44,7 +44,7 @@ module.exports = class extends Comando {
 		console.log(msg.id);
 		const embedReporte = new Discord.MessageEmbed()
 			.setColor(0x3785df)
-			.setAuthor(msg.author.username, msg.author.avatarURL)
+			.setAuthor(msg.author.username, msg.author.avatarURL())
 			.addField(`**Usuario reportado:** ${usuario.tag}`, `**Descripción:** ${titulodesc}`)
 			.addField(`**Fecha y hora:** ${hora} a las ${hora3}`, `**ID del reporte:** ${msg.id}`);
 
