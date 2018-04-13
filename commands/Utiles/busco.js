@@ -10,13 +10,14 @@ module.exports = class extends Comando {
 			permlevel: 3,
 			cooldown: 15,
 			requiredSettings: ['busco'],
-			description: 'Por añadir',
-			extendedHelp: '+busco',
-			comando: '+busco'
+			usage: '[Descripcion:str] [...]',
+			description: 'Pide que se unan a tu tripulación, con el parámetro opcional de descripción, puedes añadir más información.',
+			extendedHelp: '+busco [Descripción]',
+			comando: '+busco En esta partida de 15:00 a 16:30 vamos a hacer una incursión y a grabar un directo mientras jugamos, así que buscamos a alguien disponible durante ese horario y que de su consentimiento a la grabación.'
 		});
 	}
 
-	async run(msg) {
+	async run(msg, ...descripcion) {
 		const voiceChannel = msg.member.voiceChannel;
 		if (!voiceChannel) { return msg.send(`**${msg.author} debes conectarte a un barco para pedir tripulación.** 🚢`); }
 		if (msg.guid !== voiceChannel.guid) { return msg.send(`**${msg.author} debes conectarte a un barco para pedir tripulación.** 🚢`); }
@@ -29,15 +30,16 @@ module.exports = class extends Comando {
 
 		const embedBarco = new Discord.MessageEmbed()
 			.setTitle('Click aqui para zarpar')
+			.setAuthor(msg.author.username, msg.author.avatarURL())
 			.setURL(urlBarco)
 			.setColor(0x00ced1)
-			.addField(`_Busco **${usuariosNecesarios}** ${usuariosNecesarios === 1 ? 'pirata' : 'piratas'} en el barco ${voiceChannel.name} para zarpar._`, 'Embarcate !!!');
+			.setDescription(`Busco **${usuariosNecesarios}** ${usuariosNecesarios === 1 ? 'pirata' : 'piratas'} en el barco ${voiceChannel.name} para zarpar.`);
 
-		canal.send(`**${msg.author} dice:**`);
+		if (descripcion !== '')
+			embedBarco.addField('Descripción', `_${descripcion}_`);
+
 		canal.send(embedBarco);
-		canal.send('[<@&430418605423853568>]');
-
-		return true;
+		return canal.send('[<@&430418605423853568>]');
 	}
 
 };
