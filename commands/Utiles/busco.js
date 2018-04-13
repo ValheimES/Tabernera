@@ -36,7 +36,7 @@ module.exports = class extends Comando {
 			.setDescription(`Busco **${usuariosNecesarios}** ${usuariosNecesarios === 1 ? 'pirata' : 'piratas'} en el barco **${voiceChannel.name}** para zarpar.`);
 
 		if (descripcion !== '')
-			embedBarco.addField('Descripción', `__${descripcion}__`);
+			embedBarco.addField('Descripción', `_${descripcion}_`);
 
 		canal.send(embedBarco);
 		msg.delete(1000);
