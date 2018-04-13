@@ -30,12 +30,12 @@ module.exports = class extends Comando {
 
 		const embedBarco = new Discord.MessageEmbed()
 			.setTitle('Click aqui para zarpar')
-			.setAuthor(msg.author.username, msg.author.avatarURL())
+			.setAuthor(msg.member.nickname, msg.author.avatarURL())
 			.setURL(urlBarco)
 			.setColor(0x00ced1)
 			.setDescription(`Busco **${usuariosNecesarios}** ${usuariosNecesarios === 1 ? 'pirata' : 'piratas'} en el barco **${voiceChannel.name}** para zarpar.`);
 
-		if (descripcion !== '')
+		if (descripcion)
 			embedBarco.addField('Descripción', `_${descripcion}_`);
 
 		canal.send(embedBarco);
