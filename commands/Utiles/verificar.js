@@ -17,37 +17,35 @@ module.exports = class extends Comando {
 
 	async run(msg, [user, rol, ...nombre]) {
 		nombre = nombre.join(' ');
-		var taberna = this.client.channels.get('375828283704475649');
+		var taberna = msg.guild.channels.get(msg.guild.configs.Admins);
 
 		const MySql = await this.client.providers.get('MySQL');
 
 		const member = msg.mentions.members.first();
 
 		if (rol === 'Pionero') {
-			member.addRole([msg.guild.roles.find('name', 'Pionero'),
+			member.roles.add([msg.guild.roles.find('name', 'Pionero'),
 				msg.guild.roles.find('name', 'Fundador'),
 				msg.guild.roles.find('name', 'Insider'),
 				msg.guild.roles.find('name', 'Verificado')]);
 		} else if (rol === 'Fundador') {
-			member.addRole([msg.guild.roles.find('name', 'Fundador'),
+			member.roles.add([msg.guild.roles.find('name', 'Fundador'),
 				msg.guild.roles.find('name', 'Insider'),
 				msg.guild.roles.find('name', 'Verificado')]);
 		} else if (rol === 'Insider') {
-			member.addRole([msg.guild.roles.find('name', 'Insider'),
+			member.roles.add([msg.guild.roles.find('name', 'Insider'),
 				msg.guild.roles.find('name', 'Verificado')]);
 		} else if (rol === 'Verificado') {
-			member.addRole(msg.guild.roles.find('name', 'Verificado'));
+			member.roles.add(await msg.guild.roles.find('name', 'Verificado'));
 		} else {
 			return msg.channel.send('Has escrito mal el nombre de el rol');
 		}
 
 		member.setNickname(nombre);
 
-		if (MySql.insert2('Verificacion', ['UserID', 'Rango'], [`${user.id}`, `${rol.name}`])) {
-			// Nada
-		}
+		MySql.insert2('Verificacion', ['UserID', 'Rango'], [`${user.id}`, `${rol.name}`]);
 
-		return taberna.send(`<:tic:408639986934480908> **¡Cuenta verificada!:** _${user} , ahora puedes disfrutar de las ventajas de la verificación. Haz click aquí­ para más <#424868390654443520>._`);
+		return taberna.send(`<:tic:408639986934480908> **¡Cuenta verificada!:** _${member}, ahora puedes disfrutar de las ventajas de la verificación. Haz click aquí­ para más <#424868390654443520>._`);
 	}
 
 };
