@@ -11,11 +11,11 @@ module.exports = class extends Comando {
 			permLevel: 3,
 			description: 'Avisa a un moderador sobre un fallo o un usuario que incumple las normas.',
 			usage: '<fecha:str> <hora:str> <usuario:user> <desc:str> [...]',
-			usageDelim: ', ',
-			extendedHelp: '+reporte 27/03/2018, 14/02, @Hero#2501, Pruebas',
-			comando: '+reporte <dd/mm/yyyy>, <hh:mm>, <@Usuario> <Descripción>',
+			usageDelim: ' | ',
+			extendedHelp: '+reporte 27/03/2018 | 14:02 | @Hero#2501 | Pruebas',
+			comando: '+reporte <dd/mm/yyyy> | <hh:mm> | <@Usuario> | <Descripción>',
 			opcional: ['```md',
-				`* Los reportes son anonimos, ni tu los vas a ver.`,
+				`* Los reportes son anónimos, no pueden ser vistos por un usuario.`,
 				'```']
 		});
 	}
