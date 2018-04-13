@@ -33,12 +33,13 @@ module.exports = class extends Comando {
 			.setAuthor(msg.author.username, msg.author.avatarURL())
 			.setURL(urlBarco)
 			.setColor(0x00ced1)
-			.setDescription(`Busco **${usuariosNecesarios}** ${usuariosNecesarios === 1 ? 'pirata' : 'piratas'} en el barco ${voiceChannel.name} para zarpar.`);
+			.setDescription(`Busco **${usuariosNecesarios}** ${usuariosNecesarios === 1 ? 'pirata' : 'piratas'} en el barco **${voiceChannel.name}** para zarpar.`);
 
 		if (descripcion !== '')
 			embedBarco.addField('Descripción', `_${descripcion}_`);
 
 		canal.send(embedBarco);
+		msg.delete(1000);
 		return canal.send('[<@&430418605423853568>]');
 	}
 
