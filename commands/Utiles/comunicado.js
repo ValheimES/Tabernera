@@ -17,7 +17,7 @@ module.exports = class extends Comando {
 		});
 	}
 	async run(msg, [titulo, descripcion, imagen]) {
-		const canal = msg.guild.channels.get(msg.guild.configs.busco);
+		const canal = msg.guild.channels.get(msg.guild.configs.comunicados);
 
 		const messageFormat = [
 			`:logosot: **${titulo.toUpperCase()}**\n`,
