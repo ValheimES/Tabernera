@@ -11,7 +11,7 @@ module.exports = class extends Comando {
 			permLevel: 6,
 			description: 'Enviar comunicados al servidor siguiendo el formato utilizado. Parámetro opcional para añadir archivos adjuntos mediante un enlace. Posibilidad de adjuntar el archivo directamente.',
 			usage: '<título:str> <descripción:str> [enlace:str]',
-			extendedHelp: '+comunicado Sistema de comunicados | Añadido sistema de comunicados | https://imgur.com/a/9K6SX',
+			extendedHelp: '+comunicado Sistema de comunicados | Añadido sistema de comunicados | https://i.imgur.com/MHbYoJT1.png',
 			comando: '+comunicado <Título> | <Descripción> | [Enlace]',
 			usageDelim: '|'
 		});
