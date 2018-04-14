@@ -30,7 +30,7 @@ module.exports = class extends Comando {
 
 		const embedBarco = new Discord.MessageEmbed()
 			.setTitle('Click aqui para zarpar')
-			.setAuthor(msg.member.nickname === null ? msg.author.username : msg.member.nickname, msg.author.avatarURL())
+			.setAuthor(msg.member.nickname || msg.author.username, msg.author.avatarURL())
 			.setURL(urlBarco)
 			.setColor(0x00ced1)
 			.setDescription(`Busco **${usuariosNecesarios}** ${usuariosNecesarios === 1 ? 'pirata' : 'piratas'} en el barco **${voiceChannel.name}** para zarpar.`);
@@ -47,4 +47,4 @@ module.exports = class extends Comando {
 
 async function urlset(url) {
 	urlBarco = url;
-};
+}
