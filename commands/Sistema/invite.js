@@ -10,11 +10,12 @@ module.exports = class extends Comando {
 			extendedHelp: '+invitar'
 		});
 		this.comando = '+invitar';
-		this.admins = false;
+        this.admins = false;
 	}
 
-	run(msg) {
+	async run(msg) {
 		if (!this.client.user.bot) return msg.reply(msg.language.get('COMMAND_INVITE_SELFBOT'));
+
 		return msg.sendMessage(msg.language.get('COMMAND_INVITE', this.client));
 	}
 

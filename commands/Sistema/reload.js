@@ -1,42 +1,33 @@
 const Comando = require('../../estructuras/Comando');
-const { Stopwatch, Store } = require('klasa');
 
 module.exports = class extends Comando {
 
 	constructor(...args) {
 		super(...args, {
 			aliases: ['r'],
-			permLevel: 10,
+			permLevel: 6,
 			name: 'recargar',
 			description: (msg) => msg.language.get('COMMAND_RELOAD_DESCRIPTION'),
 			usage: '<Store:store|Piece:piece>',
 			extendedHelp: '+recargar encuesta'
 		});
 		this.comando = '+recargar <Modulo>';
-		this.admins = true;
+        this.admins = true;
 	}
 
 	async run(msg, [piece]) {
-		if (piece instanceof Store) {
+		if (piece instanceof this.client.methods.Collection) {
 			const timer = new Stopwatch();
 			await piece.loadAll();
 			await piece.init();
-			if (this.client.shard) {
-				await this.client.shard.broadcastEval(`if (this.shard.id !== ${this.client.shard.id}) this.${piece.name}.loadAll().then(() => this.${piece.name}.loadAll());`);
-			}
 			return msg.sendMessage(`${msg.language.get('COMMAND_RELOAD_ALL', piece)} (Took: ${timer.stop()})`);
 		}
-
-		try {
-			const itm = await piece.reload();
-			if (this.client.shard) {
-				await this.client.shard.broadcastEval(`if (this.shard.id !== ${this.client.shard.id}) this.${piece.store}.get('${piece.name}').reload();`);
-			}
-			return msg.sendMessage(msg.language.get('COMMAND_RELOAD', itm.type, itm.name));
-		} catch (err) {
-			piece.store.set(piece);
-			return msg.sendMessage(`❌ ${err}`);
-		}
+		return piece.reload()
+			.then(itm => msg.sendMessage(msg.language.get('COMMAND_RELOAD', itm.type, itm.name)))
+			.catch(err => {
+				this.client[`${piece.type}s`].set(piece);
+				msg.sendMessage(`? ${err}`);
+			});
 	}
 
 };

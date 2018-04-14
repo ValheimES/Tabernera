@@ -6,31 +6,29 @@ module.exports = class extends Comando {
 
 	constructor(...args) {
 		super(...args, {
-			permLevel: 10,
+			permLevel: 6,
 			name: 'transferir',
 			description: 'Transfiere un modulo principal a su respectiva carpeta',
-			usage: '<Piece:piece>',
+			usage: '<Command:cmd|Inhibitor:inhibitor|Event:event|Monitor:monitor|Language:language|Finalizer:finalizer>',
 			extendedHelp: '+transfer ayuda'
 		});
 		this.comando = '+transferir <Modulo>';
-		this.admins = true;
+        this.admins = true;
 	}
 
 	async run(msg, [piece]) {
-		const file = join(...piece.file);
-		const fileLocation = resolve(piece.store.coreDir, file);
+		const file = piece.type === 'command' ? join(...piece.file) : piece.file;
+		const fileLocation = resolve(this.client.coreBaseDir, `${piece.type}s`, file);
 		await fs.access(fileLocation).catch(() => { throw msg.language.get('COMMAND_TRANSFER_ERROR'); });
-		try {
-			await fs.copy(fileLocation, join(piece.store.userDir, file));
-			piece.store.load(piece.file);
-			if (this.client.shard) {
-				await this.client.shard.broadcastEval(`if (this.shard.id !== ${this.client.shard.id}) this.${piece.store}.load(${JSON.stringify(piece.file)});`);
-			}
-			return msg.sendMessage(msg.language.get('COMMAND_TRANSFER_SUCCESS', piece.type, piece.name));
-		} catch (err) {
-			this.client.emit('error', err.stack);
-			return msg.sendMessage(msg.language.get('COMMAND_TRANSFER_FAILED', piece.type, piece.name));
-		}
+		return fs.copy(fileLocation, resolve(this.client.clientBaseDir, `${piece.type}s`, file))
+			.then(() => {
+				this.client[`${piece.type}s`].load(resolve(this.client.clientBaseDir, `${piece.type}s`), piece.file);
+				return msg.sendMessage(msg.language.get('COMMAND_TRANSFER_SUCCESS', piece.type, piece.name));
+			})
+			.catch((err) => {
+				this.client.emit('error', err.stack);
+				return msg.sendMessage(msg.language.get('COMMAND_TRANSFER_FAILED', piece.type, piece.name));
+			});
 	}
 
 };

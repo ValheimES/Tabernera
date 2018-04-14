@@ -9,10 +9,10 @@ module.exports = class extends Comando {
 			extendedHelp: '+info'
 		});
 		this.comando = '+info';
-		this.admins = false;
+        this.admins = false;
 	}
 
-	run(msg) {
+	async run(msg) {
 		return msg.sendMessage(msg.language.get('COMMAND_INFO'));
 	}
 

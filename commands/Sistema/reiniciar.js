@@ -4,13 +4,13 @@ module.exports = class extends Comando {
 
 	constructor(...args) {
 		super(...args, {
-			permLevel: 10,
+			permLevel: 6,
 			name: 'reiniciar',
 			description: 'Reinicia el bot.',
 			extendedHelp: '+reiniciar'
 		});
 		this.comando = '+reiniciar';
-		this.admins = true;
+        this.admins = true;
 	}
 
 	async run(msg) {

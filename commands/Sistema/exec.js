@@ -5,7 +5,7 @@ module.exports = class extends Comando {
 
 	constructor(...args) {
 		super(...args, {
-			permLevel: 10,
+			permLevel: 4,
 			name: 'ejecutar',
 			description: 'Execute commands in the terminal, use with EXTREME CAUTION.',
 			usage: '<expression:str>'
