@@ -24,7 +24,9 @@ module.exports = class extends Comando {
 			await fs.copy(fileLocation, join(piece.store.userDir, file));
 			piece.store.load(piece.file);
 			if (this.client.shard) {
-				await this.client.shard.broadcastEval(`if (this.shard.id !== ${this.client.shard.id}) this.${piece.store}.load(${JSON.stringify(piece.file)});`);
+				await this.client.shard.broadcastEval(`
+					if (this.shard.id !== ${this.client.shard.id}) this.${piece.store}.load(${JSON.stringify(piece.file)});
+				`);
 			}
 			return msg.sendMessage(msg.language.get('COMMAND_TRANSFER_SUCCESS', piece.type, piece.name));
 		} catch (err) {

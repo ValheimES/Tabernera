@@ -2,8 +2,8 @@ const { Command } = require('klasa');
 
 module.exports = class extends Command {
 
-	constructor(client, dir, file, options = {}) {
-		super(client, dir, file, options);
+	constructor(client, store, file, core, options = {}) {
+		super(client, store, file, core, options);
 		this.comando = options.comando || 'No definido';
 
 		if (options.permLevel >= 4) {
@@ -12,7 +12,7 @@ module.exports = class extends Command {
 			this.admins = false;
 		}
 
-		this.opcional = options.opcional || undefined;
+		this.opcional = options.opcional || '';
 	}
 
 };

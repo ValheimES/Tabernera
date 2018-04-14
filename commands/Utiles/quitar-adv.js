@@ -1,9 +1,11 @@
 const Comando = require('../../estructuras/Comando');
-var Desc3;
-var Desc2;
+
 var var2;
+var Desc2;
+var Desc3;
 
 module.exports = class extends Comando {
+
 
 	constructor(...args) {
 		super(...args, {
@@ -14,7 +16,7 @@ module.exports = class extends Comando {
 
 			description: 'Elimina las advertencias de un usuario.',
 
-			usage: '<usuario:User> <numero:str>',
+			usage: '<usuario:user> <numero:str>',
 
 			extendedHelp: '+quitar-adv @Usuario 1',
 
@@ -23,10 +25,13 @@ module.exports = class extends Comando {
 		});
 	}
 
+
 	async run(msg, [usuario, numero]) {
 		const MySql = await this.client.providers.get('MySQL');
 
+
 		const exists = await MySql.has2('Strikes', `${usuario.id}`);
+
 
 		if (!exists) {
 			msg.delete(1000);
@@ -35,10 +40,12 @@ module.exports = class extends Comando {
 		} else {
 			const base = await MySql.get('Strikes', 'UserID', usuario.id);
 
+
 			if (base.Numero > numero && numero === '2' && base.Numero === '3') {
 				var2 = await MySql.get('Strikes', 'UserID', `${usuario.id}`);
 
 				Desc3 = var2.Desc3;
+
 
 				await MySql.update2('Strikes', `${usuario.id}`, 'Numero', `${2}`);
 				await MySql.update2('Strikes', `${usuario.id}`, 'Desc2', `${Desc3}`);
@@ -49,6 +56,7 @@ module.exports = class extends Comando {
 				Desc3 = var2.Desc3;
 
 				Desc2 = var2.Desc2;
+
 
 				await MySql.update2('Strikes', `${usuario.id}`, 'Numero', `${2}`);
 				await MySql.update2('Strikes', `${usuario.id}`, 'Desc1', `${Desc2}`);
@@ -65,16 +73,19 @@ module.exports = class extends Comando {
 
 				Desc2 = var2.Desc2;
 
+
 				await MySql.update2('Strikes', `${usuario.id}`, 'Numero', `${1}`);
 				await MySql.update2('Strikes', `${usuario.id}`, 'Desc1', `${Desc2}`);
 			} else {
 				await MySql.delete3('Strikes', `${usuario.id}`);
 			}
 
+
 			msg.delete(1000);
 
 			return msg.send('Se ha eliminado la advertencia.');
 		}
 	}
+
 
 };

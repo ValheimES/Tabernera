@@ -18,7 +18,8 @@ module.exports = class extends Comando {
 		});
 	}
 
-	async advertencias(msg, [usuario]) {
+
+	async run(msg, [advertencias, usuario]) {
 		const MySql = await this.client.providers.get('MySQL');
 
 		const exists = await MySql.has2('Strikes', `${usuario.id}`);

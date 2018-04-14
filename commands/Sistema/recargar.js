@@ -22,7 +22,9 @@ module.exports = class extends Comando {
 			await piece.loadAll();
 			await piece.init();
 			if (this.client.shard) {
-				await this.client.shard.broadcastEval(`if (this.shard.id !== ${this.client.shard.id}) this.${piece.name}.loadAll().then(() => this.${piece.name}.loadAll());`);
+				await this.client.shard.broadcastEval(`
+					if (this.shard.id !== ${this.client.shard.id}) this.${piece.name}.loadAll().then(() => this.${piece.name}.loadAll());
+				`);
 			}
 			return msg.sendMessage(`${msg.language.get('COMMAND_RELOAD_ALL', piece)} (Took: ${timer.stop()})`);
 		}
@@ -30,7 +32,9 @@ module.exports = class extends Comando {
 		try {
 			const itm = await piece.reload();
 			if (this.client.shard) {
-				await this.client.shard.broadcastEval(`if (this.shard.id !== ${this.client.shard.id}) this.${piece.store}.get('${piece.name}').reload();`);
+				await this.client.shard.broadcastEval(`
+					if (this.shard.id !== ${this.client.shard.id}) this.${piece.store}.get('${piece.name}').reload();
+				`);
 			}
 			return msg.sendMessage(msg.language.get('COMMAND_RELOAD', itm.type, itm.name));
 		} catch (err) {

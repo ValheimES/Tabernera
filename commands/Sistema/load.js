@@ -27,7 +27,12 @@ module.exports = class extends Comando {
 			if (!piece) throw msg.language.get('COMMAND_LOAD_FAIL');
 			await piece.init();
 			if (this.client.shard) {
-				await this.client.shard.broadcastEval(`if (this.shard.id !== ${this.client.shard.id}) { const piece = this.${piece.store}.load(${JSON.stringify(path)}, ${core}); if (piece) piece.init(); }`);
+				await this.client.shard.broadcastEval(`
+					if (this.shard.id !== ${this.client.shard.id}) {
+						const piece = this.${piece.store}.load(${JSON.stringify(path)}, ${core});
+						if (piece) piece.init();
+					}
+				`);
 			}
 			return msg.sendMessage(msg.language.get('COMMAND_LOAD', timer.stop(), store.name, piece.name));
 		} catch (error) {
