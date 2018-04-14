@@ -3,11 +3,12 @@ const Comando = require('../../estructuras/Comando');
 module.exports = class extends Comando {
 
 	constructor(...args) {
-		super(...args, { description: 'Comando Ping/Pong. ¿Me pregunto qué hace esto? /sarcasmo',
+		super(...args, {
+			description: 'Comando Ping/Pong. ¿Me pregunto qué hace esto? /sarcasmo',
 			extendedHelp: '+ping'
-		 });
+		});
 		this.comando = '+ping';
-        this.admins = false;
+		this.admins = false;
 	}
 
 	async run(msg) {

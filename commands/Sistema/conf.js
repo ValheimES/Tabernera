@@ -1,18 +1,31 @@
 const Comando = require('../../estructuras/Comando');
+
 const { util: { toTitleCase, codeBlock } } = require('klasa');
+
 
 module.exports = class extends Comando {
 
+
 	constructor(...args) {
 		super(...args, {
+
 			runIn: ['text'],
+
 			permLevel: 6,
+
 			guarded: true,
+
 			description: (msg) => msg.language.get('COMMAND_CONF_SERVER_DESCRIPTION'),
+
+
 			usage: '<set|get|reset|list|remove> [key:string] [value:string] [...]',
 			usageDelim: ' '
-		});		this.comando = '+conf <variable>';
-        this.admins = true;
+
+		});
+
+		this.comando = '+conf <variable>';
+
+		this.admins = true;
 	}
 
 	async run(msg, [action, key, ...value]) {
@@ -22,6 +35,7 @@ module.exports = class extends Comando {
 			const command = this.client.commands.get(value.join(' '));
 			if (command && command.guarded) throw msg.language.get('COMMAND_CONF_GUARDED', command.name);
 		}
+
 		return this[action](msg, key, value);
 	}
 
@@ -49,4 +63,7 @@ module.exports = class extends Comando {
 		const { path } = this.client.gateways.guilds.getPath(key, { avoidUnconfigurable: true, piece: false });
 		return msg.sendMessage(msg.language.get('COMMAND_CONF_SERVER', key ? `: ${key.split('.').map(toTitleCase).join('/')}` : '', codeBlock('asciidoc', path.getList(msg))));
 	}
+
+
 };
+

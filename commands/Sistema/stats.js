@@ -9,10 +9,10 @@ module.exports = class extends Comando {
 
 	constructor(...args) {
 		super(...args, { description: 'Proporciona algunos detalles sobre el bot y estadísticas.',
-		name: 'estadisticas',
-		extendedHelp: '+estadisticas'});
+			name: 'estadisticas',
+			extendedHelp: '+estadisticas' });
 		this.comando = '+estadisticas';
-        this.admins = false;
+		this.admins = false;
 	}
 
 	async run(msg) {
@@ -23,6 +23,8 @@ module.exports = class extends Comando {
 			`• Canales       :: ${this.client.channels.size.toLocaleString()}`,
 			`• Node          :: ${process.version}`,
 			`• Discord.js    :: v${discordVersion}`,
+			`• Klasa         :: v${klasaVersion}`,
+			'',
 			'= TIEMPO =',
 			`• Host          :: ${uptime().toLocaleString()}`,
 			`• Total         :: ${duration}`,
