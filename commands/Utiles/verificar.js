@@ -7,11 +7,11 @@ module.exports = class extends Comando {
 			name: 'verificar',
 			runIn: ['text'],
 			permLevel: 4,
-			description: 'Verifica a un usuario cambiandole el nombre ',
+			description: 'Sincroniza los datos de la cuenta de Discord con la cuenta de Xbox.',
 			usage: '<usuario:User> <rol:str> <nombre:str> [...]',
 			usageDelim: ' ',
-			extendedHelp: '+verificar @Chorizo @Insider Pepito',
-			comando: '+verificar <Usuario> <Rol> <Nombre>'
+			extendedHelp: '+verificar @Rufus @Insider xRufusDeponia20',
+			comando: '+verificar <@Usuario> <@Rol> <NombreXbox>'
 		});
 	}
 

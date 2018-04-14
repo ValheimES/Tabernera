@@ -5,13 +5,13 @@ module.exports = class extends Comando {
 
 	constructor(...args) {
 		super(...args, {
-			name: 'cuenta',
+			name: 'perfil',
 			runIn: ['text', 'dm', 'group'],
 			permLevel: 3,
 			description: 'Mira el estado de tu cuenta.',
-			extendedHelp: '+cuenta',
+			extendedHelp: '+perfil',
 			usage: '',
-			comando: '+cuenta'
+			comando: '+perfil'
 		});
 	}
 
