@@ -8,11 +8,11 @@ module.exports = class extends Comando {
 			name: 'comunicado',
 			enabled: true,
 			runIn: ['text'],
-			permLevel: 4,
-			description: 'Enviar comunicados al servidor.',
-			usage: '<titulo:str> <descripcion:str> [enlace:str]',
-			extendedHelp: '+comunicado',
-			comando: '+comunicado',
+			permLevel: 6,
+			description: 'Enviar comunicados al servidor siguiendo el formato utilizado. Parámetro opcional para añadir archivos adjuntos mediante un enlace. Posibilidad de adjuntar el archivo directamente.',
+			usage: '<título:str> <descripción:str> [enlace:str]',
+			extendedHelp: '+comunicado Sistema de comunicados | Añadido sistema de comunicados | http://www.imagen.com.mx/assets/img/imagen_share.png',
+			comando: '+comunicado <Título> | <Descripción> | [Enlace]',
 			usageDelim: '|'
 		});
 	}
