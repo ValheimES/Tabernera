@@ -47,4 +47,4 @@ module.exports = class extends Comando {
 
 async function urlset(url) {
 	urlBarco = url;
-}
+};

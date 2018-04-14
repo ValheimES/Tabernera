@@ -44,15 +44,16 @@ module.exports = class extends Comando {
 		console.log(msg.id);
 		const embedReporte = new Discord.MessageEmbed()
 			.setColor(0x3785df)
-			.setAuthor(msg.author.username, msg.author.avatarURL)
+			.setAuthor(msg.author.username, msg.author.avatarURL())
 			.addField(`**Usuario reportado:** ${usuario.tag}`, `**Descripción:** ${titulodesc}`)
 			.addField(`**Fecha y hora:** ${hora} a las ${hora3}`, `**ID del reporte:** ${msg.id}`);
 
-		msg.send('Tu reporte se ha subido, ahora tiene que ser evaluado');
+		msg.send('<:tic:408639986934480908> **Tu reporte ha sido enviado a moderación y está siendo revisado.**');
 		canal.send('Nuevo reporte recibido:');
 		msg.delete(2000);
 		canal.send({ embed: embedReporte });
-		return canal.send('[<@&406051816950726656>]');
+		canal.send('[<@&406051816950726656>]');
+		return msg.author.send('✅ **Tu reporte ha sido enviado a moderación y está siendo revisado:** Cuando un moderador escoge tu caso realiza una investigación y se pone en contacto contigo por MD, asegúrate de tenerlos activados. Si en 48h no has recibido respuesta, puedes enviar de nuevo el reporte.');
 	}
 
 };
