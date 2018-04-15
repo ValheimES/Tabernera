@@ -52,7 +52,7 @@ module.exports = class extends Monitor {
 
 };
 
-function getRolesToSet(serverRoles, memberRoles, rolesToAdd, rolesToDelete) {
+function getRolesToSet(memberRoles, serverRoles, rolesToAdd, rolesToDelete) {
 	var rolesToSet = new Collection;
 	memberRoles.forEach(element => {
 		rolesToSet.set(element.id, element);
