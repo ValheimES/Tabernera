@@ -33,7 +33,7 @@ module.exports = class extends Monitor {
 						canal.send(`${limpia}5:** Pirata experto.`);
 					} else if (parseInt(base2.XP) >= 4676 && parseInt(base2.XP) >= 11825 && !msg.member.roles.exists('id', '424585387596447765') && !msg.member.roles.exists('id', '424585482119413760') && !msg.member.roles.exists('id', '424585537035304962')) {
 						await msg.member.roles.set(getRolesToSet(msg.member.roles, msg.guild.roles, ['424585387596447765'], ['424585289852256268']));
-						canal.send(`${limpia}4:** Pirata rufián.`);
+						canal.send(`${limpia}4:** Pirata.`);
 					} else if (parseInt(base2.XP) >= 1151 && parseInt(base2.XP) >= 4675 && !msg.member.roles.exists('id', '424585289852256268') && !msg.member.roles.exists('id', '424585387596447765') && !msg.member.roles.exists('id', '424585482119413760') && !msg.member.roles.exists('id', '424585537035304962')) {
 						await msg.member.roles.set(getRolesToSet(msg.member.roles, msg.guild.roles, ['424585289852256268'], ['424585155408166922']));
 						canal.send(`${limpia}3:** Grumete gallina.`);
