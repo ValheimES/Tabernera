@@ -2,9 +2,9 @@
   "name": "tabernera",
   "version": "1.0.0",
   "description": "Discord Bot built on Klasa",
-  "main": "bot.js",
+  "main": "src/Tabernera",
   "scripts": {
-    "test": "eslint ./"
+    "test": "eslint src"
   },
   "keywords": [
     "discord.js",
@@ -15,20 +15,12 @@
   "license": "UNLICENSED",
   "dependencies": {
     "discord.js": "github:discordjs/discord.js",
-    "klasa": "github:dirigeants/klasa",
-    "express": "^4.16.3",
-    "express-session": "^1.15.6",
-    "chalk": "^2.3.2",
-    "body-parser": "^1.18.2",
-    "snekfetch": "^3.6.4",
-    "fs-nextra": "^0.3.2",
-    "os-uptime": "^2.0.1",
-    "moment": "^2.22.0",
-    "moment-duration-format": "^2.2.2",
+    "klasa": "github:dirigeants/klasa#SGv2.2.0",
     "mysql2": "^1.5.3"
   },
   "devDependencies": {
-    "eslint": "^4.19.1"
+    "eslint": "^4.19.1",
+    "eslint-config-klasa": "github:dirigeants/klasa-lint"
   },
   "repository": {
     "type": "git",
