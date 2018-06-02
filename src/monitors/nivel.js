@@ -24,24 +24,24 @@ module.exports = class extends Monitor {
 
 		const memberRoles = new Set(msg.member.roles.keys()), initial = new Set(memberRoles);
 		let rolename;
-		if (next <= 25) {
-			this.editRoles(memberRoles, ROLES.LIMPIACUBIERTAS);
-			rolename = '1:** Limpiacubiertas.';
-		} else if (next <= 1150) {
-			this.editRoles(memberRoles, ROLES.RATADEMAR);
-			rolename = '2:** Rata de mar.';
-		} else if (next <= 4675) {
-			this.editRoles(memberRoles, ROLES.GRUMETEGALLINA);
-			rolename = '3:** Grumete gallina.';
-		} else if (next <= 11825) {
-			this.editRoles(memberRoles, ROLES.PIRATA);
-			rolename = '4:** Pirata.';
-		} else if (next <= 67525) {
-			this.editRoles(memberRoles, ROLES.PIRATAEXPERTO);
-			rolename = '5:** Pirata experto.';
-		} else {
+		if (next >= 67525) {
 			this.editRoles(memberRoles, ROLES.REYPIRATA);
 			rolename = '6:** Rey pirata.';
+		} else if (next >= 23850) {
+			this.editRoles(memberRoles, ROLES.PIRATAEXPERTO);
+			rolename = '5:** Pirata experto.';
+		} else if (next >= 11825) {
+			this.editRoles(memberRoles, ROLES.PIRATA);
+			rolename = '4:** Pirata.';
+		} else if (next >= 4675) {
+			this.editRoles(memberRoles, ROLES.GRUMETEGALLINA);
+			rolename = '3:** Grumete gallina.';
+		} else if (next >= 1150) {
+			this.editRoles(memberRoles, ROLES.RATADEMAR);
+			rolename = '2:** Rata de mar.';
+		} else {
+			this.editRoles(memberRoles, ROLES.LIMPIACUBIERTAS);
+			rolename = '1:** Limpiacubiertas.';
 		}
 
 		if (this.equalSets(memberRoles, initial)) return;

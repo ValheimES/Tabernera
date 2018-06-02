@@ -4,10 +4,9 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			name: 'eliminar-adv',
 			permissionLevel: 5,
 			description: 'Elimina las advertencias de un usuario.',
-			usage: '<usuario:User>',
+			usage: '<usuario:user>',
 			extendedHelp: '+eliminar-adv @Usuario',
 			comando: '+eliminar-adv <Usuario>',
 			opcional: ['```md',

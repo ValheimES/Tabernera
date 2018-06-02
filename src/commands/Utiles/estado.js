@@ -1,6 +1,6 @@
-const Comando = require('../../estructuras/Comando');
+const { Command } = require('../../index');
 
-module.exports = class extends Comando {
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
@@ -10,22 +10,15 @@ module.exports = class extends Comando {
 			cooldown: 4,
 			permissionLevel: 6,
 			description: 'Cambia el estado.',
-			usage: '<estado:str> [...]',
+			usage: '<estado:str{2,32}>',
 			extendedHelp: '+estado',
 			comando: '+estado'
 		});
 	}
-	async run(msg, [...estado]) {
-		const bot = msg.client.users.get('408643206369116160');
-
-		estado = `${estado.join(' ')}`;
-
-		await bot.setActivity(estado);
-
-		await msg.channel.send('Se ha cambiado el estado.');
-		await msg.delete(100);
-
-		return true;
+	async run(msg, [estado]) {
+		msg.delete(100);
+		await this.client.user.setActivity(estado);
+		return msg.sendMessage('Se ha cambiado el estado.');
 	}
 
 };

@@ -1,14 +1,12 @@
-const Comando = require('../../estructuras/Comando');
+const { Command } = require('../../index');
 
-module.exports = class extends Comando {
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			name: 'grog',
-			enabled: true,
 			runIn: ['text'],
 			cooldown: 4,
-			description: 'sirve un grog.',
+			description: 'Sirve un grog.',
 			usage: '<usuario:user>',
 			extendedHelp: '+grog',
 			comando: '+grog',
@@ -16,10 +14,10 @@ module.exports = class extends Comando {
 		});
 	}
 
-	async run(msg, [usuario]) {
-		var taberna = msg.client.channels.get('375828283704475649');
-		var Textos = [`Hola ${usuario} sirvete🍺`, `${usuario} sirvete guapo🍺`, `Aqui tienes ${usuario} 🍺`];
-		return taberna.send(Textos[Math.floor(Math.random() * Textos.length)]);
+	run(msg, [usuario]) {
+		const taberna = msg.client.channels.get('375828283704475649');
+		const textos = [`Hola ${usuario} sirvete🍺`, `${usuario} sirvete guapo🍺`, `Aqui tienes ${usuario} 🍺`];
+		return taberna.send(textos[Math.floor(Math.random() * textos.length)]);
 	}
 
 };

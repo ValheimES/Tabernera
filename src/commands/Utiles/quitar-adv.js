@@ -1,6 +1,6 @@
-const Comando = require('../../estructuras/Comando');
+const { Command } = require('../../index');
 
-module.exports = class extends Comando {
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
