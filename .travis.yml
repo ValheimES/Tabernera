@@ -4,3 +4,11 @@ node_js:
 
 script:
   - npm run test
+
+after_success:
+  - chmod +xdiscord.sh
+  - ./discord.sh success $WEBHOOK_URL
+
+after_failure:
+  - chmod +x discord.sh
+  - ./discord.sh failure $WEBHOOK_URL
