@@ -23,7 +23,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [fecha, hora, usuario, ...titulodesc]) {
-		const canal = msg.guild.channels.get(msg.guild.configs.reportes);
+		const canal = msg.guild.channels.get(msg.guild.configs.channels.reportes);
 		if (!canal || !canal.postable) throw 'Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.';
 
 		const fechaYHora = ts.display(new Date(validaFecha(fecha).concat(validaHora(hora))));

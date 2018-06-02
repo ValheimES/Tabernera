@@ -21,7 +21,7 @@ module.exports = class extends Command {
 		if (voiceChannel.full) throw `**${msg.author} no puedes pedir más tripulantes ¡tu barco ya está lleno!** 🚫`;
 
 		const usuariosNecesarios = voiceChannel.userLimit - voiceChannel.members.size;
-		const canal = msg.guild.channels.get(msg.guild.configs.busco);
+		const canal = msg.guild.channels.get(msg.guild.configs.channels.busco);
 
 		const { url } = await voiceChannel.createInvite();
 

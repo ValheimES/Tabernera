@@ -21,7 +21,7 @@ module.exports = class extends Command {
 
 		await msg.delete();
 
-		const canal = msg.guild.channels.get(msg.guild.configs.comunicados);
+		const canal = msg.guild.channels.get(msg.guild.configs.channels.comunicados);
 		const messageFormat = `<:logosot:418871931157086218> **${titulo.toUpperCase()}**\n\n${descripcion}\n\n[@everyone]`;
 		if (imagen) return canal.send(messageFormat, new MessageAttachment(this.parseURL(imagen)));
 		return canal.send(messageFormat);

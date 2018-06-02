@@ -16,7 +16,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [user, rol, ...nombre]) {
-		const taberna = msg.guild.channels.get(msg.guild.configs.channels.admin);
+		const taberna = msg.guild.channels.get(msg.guild.configs.channels.administrador);
 		if (!taberna) throw 'El canal de Administradores no ha sido configurado o no existe en el servidor.';
 
 		const member = await msg.guild.members.fetch(user.id)

@@ -29,8 +29,8 @@ module.exports = class extends Command {
 
 		await provider.update('strikes', usuario.id, { numero: numero + 1, [numero === 1 ? 'desc2' : 'desc3']: adv.join(' ') });
 		if (numero === 2) {
-			const taberna = msg.guild.channels.get(msg.guild.configs.channels.admin);
-			await taberna.send(`${msg.guild.roles.get(msg.guild.configs.AdminRolId)} ${usuario.username} tiene 3 advertencias, hora de examinar el caso.`);
+			const taberna = msg.guild.channels.get(msg.guild.configs.channels.administrador);
+			await taberna.send(`<@&${msg.guild.configs.roles.administrador}> ${usuario.username} tiene 3 advertencias, hora de examinar el caso.`);
 		}
 		return msg.sendMessage('Se ha creado la advertencia.');
 	}
