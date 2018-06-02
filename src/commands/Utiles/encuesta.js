@@ -1,11 +1,11 @@
-const Comando = require('../../estructuras/Comando');
-const Discord = require('discord.js');
+const { Command } = require('../../index');
+const { MessageEmbed } = require('discord.js');
 
 const a = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 const b = ['', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 const unicode = ['', '🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿'];
 
-module.exports = class extends Comando {
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
@@ -22,7 +22,7 @@ module.exports = class extends Comando {
 	}
 
 	async run(msg, [bool, numop, ...parametros]) {
-		const canal = msg.guild.channels.get(msg.guild.configs.comunicados);
+		const canal = msg.guild.channels.get(msg.guild.configs.channels.comunicados);
 
 		parametros = `${parametros.join(' ')}`;
 		var partes = parametros.split('|');
@@ -31,7 +31,7 @@ module.exports = class extends Comando {
 		const desc = partes[2];
 
 		if (numop <= 9 && bool === 'numeros') {
-			const embedEncuesta = new Discord.MessageEmbed()
+			const embedEncuesta = new MessageEmbed()
 				.setColor(0xee4646)
 				.setTitle(`${titulo}`)
 				.setDescription(`${desc}`)
@@ -49,7 +49,7 @@ module.exports = class extends Comando {
 			});
 			await msg.delete(100);
 		} else {
-			const embedEncuesta2 = new Discord.MessageEmbed()
+			const embedEncuesta2 = new MessageEmbed()
 				.setColor(0xee4646)
 				.setTitle(`${titulo}`)
 				.setDescription(`${desc}`)
@@ -75,6 +75,6 @@ module.exports = class extends Comando {
 function inWords(ifNum, num) {
 	if (ifNum)
 		return a[num];
-	 else
+	else
 		return b[num];
 }

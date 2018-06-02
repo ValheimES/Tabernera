@@ -1,7 +1,13 @@
-const Comando = require('../../estructuras/Comando');
-const Discord = require('discord.js');
+const { Command, Timestamp } = require('../../index');
+const { MessageEmbed } = require('discord.js');
 
-module.exports = class extends Comando {
+const DATE_FORMAT = /\d{1,2}\/\d{1,2}\/\d{4}/;
+const HOUR_FORMAT = /\d{1,2}:\d{1,2}/;
+const MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+const ts = new Timestamp('DD/MM/YYYY [a las] hh:mm');
+
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
@@ -11,7 +17,7 @@ module.exports = class extends Comando {
 			permissionLevel: 3,
 			description: 'Avisa a un moderador sobre un fallo o un usuario que incumple las normas.',
 			usage: '<fecha:str> <hora:str> <usuario:user> <desc:str> [...]',
-			usageDelim: ' | ',
+			usageDelim: '|',
 			extendedHelp: '+reporte 27/03/2018 | 14:02 | @Hero#2501 | Pruebas',
 			comando: '+reporte <dd/mm/yyyy> | <hh:mm> | <@Usuario> | <Descripción>',
 			opcional: ['```md',
@@ -20,40 +26,43 @@ module.exports = class extends Comando {
 		});
 	}
 
-	async run(msg, [hora, hora3, usuario, ...titulodesc]) {
+	async run(msg, [fecha, hora, usuario, ...titulodesc]) {
 		const canal = msg.guild.channels.get(msg.guild.configs.reportes);
+		if (!canal || !canal.postable) throw 'Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.';
 
-		var hora2 = hora.split('/');
-		if (hora2.length !== 3)
-			return msg.sendMessage('Error de formato, dd/mm/yyyy');
-
-		if (!hora2[0].length === 2 || !hora2[1].length === 2 || !hora2[2].length === 4)
-			return msg.sendMessage('Error de formato, dd/mm/yyyy');
-
-		var hora4 = hora3.split(':');
-		if (hora4.length !== 2)
-			return msg.sendMessage('Error de formato, hh:mm');
-
-		if (!hora4[0].length === 2 || !hora4[1].length === 2)
-			return msg.sendMessage('Error de formato, hh:mm');
-
-
-		titulodesc = `${titulodesc.join(' ')}`;
-
-		if (!canal || canal.postable === false) return msg.sendMessage('Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.');
-		console.log(msg.id);
-		const embedReporte = new Discord.MessageEmbed()
-			.setColor(0x3785df)
-			.setAuthor(msg.author.username, msg.author.avatarURL())
-			.addField(`**Usuario reportado:** ${usuario.tag}`, `**Descripción:** ${titulodesc}`)
-			.addField(`**Fecha y hora:** ${hora} a las ${hora3}`, `**ID del reporte:** ${msg.id}`);
+		const fechaYHora = ts.display(new Date(this.validaFecha(fecha).concat(this.validaHora(hora))));
 
 		msg.sendMessage('<:tic:408639986934480908> **Tu reporte ha sido enviado a moderación y está siendo revisado.**');
-		canal.send('Nuevo reporte recibido:');
 		msg.delete(2000);
-		canal.send({ embed: embedReporte });
-		canal.send('[<@&406051816950726656>]');
-		return msg.author.send('✅ **Tu reporte ha sido enviado a moderación y está siendo revisado:** Cuando un moderador escoge tu caso realiza una investigación y se pone en contacto contigo por MD, asegúrate de tenerlos activados. Si en 48h no has recibido respuesta, puedes enviar de nuevo el reporte.');
+
+		await canal.send('Nuevo reporte recibido:', new MessageEmbed()
+			.setColor(0x3785df)
+			.setAuthor(msg.author.username, msg.author.avatarURL())
+			.addField(`**Usuario reportado:** ${usuario.tag}`, `**Descripción:** ${titulodesc.join('|')}`)
+			.addField(`**Fecha y hora:** ${fechaYHora}`, `**ID del reporte:** ${msg.id}`));
+		await canal.send('[<@&406051816950726656>]');
+		return msg.author.send('✅ **Tu reporte ha sido enviado a moderación y está siendo revisado:** Cuando un moderador escoge tu caso realiza una investigación y se pone en contacto contigo por MD, asegúrate de tenerlos activados. Si en 48h no has recibido respuesta, puedes enviar de nuevo el reporte.').catch(() => null);
+	}
+
+	validaFecha(fecha) {
+		if (!DATE_FORMAT.test(fecha)) throw 'Error de formato, la fecha debe tener el siguiente formato: dd/mm/yyyy';
+		const [día, mes, año] = fecha.split('/').map(Number);
+		if (mes > 12 || (mes === 2 && día === 29 && !this.esAñoBisiesto(año)) || MONTH_DAYS[mes] < día)
+			throw 'Error de validación, ¡asegúrate de que la fecha es correcta!';
+
+		return [día, mes, año];
+	}
+
+	validaHora(horas) {
+		if (!HOUR_FORMAT.test(horas)) throw 'Error de formato, la hora debe tener el siguiente formato: hh:mm';
+		const [hora, minuto] = horas.split(':').map(Number);
+		if (hora > 60 || minuto > 60) throw 'Error de validación, ¡asegúrate de que la hora es correcta!';
+
+		return [hora, minuto];
+	}
+
+	esAñoBisiesto(año) {
+		return ((año % 4 === 0) && (año % 100 !== 0)) || (año % 400 === 0);
 	}
 
 };
