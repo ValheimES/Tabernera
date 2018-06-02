@@ -1,4 +1,4 @@
-const { SQLProvider, QueryBuilder, Timestamp, Type, util: { mergeDefault, isNumber, isObject } } = require('klasa');
+const { SQLProvider, QueryBuilder, Schema, Timestamp, Type, util: { mergeDefault, isNumber, isObject } } = require('klasa');
 
 /**
  * NOTE: You need to install mysql2
@@ -266,18 +266,15 @@ module.exports = class extends SQLProvider {
 
 	/**
 	 * Add a new column to a table's schema.
-	 * @param {string} table The name of the table to edit.
-	 * @param {(string|Array<string[]>)} key The key to add.
-	 * @param {string} [datatype] The datatype for the new key.
-	 * @returns {Promise<any[]>}
+	 * @param {string} table The table to update
+	 * @param {(SchemaFolder | SchemaPiece)} piece The SchemaFolder or SchemaPiece added to the schema
+	 * @returns {Promise<*>}
 	 */
-	addColumn(table, key, datatype) {
-		if (typeof key === 'string') return this.exec(`ALTER TABLE ${sanitizeKeyName(table)} ADD COLUMN ${sanitizeKeyName(key)} ${datatype};`);
-		if (typeof datatype === 'undefined' && Array.isArray(key)) {
-			return this.exec(`ALTER TABLE ${sanitizeKeyName(table)} ${key.map(([column, type]) =>
-				`ADD COLUMN ${sanitizeKeyName(column)} ${type}`).join(', ')};`);
-		}
-		throw new TypeError('Invalid usage of MySQL#addColumn. Expected a string and string or string[][] and undefined.');
+	addColumn(table, piece) {
+		if (!(piece instanceof Schema)) throw new TypeError('Invalid usage of PostgreSQL#addColumn. Expected a SchemaPiece or SchemaFolder instance.');
+		return this.exec(piece.type !== 'Folder'
+			? `ALTER TABLE ${sanitizeKeyName(table)} ADD COLUMN ${this.qb.parse(piece)};`
+			: `ALTER TABLE ${sanitizeKeyName(table)} ${[...piece.values(true)].map(subpiece => `ADD COLUMN ${this.qb.parse(subpiece)}`).join(', ')};`);
 	}
 
 	/**
@@ -293,14 +290,14 @@ module.exports = class extends SQLProvider {
 	}
 
 	/**
-	 * Edit the key's datatype from the table's schema.
-	 * @param {string} table The name of the table to edit.
-	 * @param {string} key The name of the column to update.
-	 * @param {string} datatype The new datatype for the column.
-	 * @returns {Promise<any[]>}
+	 * Alters the datatype from a column.
+	 * @param {string} table The table to update
+	 * @param {SchemaPiece} piece The modified SchemaPiece
+	 * @returns {Promise<*>}
 	 */
-	updateColumn(table, key, datatype) {
-		return this.exec(`ALTER TABLE ${sanitizeKeyName(table)} MODIFY COLUMN ${sanitizeKeyName(key)} ${datatype};`);
+	updateColumn(table, piece) {
+		const [column, ...datatype] = this.qb.parse(piece).split(' ');
+		return this.exec(`ALTER TABLE ${sanitizeKeyName(table)} MODIFY COLUMN ${sanitizeKeyName(column)} TYPE ${datatype};`);
 	}
 
 	/**
