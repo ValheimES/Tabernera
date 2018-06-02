@@ -25,15 +25,15 @@ module.exports = class extends Comando {
 			`\n[@everyone]`
 		];
 
-		if (!imagen && msg.attachments.size) 
+		if (!imagen && msg.attachments.size)
 			imagen = msg.attachments.first().url;
-		
 
-		if (imagen) 
+
+		if (imagen)
 			await canal.send(messageFormat, new Discord.MessageAttachment(imagen));
-		 else 
+		 else
 			await canal.send(messageFormat);
-		
+
 		await msg.delete(100);
 
 		return true;

@@ -1,33 +1,33 @@
-const Comando = require('../../estructuras/Comando');
+const { Command } = require('../../index');
 
-module.exports = class extends Comando {
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			name: 'actualizar',
 			runIn: ['text'],
 			permissionLevel: 6,
 			description: 'Comando de un uso',
-			usage: '',
-			usageDelim: ' ',
 			extendedHelp: '+actualizar',
-			comando: '+actualizar',
-			opcional: ['```md',
-				`* Hay que tener precaucion con este comando.`,
-				'```']
+			opcional: ['```md', `* Hay que tener precaucion con este comando.`, '```']
 		});
 	}
 
 	async run(msg) {
-		var members = msg.guild.members.array();
+		const insider = msg.guild.roles.get(msg.guild.configs.roles.insider);
+		if (!insider) throw 'El rol de Insiders no está configurado o no existe.';
 
-		for (let i = 0; i < members.length; i++) {
-			if (await members[i].roles.exists('name', 'Insider') && !members[i].roles.exists('name', 'Verificado')) 
-				await members[i].addRole(msg.guild.roles.find('name', 'Verificado'));
-			
+		const verificado = msg.guild.roles.get(msg.guild.configs.roles.verificado);
+		if (!verificado) throw 'El rol de Verificado no está configurado o no existe.';
+
+		let number = 0;
+		for (const member of msg.guild.members.values()) {
+			if (member.roles.has(insider.id) && !member.roles.has(verificado.id)) {
+				await member.roles.add(verificado);
+				number++;
+			}
 		}
 
-		return msg.send('Completado');
+		return msg.sendMessage(`Operación completada, se ha añadido el rol ${verificado.name} a ${number} usuario${number !== 1 ? 's' : ''}.`);
 	}
 
 };

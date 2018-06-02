@@ -4,7 +4,6 @@ module.exports = class extends Comando {
 
 	constructor(...args) {
 		super(...args, {
-			name: 'advertir',
 			runIn: ['text'],
 			permissionLevel: 5,
 			description: 'Permite a un moderador añadir una advertencia de manera manual a un\n usuario que haya infringido las normativas. Es un sistema acumulativo que al llegar a\n la tercera advertencia, pone el caso a disposición de la administración para evaluarlo y aplicar\n una sanción según la gravedad del asunto, que puede ser desde una expulsión temporal, hasta\n un bloqueo permamente.',
@@ -46,11 +45,11 @@ module.exports = class extends Comando {
 				throw 'Se ha producido un error';
 			}
 		} else if (numeroAdv === 2) {
-			if (MySql.update2('Strikes', `${usuario.id}`, 'Numero', `${parseInt(base.Numero) + 1}`) && MySql.update2('Strikes', `${usuario.id}`, 'Desc3', `${adv}`)) 
+			if (MySql.update2('Strikes', `${usuario.id}`, 'Numero', `${parseInt(base.Numero) + 1}`) && MySql.update2('Strikes', `${usuario.id}`, 'Desc3', `${adv}`))
 				msg.send('Se ha creado la advertencia.');
-			 else 
+			 else
 				throw 'Se ha producido un error';
-			
+
 
 			canal.send(`${msg.guild.roles.get(msg.guild.configs.AdminRolId)} ${usuarioPorID} tiene 3 advertencias, hora de examinar el caso.`);
 			return msg.delete(1000);

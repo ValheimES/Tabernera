@@ -1,6 +1,6 @@
-const Comando = require('../../estructuras/Comando');
+const { Command, util: { toTitleCase } } = require('../../index');
 
-module.exports = class extends Comando {
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
@@ -8,7 +8,7 @@ module.exports = class extends Comando {
 			runIn: ['text'],
 			permissionLevel: 4,
 			description: 'Sincroniza los datos de la cuenta de Discord con la cuenta de Xbox.',
-			usage: '<usuario:User> <rol:str> <nombre:str> [...]',
+			usage: '<usuario:user> <rol:str> <nombre:str> [...]',
 			usageDelim: ' ',
 			extendedHelp: '+verificar @Rufus @Insider xRufusDeponia20',
 			comando: '+verificar <@Usuario> <@Rol> <NombreXbox>'
@@ -16,36 +16,41 @@ module.exports = class extends Comando {
 	}
 
 	async run(msg, [user, rol, ...nombre]) {
-		nombre = nombre.join(' ');
-		var taberna = msg.guild.channels.get(msg.guild.configs.Admins);
+		const taberna = msg.guild.channels.get(msg.guild.configs.channels.admin);
+		if (!taberna) throw 'El canal de Administradores no ha sido configurado o no existe en el servidor.';
 
-		const MySql = await this.client.providers.get('MySQL');
+		const member = await msg.guild.members.fetch(user.id)
+			.catch(() => { throw 'El usuario no parece estar en el servidor, ¿viste fantasmas?'; });
 
-		const member = msg.mentions.members.first();
-
-		if (rol === 'Pionero') {
-			member.roles.add([msg.guild.roles.find('name', 'Pionero'),
-				msg.guild.roles.find('name', 'Fundador'),
-				msg.guild.roles.find('name', 'Insider'),
-				msg.guild.roles.find('name', 'Verificado')]);
-		} else if (rol === 'Fundador') {
-			member.roles.add([msg.guild.roles.find('name', 'Fundador'),
-				msg.guild.roles.find('name', 'Insider'),
-				msg.guild.roles.find('name', 'Verificado')]);
-		} else if (rol === 'Insider') {
-			member.roles.add([msg.guild.roles.find('name', 'Insider'),
-				msg.guild.roles.find('name', 'Verificado')]);
-		} else if (rol === 'Verificado') {
-			member.roles.add(await msg.guild.roles.find('name', 'Verificado'));
-		} else {
-			return msg.channel.send('Has escrito mal el nombre de el rol');
+		const roles = [];
+		rol = rol.toLowerCase();
+		switch (rol) {
+			case 'pionero':
+				roles.push(this.getRole(msg, 'pionero'));
+				// falls through
+			case 'fundador':
+				roles.push(this.getRole(msg, 'fundador'));
+				// falls through
+			case 'insider':
+				roles.push(this.getRole(msg, 'insider'));
+				// falls through
+			case 'verificado':
+				roles.push(this.getRole(msg, 'verificado'));
+				break;
+			default:
+				throw 'Has escrito mal el nombre del rol.';
 		}
-
-		member.setNickname(nombre);
-
-		MySql.insert2('Verificacion', ['UserID', 'Rango'], [`${user.id}`, `${rol.name}`]);
+		if (roles.length) await member.roles.add(roles);
+		await member.setNickname(nombre.join(' '));
+		await this.client.providers.default.create('Verificacion', user.id, { rango: rol });
 
 		return taberna.send(`<:tic:408639986934480908> **¡Cuenta verificada!:** _${member}, ahora puedes disfrutar de las ventajas de la verificación. Haz click aquí­ para más <#424868390654443520>._`);
+	}
+
+	getRole(msg, rolename) {
+		const role = msg.guild.roles.get(msg.guild.configs.roles[rolename]);
+		if (!role) throw `El rol ${toTitleCase(rolename)} no ha sido configurado o no existe en el servidor.`;
+		return role;
 	}
 
 };

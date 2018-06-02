@@ -1,8 +1,8 @@
-const Comando = require('../../estructuras/Comando');
+const { Command } = require('../../index');
 const fs = require('fs-nextra');
 const { resolve, join } = require('path');
 
-module.exports = class extends Comando {
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {

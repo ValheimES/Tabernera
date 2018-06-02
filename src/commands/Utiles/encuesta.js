@@ -39,15 +39,14 @@ module.exports = class extends Comando {
 					.setTimestamp(new Date())
 					.setFooter(`seaofthieves-es.com`);
 
-				for (let i = 1; i < (numop + 1); i++) 
+				for (let i = 1; i < (numop + 1); i++)
 					embedEncuesta.addField('\u200b', `:${inWords(true, i)}: ${partes[i + 2]}`);
-				
+
 				embedEncuesta.addField('\u200b', `@everyone`);
 
 				canal.send(embedEncuesta).then(async (message) => {
-					for (var i = 1; i < (numop + 1); i++) 
+					for (var i = 1; i < (numop + 1); i++)
 						await message.react(`${i}\u20e3`);
-					
 				});
 				await msg.delete(100);
 			} else {
@@ -58,15 +57,14 @@ module.exports = class extends Comando {
 					.setTimestamp(new Date())
 					.setFooter(`seaofthieves-es.com`);
 
-				for (let i = 1; i < (numop + 1); i++) 
+				for (let i = 1; i < (numop + 1); i++)
 					embedEncuesta2.addField('\u200b', `:regional_indicator_${inWords(false, i)}: ${partes[i + 2]}`);
-				
+
 				embedEncuesta2.addField('\u200b', `@everyone`);
 
 				canal.send(embedEncuesta2).then(async (message) => {
-					for (let i = 1; i < (numop + 1); i++) 
+					for (let i = 1; i < (numop + 1); i++)
 						await message.react(`${unicode[i]}`);
-					
 				});
 				await msg.delete(100);
 			}
@@ -80,9 +78,8 @@ module.exports = class extends Comando {
 };
 
 function inWords(ifNum, num) {
-	if (ifNum) 
+	if (ifNum)
 		return a[num];
-	 else 
+	 else
 		return b[num];
-	
 }

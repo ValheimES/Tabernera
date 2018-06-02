@@ -1,6 +1,7 @@
 const Comando = require('../../estructuras/Comando');
 const Discord = require('discord.js');
 
+// TODO(kyraNET) Rewrite
 module.exports = class extends Comando {
 
 	constructor(...args) {
@@ -9,7 +10,7 @@ module.exports = class extends Comando {
 			requiredSettings: ['reportes'],
 			permissionLevel: 4,
 			description: 'Responde a un fallo que se ha solucionando dando una descripción y la id del mensaje.',
-			usage: '<idmensaje:int>  <desc:str> [...]',
+			usage: '<idmensaje:int> <desc:str> [...]',
 			usageDelim: ' ',
 			extendedHelp: '+responder 378947583628938 tu reporte ha sido solucionado',
 			comando: '+responder <idMensaje> <Descripción>',
@@ -30,9 +31,9 @@ module.exports = class extends Comando {
 		}
 
 		const messag = await MySql.get('Fallos', 'ID', idmensaje);
-		if (messag.Aceptado == '0') {
-			const user = await this.client.users.fetch('' + messag.UserID);
-			if (messag.NumApp == '5') {
+		if (messag.Aceptado === '0') {
+			const user = await this.client.users.fetch(`${messag.UserID}`);
+			if (messag.NumApp === '5') {
 				const embedRespuesta = new Discord.MessageEmbed()
 					.setColor(0x3785df)
 					.setAuthor(user.username, user.avatarURL())
@@ -48,19 +49,18 @@ module.exports = class extends Comando {
 			var mv = null;
 			for (let i = 0; i < mcg.length; i++) {
 				if ((i + 1) % 2) {
-				} else if(mcg[i].embeds[0].footer.text == messag.MsgID) {
-
-                        mv = mcg[i];
-                    }
+				} else if (mcg[i].embeds[0].footer.text === messag.MsgID) {
+					mv = mcg[i];
+				}
 			}
-			console.log('' + (parseInt(messag.NumApp) + 1));
+			console.log(`${parseInt(messag.NumApp) + 1}`);
 			MySql.update('Fallos', parseInt(idmensaje), 'NumApp', messag.NumApp + 1);
 			msg.delete(1000);
 			return mv.edit(new Discord.MessageEmbed().setColor(0x3785df)
 				.setAuthor(user.username, user.avatarURL())
 				.setTitle(messag.Title)
 				.setDescription(messag.Desc)
-				.addField('Aceptado', `ID: ${  idmensaje}`)
+				.addField('Aceptado', `ID: ${idmensaje}`)
 				.setFooter(messag.MsgID));
 		} else {
 			msg.send('El reporte ya ha sido aceptado, para darlo por solucionado escriba +');

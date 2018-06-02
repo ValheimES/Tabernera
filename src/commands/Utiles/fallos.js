@@ -24,23 +24,23 @@ module.exports = class extends Comando {
 		const canal = msg.guild.channels.get(msg.guild.configs.reportes);
 
 		var hora2 = hora.split('/');
-		if (hora2.length !== 3) 
+		if (hora2.length !== 3)
 			return msg.send('Error de formato, dd/mm/yyyy');
-		
-		if (!hora2[0].length === 2 || !hora2[1].length === 2 || !hora2[2].length === 4) 
+
+		if (!hora2[0].length === 2 || !hora2[1].length === 2 || !hora2[2].length === 4)
 			return msg.send('Error de formato, dd/mm/yyyy');
-		
+
 		var hora4 = hora3.split(':');
-		if (hora4.length !== 2) 
+		if (hora4.length !== 2)
 			return msg.send('Error de formato, hh:mm');
-		
-		if (!hora4[0].length === 2 || !hora4[1].length === 2) 
+
+		if (!hora4[0].length === 2 || !hora4[1].length === 2)
 			return msg.send('Error de formato, hh:mm');
-		
+
 
 		titulodesc = `${titulodesc.join(' ')}`;
 
-		if (!canal || canal.postable === false)  return msg.send('Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.'); 
+		if (!canal || canal.postable === false) return msg.send('Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.');
 		console.log(msg.id);
 		const embedReporte = new Discord.MessageEmbed()
 			.setColor(0x3785df)

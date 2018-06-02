@@ -19,9 +19,9 @@ module.exports = class extends Comando {
 
 	async run(msg, [...descripcion]) {
 		const voiceChannel = msg.member.voiceChannel;
-		if (!voiceChannel)  return msg.send(`**${msg.author} debes conectarte a un barco para pedir tripulación.** 🚢`); 
-		if (msg.guid !== voiceChannel.guid)  return msg.send(`**${msg.author} debes conectarte a un barco para pedir tripulación.** 🚢`); 
-		if (voiceChannel.full)  return msg.send(`**${msg.author} no puedes pedir más tripulantes ¡tu barco ya está lleno!** 🚫`); 
+		if (!voiceChannel) return msg.send(`**${msg.author} debes conectarte a un barco para pedir tripulación.** 🚢`);
+		if (msg.guid !== voiceChannel.guid) return msg.send(`**${msg.author} debes conectarte a un barco para pedir tripulación.** 🚢`);
+		if (voiceChannel.full) return msg.send(`**${msg.author} no puedes pedir más tripulantes ¡tu barco ya está lleno!** 🚫`);
 
 		const usuariosNecesarios = voiceChannel.userLimit - voiceChannel.members.array().length;
 		const canal = msg.guild.channels.get(msg.guild.configs.busco);

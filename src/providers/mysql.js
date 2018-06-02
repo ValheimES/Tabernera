@@ -173,9 +173,9 @@ module.exports = class extends SQLProvider {
 	 * @returns {Promise<Object[]>}
 	 */
 	async getSorted(table, key, order = 'DESC', limitMin, limitMax) {
-		if (order !== 'DESC' && order !== 'ASC') {
+		if (order !== 'DESC' && order !== 'ASC')
 			throw new TypeError(`MySQL#getSorted 'order' parameter expects either 'DESC' or 'ASC'. Got: ${order}`);
-		}
+
 
 		return this.runAll(`SELECT * FROM ${sanitizeKeyName(table)} ORDER BY ${sanitizeKeyName(key)} ${order} ${parseRange(limitMin, limitMax)};`)
 			.then(results => results.map(output => this.parseEntry(table, output)));
@@ -227,9 +227,9 @@ module.exports = class extends SQLProvider {
 	 * @returns {Promise<any[]>}
 	 */
 	incrementValue(table, id, key, amount = 1) {
-		if (amount < 0 || isNaN(amount) || Number.isInteger(amount) === false || Number.isSafeInteger(amount) === false) {
+		if (amount < 0 || isNaN(amount) || Number.isInteger(amount) === false || Number.isSafeInteger(amount) === false)
 			throw new TypeError(`MySQL#incrementValue expects the parameter 'amount' to be an integer greater or equal than zero. Got: ${amount}`);
-		}
+
 
 		return this.exec(`UPDATE ${sanitizeKeyName(table)} SET ${key} = ${key} + ${amount} WHERE id = ${sanitizeString(id)};`);
 	}
@@ -242,9 +242,9 @@ module.exports = class extends SQLProvider {
 	 * @returns {Promise<any[]>}
 	 */
 	decrementValue(table, id, key, amount = 1) {
-		if (amount < 0 || isNaN(amount) || Number.isInteger(amount) === false || Number.isSafeInteger(amount) === false) {
+		if (amount < 0 || isNaN(amount) || Number.isInteger(amount) === false || Number.isSafeInteger(amount) === false)
 			throw new TypeError(`MySQL#incrementValue expects the parameter 'amount' to be an integer greater or equal than zero. Got: ${amount}`);
-		}
+
 
 		return this.exec(`UPDATE ${sanitizeKeyName(table)} SET ${key} = GREATEST(0, ${key} - ${amount}) WHERE id = ${sanitizeString(id)};`);
 	}
@@ -337,21 +337,20 @@ module.exports = class extends SQLProvider {
 function parseRange(min, max) {
 	// Min value validation
 	if (typeof min === 'undefined') return '';
-	if (isNaN(min) || Number.isInteger(min) === false || Number.isSafeInteger(min) === false) {
+	if (isNaN(min) || Number.isInteger(min) === false || Number.isSafeInteger(min) === false)
 		throw new TypeError(`%MySQL.parseRange 'min' parameter expects an integer or undefined, got ${min}`);
-	}
-	if (min < 0) {
+
+	if (min < 0)
 		throw new TypeError(`%MySQL.parseRange 'min' parameter expects to be equal or greater than zero, got ${min}`);
-	}
+
 
 	// Max value validation
 	if (typeof max !== 'undefined') {
-		if (typeof max !== 'number' || isNaN(max) || Number.isInteger(max) === false || Number.isSafeInteger(max) === false) {
+		if (typeof max !== 'number' || isNaN(max) || Number.isInteger(max) === false || Number.isSafeInteger(max) === false)
 			throw new TypeError(`%MySQL.parseRange 'max' parameter expects an integer or undefined, got ${max}`);
-		}
-		if (max <= min) {
+
+		if (max <= min)
 			throw new TypeError(`%MySQL.parseRange 'max' parameter expects ${max} to be greater than ${min}. Got: ${max} <= ${min}`);
-		}
 	}
 
 	return `LIMIT ${min}${typeof max === 'number' ? `,${max}` : ''}`;
@@ -364,7 +363,7 @@ function parseRange(min, max) {
  */
 function sanitizeInteger(value) {
 	if (isNumber(value)) throw new TypeError(`%MySQL.sanitizeNumber expects an integer, got ${value}`);
-	if (value < 0) { throw new TypeError(`%MySQL.sanitizeNumber expects a positive integer, got ${value}`); }
+	if (value < 0) throw new TypeError(`%MySQL.sanitizeNumber expects a positive integer, got ${value}`);
 	return String(value);
 }
 
@@ -383,8 +382,8 @@ function sanitizeString(value) {
  * @private
  */
 function sanitizeKeyName(value) {
-	if (typeof value !== 'string') { throw new TypeError(`%MySQL.sanitizeString expects a string, got: ${typeof value}`); }
-	if (/`/.test(value)) { throw new TypeError(`Invalid input (${value}).`); }
+	if (typeof value !== 'string') throw new TypeError(`%MySQL.sanitizeString expects a string, got: ${typeof value}`);
+	if (/`/.test(value)) throw new TypeError(`Invalid input (${value}).`);
 	return `\`${value}\``;
 }
 

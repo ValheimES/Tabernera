@@ -32,14 +32,13 @@ module.exports = class extends Comando {
 
 		if (partes.length > 2) {
 			desc += partes[1];
-			for (i = 2; i < partes.length; i++) 
+			for (i = 2; i < partes.length; i++)
 				desc = `${desc}|${partes[i]}`;
-			
 		} else {
 			desc = partes[1];
 		}
 
-		if (!canal || canal.postable === false)  return msg.send('Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.'); 
+		if (!canal || canal.postable === false) return msg.send('Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.');
 
 		const embedSugerencia = new Discord.MessageEmbed()
 			.setColor(0x3785df)

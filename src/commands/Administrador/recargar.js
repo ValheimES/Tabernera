@@ -1,7 +1,6 @@
-const Comando = require('../../estructuras/Comando');
-const { Stopwatch, Store } = require('klasa');
+const { Command, Stopwatch, Store } = require('../../index');
 
-module.exports = class extends Comando {
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
