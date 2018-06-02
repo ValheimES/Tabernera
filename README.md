@@ -1,6 +1,8 @@
 # Tabernera: Discord bot.
 ![version](https://img.shields.io/badge/version-0.1-brightgreen.svg) [![Discord](https://discordapp.com/api/guilds/375828283184513033/embed.png)](https://discord.gg/enjYrQt)
 
+![buildpassing](https://api.travis-ci.org/SeaOfThievesES/Tabernera.svg?branch=rewrite)
+
 ![Este texto salta cuando la imagen falla](https://trello-attachments.s3.amazonaws.com/5a9400d6416e09446aa28138/5a9d2aa5a5ffb2ecee551770/40787c1f26bf5d404fc5b3f751e3ef91/Avatar_-_Tabernera.png)
 
 ## ¿Qué es?
