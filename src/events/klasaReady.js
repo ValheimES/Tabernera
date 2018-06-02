@@ -36,13 +36,14 @@ module.exports = class extends Event {
 				let folder = schema;
 				const keys = key.split('.');
 				for (let i = 0; i < keys.length; i++) {
-					if (!folder.has(keys[i])) {
-						await folder.add(keys[i], makeObject(keys.slice(i, keys.length), type));
+					const nextKey = keys[i];
+					if (!folder.has(nextKey)) {
+						await folder.add(nextKey, makeObject(keys.slice(i + 1, keys.length), type));
 						break;
-					} else if (folder[keys[i]].type !== 'Folder') {
+					} else if (folder[nextKey].type !== 'Folder') {
 						break;
 					}
-					folder = folder[key];
+					folder = folder[nextKey];
 				}
 			} else if (!schema.has(key)) {
 				await schema.add(key, type);
