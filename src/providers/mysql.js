@@ -78,7 +78,8 @@ module.exports = class extends SQLProvider {
 		const schemaValues = [...gateway.schema.values(true)];
 		return this.run(`
 			CREATE TABLE ${sanitizeKeyName(table)} (
-				id VARCHAR(18) PRIMARY KEY NOT NULL UNIQUE${schemaValues.length ? `, ${schemaValues.map(this.qb.parse.bind(this.qb)).join(', ')}` : ''}
+				id VARCHAR(18) NOT NULL UNIQUE${schemaValues.length ? `, ${schemaValues.map(this.qb.parse.bind(this.qb)).join(', ')}` : ''},
+				PRIMARY KEY(id)
 			)`
 		);
 	}
