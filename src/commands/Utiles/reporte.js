@@ -33,7 +33,7 @@ module.exports = class extends Command {
 
 		await canal.send('Nuevo reporte recibido:', new MessageEmbed()
 			.setColor(0x3785df)
-			.setAuthor(msg.author.username, msg.author.avatarURL())
+			.setAuthor(msg.author.username, msg.author.displayAvatarURL())
 			.addField(`**Usuario reportado:** ${usuario.tag}`, `**Descripción:** ${titulodesc.join('|')}`)
 			.addField(`**Fecha y hora:** ${fechaYHora}`, `**ID del reporte:** ${msg.id}`));
 		await canal.send('[<@&406051816950726656>]');

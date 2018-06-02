@@ -42,7 +42,7 @@ module.exports = class extends Command {
 		}
 		if (roles.length) await member.roles.add(roles);
 		await member.setNickname(nombre.join(' '));
-		await this.client.providers.default.create('Verificacion', user.id, { rango: rol });
+		await this.client.providers.default.create('verificacion', user.id, { rango: rol });
 
 		return taberna.send(`<:tic:408639986934480908> **¡Cuenta verificada!:** _${member}, ahora puedes disfrutar de las ventajas de la verificación. Haz click aquí­ para más <#424868390654443520>._`);
 	}

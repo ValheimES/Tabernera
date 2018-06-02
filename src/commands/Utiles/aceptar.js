@@ -30,7 +30,7 @@ module.exports = class extends Command {
 
 		msg.delete(1000);
 
-		const user = await this.client.users.fetch(datos.userID);
+		const user = await this.client.users.fetch(datos.id);
 		const updateQuery = {};
 		if (datos.numApp === 5) {
 			user.send(new MessageEmbed()
