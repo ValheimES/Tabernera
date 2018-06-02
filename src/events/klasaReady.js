@@ -39,6 +39,8 @@ module.exports = class extends Event {
 					if (!folder.has(keys[i])) {
 						await folder.add(keys[i], makeObject(keys.slice(i, keys.length), type));
 						break;
+					} else if (folder[key].type !== 'Folder' && folder[key].path === key) {
+						break;
 					}
 					folder = folder[key];
 				}
