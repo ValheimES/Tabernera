@@ -14,10 +14,11 @@ module.exports = class extends Monitor {
 
 	constructor(...args) {
 		super(...args, { ignoreOthers: false });
+		this.cooldowns = new Set();
 	}
 
 	async run(msg) {
-		if (!msg.guild || msg.guild.id !== '375828283184513033' || msg.channel.name === 'comandos') return;
+		if (!msg.guild || msg.guild.id !== '375828283184513033' || msg.channel.name === 'comandos' || this.cooldowns.has(msg.author.id)) return;
 		const base = msg.author.configs.xp;
 		const next = base + 10;
 		await msg.author.configs.update('xp', next);
@@ -43,6 +44,9 @@ module.exports = class extends Monitor {
 			this.editRoles(memberRoles, ROLES.LIMPIACUBIERTAS);
 			rolename = '1:** Limpiacubiertas.';
 		}
+
+		this.cooldowns.add(msg.author.id);
+		setTimeout(() => this.cooldowns.delete(msg.author.id), 60000);
 
 		if (this.equalSets(memberRoles, initial)) return;
 		await msg.member.roles.set([...memberRoles]);
