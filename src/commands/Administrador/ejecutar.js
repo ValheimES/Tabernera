@@ -15,7 +15,7 @@ module.exports = class extends Command {
 
 		const output = result.stdout ? `**\`OUTPUT\`**${util.codeBlock('prolog', result.stdout)}` : '';
 		const outerr = result.stderr ? `**\`ERROR\`**${util.codeBlock('prolog', result.stderr)}` : '';
-		return msg.send([output, outerr].join('\n'));
+		return msg.sendMessage([output, outerr].join('\n'));
 	}
 
 };

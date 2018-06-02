@@ -17,18 +17,15 @@ module.exports = class extends Comando {
 	}
 
 	async run(msg, [usuario]) {
-		const MySql = await this.client.providers.get('MySQL');
+		const provider = this.client.providers.default;
+		msg.delete(1000);
 
-		const exists = await MySql.has2('Strikes', `${usuario.id}`);
-
-		if (!exists) {
-			msg.delete(1000);
-			return msg.send('El usuario no tiene advertencias.');
-		} else {
-			await MySql.delete3('Strikes', usuario.id);
-			msg.delete(1000);
-			return msg.send('El usuario ya no tiene advertencias.');
+		if (await provider.has('strikes', usuario.id)) {
+			await provider.delete('strikes', usuario.id);
+			return msg.sendMessage('El usuario ya no tiene advertencias.');
 		}
+
+		return msg.sendMessage('El usuario no tiene advertencias.');
 	}
 
 };

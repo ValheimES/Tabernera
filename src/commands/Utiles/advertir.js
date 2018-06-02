@@ -1,6 +1,6 @@
-const Comando = require('../../estructuras/Comando');
+const { Command } = require('../../index');
 
-module.exports = class extends Comando {
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
@@ -11,55 +11,28 @@ module.exports = class extends Comando {
 			usageDelim: ' ',
 			extendedHelp: '+advertir @Usuario Incumplimiento de la normativa 1.1.2: Autopromocionarse.',
 			comando: '+advertir <Usuario> <Razón>',
-			opcional: ['```md',
-				`* Hay que tener precaucion con este comando.`,
-				'```']
+			opcional: ['```md', `* Hay que tener precaucion con este comando.`, '```']
 		});
 	}
 
 	async run(msg, [usuario, ...adv]) {
-		const canal = msg.guild.channels.get(msg.guild.configs.Admins);
+		const provider = this.client.providers.default;
 
-		const MySql = await this.client.providers.get('MySQL');
-
-		const exists = await MySql.has2('Strikes', `${usuario.id}`);
-
-		adv = `${adv.join(' ')}`;
-
-		if (!exists) {
-			await MySql.insert2('Strikes', ['UserID', 'Desc', 'Desc2', 'Desc3', 'Numero'], [`${usuario.id}`, `${adv}`, `No hay información todavía`, `No hay información todavía`, `1`]);
-			msg.delete(1000);
-			return msg.send('Se ha creado la advertencia.');
+		if (!await provider.has('strikes', usuario.id)) {
+			await provider.insert('strikes', usuario.id, { numero: 1, desc1: adv.join(' ') });
+			msg.delete();
+			return msg.sendMessage('Se ha creado la primera advertencia.');
 		}
 
-		var numeroAdv;
-		const base = await MySql.get('Strikes', 'UserID', usuario.id);
-		numeroAdv = base.Numero;
-		var usuarioPorID = await this.client.users.fetch(base.UserID);
+		const { numero } = await provider.get('strikes', usuario.id);
+		if (numero >= 3) return msg.sendMessage(`${msg.author} , el usuario ya tiene 3 advertencias, no son necesarias más.`);
 
-		if (numeroAdv === 1) {
-			if (MySql.update2('Strikes', `${usuario.id}`, 'Numero', `${parseInt(base.Numero) + 1}`) && MySql.update2('Strikes', `${usuario.id}`, 'Desc2', `${adv}`)) {
-				msg.delete(1000);
-				return msg.send('Se ha creado la advertencia.');
-			} else {
-				throw 'Se ha producido un error';
-			}
-		} else if (numeroAdv === 2) {
-			if (MySql.update2('Strikes', `${usuario.id}`, 'Numero', `${parseInt(base.Numero) + 1}`) && MySql.update2('Strikes', `${usuario.id}`, 'Desc3', `${adv}`))
-				msg.send('Se ha creado la advertencia.');
-			 else
-				throw 'Se ha producido un error';
-
-
-			canal.send(`${msg.guild.roles.get(msg.guild.configs.AdminRolId)} ${usuarioPorID} tiene 3 advertencias, hora de examinar el caso.`);
-			return msg.delete(1000);
-		} else if (numeroAdv > 2) {
-			msg.delete(1000);
-
-			return msg.send(`${msg.author} , el usuario ya tiene 3 advertencias, no son necesarias más.`);
+		await provider.update('strikes', usuario.id, { numero: numero + 1, [numero === 1 ? 'desc2' : 'desc3']: adv.join(' ') });
+		if (numero === 2) {
+			const taberna = msg.guild.channels.get(msg.guild.configs.channels.admin);
+			await taberna.send(`${msg.guild.roles.get(msg.guild.configs.AdminRolId)} ${usuario.username} tiene 3 advertencias, hora de examinar el caso.`);
 		}
-
-		return true;
+		return msg.sendMessage('Se ha creado la advertencia.');
 	}
 
 };

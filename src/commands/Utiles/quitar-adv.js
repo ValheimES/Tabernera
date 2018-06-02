@@ -36,7 +36,7 @@ module.exports = class extends Comando {
 		if (!exists) {
 			msg.delete(1000);
 
-			return msg.send('El usuario no tiene advertencias.');
+			return msg.sendMessage('El usuario no tiene advertencias.');
 		} else {
 			const base = await MySql.get('Strikes', 'UserID', usuario.id);
 
@@ -83,7 +83,7 @@ module.exports = class extends Comando {
 
 			msg.delete(1000);
 
-			return msg.send('Se ha eliminado la advertencia.');
+			return msg.sendMessage('Se ha eliminado la advertencia.');
 		}
 	}
 

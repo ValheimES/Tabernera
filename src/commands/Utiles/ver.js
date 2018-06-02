@@ -1,7 +1,7 @@
-const Comando = require('../../estructuras/Comando');
-const Discord = require('discord.js');
+const { Command } = require('../../index');
+const { MessageEmbed } = require('discord.js');
 
-module.exports = class extends Comando {
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
@@ -19,35 +19,22 @@ module.exports = class extends Comando {
 	}
 
 
-	async run(msg, [advertencias, usuario]) {
-		const MySql = await this.client.providers.get('MySQL');
+	async run(msg, [, usuario]) {
+		msg.delete(1000);
 
-		const exists = await MySql.has2('Strikes', `${usuario.id}`);
+		const datos = await this.client.providers.default.get('strikes', usuario.id);
 
-		if (exists) {
-			const base = await MySql.get('Strikes', 'UserID', usuario.id);
-
-			var usuarioPorID = await this.client.users.fetch(base.UserID);
-
-			var advertencia = base.Numero > 1 ? 'advertencias' : 'advertencia';
-
-			const embedAdvertencia = new Discord.MessageEmbed()
-				.setColor(0xdfbb17)
-				.setAuthor(usuarioPorID.username, usuarioPorID.avatarURL())
-				.setTitle(`Advertencias`)
-				.setURL('http://gamedev.es')
-				.setDescription(`Aqui puedes consultar las advertencias de un usuario`)
-				.addField('⚠**Advertencia 1:**', `${base.Desc}`)
-				.addField('⚠**Advertencia 2:**', `${base.Desc2}`)
-				.addField('⚠**Advertencia 3:**', `${base.Desc3}`)
-				.setFooter(`El usuario tiene ${base.Numero} ${advertencia}`);
-
-			msg.delete(1000);
-			return msg.send(embedAdvertencia);
-		} else {
-			msg.delete(1000);
-			return msg.send('El usuario no tiene advertencias.');
-		}
+		if (!datos) return msg.sendMessage('El usuario no tiene advertencias.');
+		return msg.sendEmbed(new MessageEmbed()
+			.setColor(0xdfbb17)
+			.setAuthor(usuario.username, usuario.avatarURL())
+			.setTitle(`Advertencias`)
+			.setURL('http://gamedev.es')
+			.setDescription(`Aqui puedes consultar las advertencias de un usuario`)
+			.addField('⚠**Advertencia 1:**', `${datos.desc}`)
+			.addField('⚠**Advertencia 2:**', `${datos.desc2}`)
+			.addField('⚠**Advertencia 3:**', `${datos.desc3}`)
+			.setFooter(`El usuario tiene ${datos.numero} ${datos.numero > 1 ? 'advertencias' : 'advertencia'}`));
 	}
 
 };

@@ -25,22 +25,22 @@ module.exports = class extends Comando {
 
 		var hora2 = hora.split('/');
 		if (hora2.length !== 3)
-			return msg.send('Error de formato, dd/mm/yyyy');
+			return msg.sendMessage('Error de formato, dd/mm/yyyy');
 
 		if (!hora2[0].length === 2 || !hora2[1].length === 2 || !hora2[2].length === 4)
-			return msg.send('Error de formato, dd/mm/yyyy');
+			return msg.sendMessage('Error de formato, dd/mm/yyyy');
 
 		var hora4 = hora3.split(':');
 		if (hora4.length !== 2)
-			return msg.send('Error de formato, hh:mm');
+			return msg.sendMessage('Error de formato, hh:mm');
 
 		if (!hora4[0].length === 2 || !hora4[1].length === 2)
-			return msg.send('Error de formato, hh:mm');
+			return msg.sendMessage('Error de formato, hh:mm');
 
 
 		titulodesc = `${titulodesc.join(' ')}`;
 
-		if (!canal || canal.postable === false) return msg.send('Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.');
+		if (!canal || canal.postable === false) return msg.sendMessage('Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.');
 		console.log(msg.id);
 		const embedReporte = new Discord.MessageEmbed()
 			.setColor(0x3785df)
@@ -48,7 +48,7 @@ module.exports = class extends Comando {
 			.addField(`**Usuario reportado:** ${usuario.tag}`, `**Descripción:** ${titulodesc}`)
 			.addField(`**Fecha y hora:** ${hora} a las ${hora3}`, `**ID del reporte:** ${msg.id}`);
 
-		msg.send('<:tic:408639986934480908> **Tu reporte ha sido enviado a moderación y está siendo revisado.**');
+		msg.sendMessage('<:tic:408639986934480908> **Tu reporte ha sido enviado a moderación y está siendo revisado.**');
 		canal.send('Nuevo reporte recibido:');
 		msg.delete(2000);
 		canal.send({ embed: embedReporte });

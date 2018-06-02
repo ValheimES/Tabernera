@@ -1,63 +1,40 @@
-const Comando = require('../../estructuras/Comando');
-const Discord = require('discord.js');
+const { Command } = require('../../index');
+const { MessageEmbed } = require('discord.js');
 
-module.exports = class extends Comando {
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
 			name: 'sugerencia',
-			runIn: ['text', 'dm', 'group'],
+			runIn: ['text'],
 			permissionLevel: 3,
-			requiredSettings: ['SugerenciasBot'],
+			requiredSettings: ['channels.sugerencias'],
 			description: 'Escribe una sugerencia en el canal que hallas selceccionado en la configuración.',
 			extendedHelp: '+sugerencia Titulo | Descripción',
-			usage: '<titulodesc:str> [...]',
-			usageDelim: ' ',
+			usage: '<titulo:str> <descripcion:str> [...]',
+			usageDelim: '|',
 			comando: '+sugerencia  <Titulo> | <Descripción>'
 		});
 	}
 
-	async run(msg, [...titulodesc]) {
-		const canal = msg.guild.channels.get(msg.guild.configs.SugerenciasBot);
-
-		titulodesc = `${titulodesc.join(' ')}`;
-
-		var partes = titulodesc.split('|');
-
-		const titulo = partes[0];
-
-		var desc = '';
-
-		var i;
-
-		if (partes.length > 2) {
-			desc += partes[1];
-			for (i = 2; i < partes.length; i++)
-				desc = `${desc}|${partes[i]}`;
-		} else {
-			desc = partes[1];
-		}
-
-		if (!canal || canal.postable === false) return msg.send('Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.');
-
-		const embedSugerencia = new Discord.MessageEmbed()
-			.setColor(0x3785df)
-			.setAuthor(msg.author.username, msg.author.avatarURL())
-			.setTitle(`${titulo}`)
-			.setURL('http://gamedev.es')
-			.setDescription(`${desc}`)
-			.setFooter(`ID: ${msg.id}`);
+	async run(msg, [titulo, ...descripcion]) {
+		const canal = msg.guild.channels.get(msg.guild.configs.channels.sugerencias);
+		if (!canal || canal.postable === false) return msg.sendMessage('Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.');
 
 		msg.delete(2000);
+		await canal.send('Nueva sugerencia recibida:');
 
-		canal.send('Nueva sugerencia recibida:');
-		canal.send({ embed: embedSugerencia }).then(async (message) => {
-			await message.react('408639986934480908');
-			await message.react('407160220624617484');
-		});
+		const message = await canal.send(new MessageEmbed()
+			.setColor(0x3785df)
+			.setAuthor(msg.author.username, msg.author.displayAvatarURL())
+			.setTitle(titulo)
+			.setURL('http://gamedev.es')
+			.setDescription(descripcion.join('|'))
+			.setFooter(`ID: ${msg.id}`));
+		await message.react('408639986934480908');
+		await message.react('407160220624617484');
 
-		return true;
-		//* *Tu reporte ha sido solucionado:** \n ${desc.join(' ')}\n`
+		return message;
 	}
 
 };

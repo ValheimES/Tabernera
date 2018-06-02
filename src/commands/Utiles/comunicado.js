@@ -1,11 +1,10 @@
-const Comando = require('../../estructuras/Comando');
-const Discord = require('discord.js');
+const { Command } = require('../../index');
+const { MessageAttachment } = require('discord.js');
 
-module.exports = class extends Comando {
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			name: 'comunicado',
 			enabled: true,
 			runIn: ['text'],
 			permissionLevel: 6,
@@ -16,27 +15,26 @@ module.exports = class extends Comando {
 			usageDelim: '|'
 		});
 	}
+
 	async run(msg, [titulo, descripcion, imagen]) {
+		if (!imagen && msg.attachments.size) imagen = msg.attachments.first().url;
+
+		await msg.delete();
+
 		const canal = msg.guild.channels.get(msg.guild.configs.comunicados);
+		const messageFormat = `<:logosot:418871931157086218> **${titulo.toUpperCase()}**\n\n${descripcion}\n\n[@everyone]`;
+		if (imagen) return canal.send(messageFormat, new MessageAttachment(this.parseURL(imagen)));
+		return canal.send(messageFormat);
+	}
 
-		const messageFormat = [
-			`:logosot: **${titulo.toUpperCase()}**\n`,
-			descripcion,
-			`\n[@everyone]`
-		];
-
-		if (!imagen && msg.attachments.size)
-			imagen = msg.attachments.first().url;
-
-
-		if (imagen)
-			await canal.send(messageFormat, new Discord.MessageAttachment(imagen));
-		 else
-			await canal.send(messageFormat);
-
-		await msg.delete(100);
-
-		return true;
+	parseURL(imagen) {
+		try {
+			const url = new URL(imagen);
+			if (!/\.(png|jpg|jpeg|gif|bmp|webp)$/.test(url.pathname)) throw '';
+			return imagen;
+		} catch (_) {
+			throw 'La URL o el archivo adjunto no es una imagen válida.';
+		}
 	}
 
 };

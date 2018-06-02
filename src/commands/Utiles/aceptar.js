@@ -1,8 +1,8 @@
-const Comando = require('../../estructuras/Comando');
-const Discord = require('discord.js');
+const { Command } = require('../../index');
+const { MessageEmbed } = require('discord.js');
 
 // TODO(kyraNET) Rewrite
-module.exports = class extends Comando {
+module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
@@ -18,23 +18,22 @@ module.exports = class extends Comando {
 		});
 	}
 
-
 	async run(msg, [idmensaje, ...desc]) {
 		const canal = msg.guild.channels.get(msg.guild.configs.reportes);
 		if (!canal || canal.postable === false)
-			return msg.send('Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.');
+			return msg.sendMessage('Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.');
 
 		const MySql = await this.client.providers.get('MySQL');
 
 		if (MySql.get('Fallos', 'ID', idmensaje)) {} else {
-			return msg.send('El ID del reporte no es valido');
+			return msg.sendMessage('El ID del reporte no es valido');
 		}
 
 		const messag = await MySql.get('Fallos', 'ID', idmensaje);
 		if (messag.Aceptado === '0') {
 			const user = await this.client.users.fetch(`${messag.UserID}`);
 			if (messag.NumApp === '5') {
-				const embedRespuesta = new Discord.MessageEmbed()
+				const embedRespuesta = new MessageEmbed()
 					.setColor(0x3785df)
 					.setAuthor(user.username, user.avatarURL())
 					.setTitle(messag.Title)
@@ -63,7 +62,7 @@ module.exports = class extends Comando {
 				.addField('Aceptado', `ID: ${idmensaje}`)
 				.setFooter(messag.MsgID));
 		} else {
-			msg.send('El reporte ya ha sido aceptado, para darlo por solucionado escriba +');
+			msg.sendMessage('El reporte ya ha sido aceptado, para darlo por solucionado escriba +');
 			return msg.delete(1000);
 		}
 	}
