@@ -26,7 +26,9 @@ module.exports = class extends SQLProvider {
 			json: { type: 'JSON', resolver: (input) => `'${JSON.stringify(input)}'` },
 			null: 'NULL',
 			time: { type: 'DATETIME', resolver: (input) => TIMEPARSERS.DATETIME.display(input) },
-			timestamp: { type: 'TIMESTAMP', resolver: (input) => TIMEPARSERS.DATE.display(input) }
+			timestamp: { type: 'TIMESTAMP', resolver: (input) => TIMEPARSERS.DATE.display(input) },
+			array: () => 'JSON',
+			arrayResolver: (values) => values.length ? `'${JSON.stringify(values)}'` : "'{}'"
 		});
 		this.db = null;
 	}

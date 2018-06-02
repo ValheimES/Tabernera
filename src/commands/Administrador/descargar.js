@@ -8,9 +8,9 @@ module.exports = class extends Command {
 			permissionLevel: 10,
 			description: 'Descarga un modulo de Klasa.',
 			usage: '<Piece:piece>',
-			extendedHelp: '+descargar languages'
+			extendedHelp: '+descargar languages',
+			comando: '+descargar <Modulo>'
 		});
-		this.comando = '+descargar <Modulo>';
 	}
 
 	async run(message, [piece]) {
