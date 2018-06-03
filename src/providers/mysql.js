@@ -30,8 +30,8 @@ module.exports = class extends SQLProvider {
 			array: () => 'ARRAY',
 			arrayResolver: (values) => values.length ? `'${JSON.stringify(values)}'` : "'[]'",
 			formatDatatype: (name, datatype, def = null) => datatype === 'ARRAY'
-				? `${name} TEXT`
-				: `${name} ${datatype}${def !== null ? ` NOT NULL DEFAULT ${def}` : ''}`
+				? `${sanitizeKeyName(name)} TEXT`
+				: `${sanitizeKeyName(name)} ${datatype}${def !== null ? ` NOT NULL DEFAULT ${def}` : ''}`
 		});
 		this.db = null;
 	}
