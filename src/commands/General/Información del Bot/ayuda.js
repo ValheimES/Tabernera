@@ -25,7 +25,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	run(msg, [cmd]) {
+	async run(msg, [cmd]) {
 		if (cmd) {
 			if (cmd.name === 'ayuda') return msg.sendMessage(`${codeBlock('fix', 'AYUDA: 2. SISTEMA — ¿AYUDA?')}\n${easterEgg[Math.floor((Math.random() * ayuda.length) + 1)]}`);
 			return msg.sendMessage([
@@ -37,7 +37,7 @@ module.exports = class extends Command {
 			].join('\n'));
 		}
 
-		return msg.sendMessage(this.buildHelpList(msg));
+		return msg.sendMessage(await this.buildHelpList(msg));
 	}
 
 	async buildHelpList(msg) {
@@ -59,7 +59,7 @@ module.exports = class extends Command {
 			'\n'
 		];
 		for (const [category, commands] of categories) output.push(`${i++}. ${category.toUpperCase()} — ${commands.join(', ')}`);
-		return output.join('\n');
+		return codeBlock('md', output.join('\n'));
 	}
 
 	findCategory(category) {
