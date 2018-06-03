@@ -10,12 +10,9 @@ module.exports = class extends Event {
 		if (channel) {
 			await channel.send([
 				codeBlock('fix', '¡AHOY PIRATA!'),
-				'\n',
-				'<:barco:406838651771682818> **¡Un nuevo barco acaba de atracar en el puerto!**',
-				'\n',
-				`_El pirata ${member} entra de un portazo en la <#375828283704475649> sediento de una buena jarra de grog_ <:jarra:406906694766034947>`,
-				'\n',
-				'http://gph.is/2Gd8vlD'
+				'\n<:barco:406838651771682818> **¡Un nuevo barco acaba de atracar en el puerto!**',
+				`\n_El pirata ${member} entra de un portazo en la <#375828283704475649> sediento de una buena jarra de grog_ <:jarra:406906694766034947>`,
+				'\nhttp://gph.is/2Gd8vlD'
 			].join('\n'));
 		}
 	}

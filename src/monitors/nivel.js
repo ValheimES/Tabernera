@@ -55,10 +55,8 @@ module.exports = class extends Monitor {
 		if (canal) {
 			await canal.send([
 				codeBlock('fix', 'SISTEMA DE NIVELES'),
-				'\n',
-				`<:flechaarriba:406932788256702474> **${msg.author} ha subido de nivel.**`,
-				'\n',
-				`<:garfio:407239812873977857> **Nivel ${rolename}`
+				`\n<:flechaarriba:406932788256702474> **${msg.author} ha subido de nivel.**`,
+				`\n<:garfio:407239812873977857> **Nivel ${rolename}`
 			].join('\n'));
 		}
 	}
