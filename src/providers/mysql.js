@@ -197,8 +197,10 @@ module.exports = class extends SQLProvider {
 		const [keys, values] = this.parseUpdateInput(data, false);
 
 		// Push the id to the inserts.
-		keys.push('id');
-		values.push(id);
+		if (!keys.includes('id')) {
+			keys.push('id');
+			values.push(id);
+		}
 		return this.exec(`INSERT INTO ${sanitizeKeyName(table)} (${keys.map(sanitizeKeyName).join(', ')}) VALUES (${values.map(sanitizeInput).join(', ')});`);
 	}
 
@@ -233,9 +235,8 @@ module.exports = class extends SQLProvider {
 	 * @returns {Promise<any[]>}
 	 */
 	incrementValue(table, id, key, amount = 1) {
-		if (amount < 0 || isNaN(amount) || Number.isInteger(amount) === false || Number.isSafeInteger(amount) === false)
+		if (amount < 0 || !isNumber(amount))
 			throw new TypeError(`MySQL#incrementValue expects the parameter 'amount' to be an integer greater or equal than zero. Got: ${amount}`);
-
 
 		return this.exec(`UPDATE ${sanitizeKeyName(table)} SET ${key} = ${key} + ${amount} WHERE id = ${sanitizeString(id)};`);
 	}
@@ -248,9 +249,8 @@ module.exports = class extends SQLProvider {
 	 * @returns {Promise<any[]>}
 	 */
 	decrementValue(table, id, key, amount = 1) {
-		if (amount < 0 || isNaN(amount) || Number.isInteger(amount) === false || Number.isSafeInteger(amount) === false)
+		if (amount < 0 || !isNumber(amount))
 			throw new TypeError(`MySQL#incrementValue expects the parameter 'amount' to be an integer greater or equal than zero. Got: ${amount}`);
-
 
 		return this.exec(`UPDATE ${sanitizeKeyName(table)} SET ${key} = GREATEST(0, ${key} - ${amount}) WHERE id = ${sanitizeString(id)};`);
 	}
@@ -340,7 +340,7 @@ module.exports = class extends SQLProvider {
 function parseRange(min, max) {
 	// Min value validation
 	if (typeof min === 'undefined') return '';
-	if (isNaN(min) || Number.isInteger(min) === false || Number.isSafeInteger(min) === false)
+	if (!isNumber(min))
 		throw new TypeError(`%MySQL.parseRange 'min' parameter expects an integer or undefined, got ${min}`);
 
 	if (min < 0)
@@ -349,7 +349,7 @@ function parseRange(min, max) {
 
 	// Max value validation
 	if (typeof max !== 'undefined') {
-		if (typeof max !== 'number' || isNaN(max) || Number.isInteger(max) === false || Number.isSafeInteger(max) === false)
+		if (!isNumber(max))
 			throw new TypeError(`%MySQL.parseRange 'max' parameter expects an integer or undefined, got ${max}`);
 
 		if (max <= min)
@@ -385,7 +385,7 @@ function sanitizeString(value) {
  * @private
  */
 function sanitizeKeyName(value) {
-	if (typeof value !== 'string') throw new TypeError(`%MySQL.sanitizeString expects a string, got: ${typeof value}`);
+	if (typeof value !== 'string') throw new TypeError(`%MySQL.sanitizeString expects a string, got: ${new Type(value)}`);
 	if (/`/.test(value)) throw new TypeError(`Invalid input (${value}).`);
 	return `\`${value}\``;
 }

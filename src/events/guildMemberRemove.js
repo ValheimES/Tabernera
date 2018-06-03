@@ -10,7 +10,7 @@ module.exports = class extends Event {
 				'\n',
 				'<:barco:406838651771682818> **Su barco desaparece por el horizonte**',
 				'\n',
-				'_El pirata ${member} se va de la <#375828283704475649> ¡partid con viento fresco!_ 👋🏽',
+				`_El pirata ${member} se va de la <#375828283704475649> ¡partid con viento fresco!_ 👋🏽`,
 				'\n',
 				'http://gph.is/2GfPizB'
 			].join('\n'));
