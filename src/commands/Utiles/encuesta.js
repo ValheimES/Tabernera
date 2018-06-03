@@ -23,6 +23,8 @@ module.exports = class extends Command {
 	async run(msg, [tipo, ...parametros]) {
 		msg.delete(100);
 		const canal = msg.guild.channels.get(msg.guild.configs.channels.comunicados);
+		if (!canal || !canal.postable)
+			throw 'Por favor, reestablezca un canal de comunicados, ya que éste ha sido borrado o no puedo mandar mensajes en él.';
 
 		const [titulo, descripcion, ...partes] = parametros.join(' ').split('|');
 

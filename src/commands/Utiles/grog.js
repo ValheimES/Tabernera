@@ -16,6 +16,9 @@ module.exports = class extends Command {
 
 	run(msg, [usuario]) {
 		const taberna = msg.client.channels.get('375828283704475649');
+		if (!taberna || !taberna.postable)
+			throw 'Por favor, reestablezca un canal, ya que éste ha sido borrado o no puedo mandar mensajes en él.';
+
 		const textos = [`Hola ${usuario} sirvete🍺`, `${usuario} sirvete guapo🍺`, `Aqui tienes ${usuario} 🍺`];
 		return taberna.send(textos[Math.floor(Math.random() * textos.length)]);
 	}
