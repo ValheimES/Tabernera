@@ -40,6 +40,9 @@ module.exports = class extends Command {
 			default:
 				throw 'Has escrito mal el nombre del rol.';
 		}
+
+		msg.delete();
+
 		if (roles.length) await member.roles.add(roles);
 		await member.setNickname(nombre.join(' '));
 		await this.client.providers.default.create('verificacion', user.id, { rango: rol });
