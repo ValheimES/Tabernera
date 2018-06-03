@@ -1,4 +1,5 @@
 const { Event, util: { codeBlock } } = require('../index');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Event {
 
@@ -8,12 +9,15 @@ module.exports = class extends Event {
 
 		const channel = member.guild.channels.get(member.guild.configs.channels.puerto);
 		if (channel) {
-			await channel.send([
-				codeBlock('fix', '¡AHOY PIRATA!'),
-				'\n<:barco:406838651771682818> **¡Un nuevo barco acaba de atracar en el puerto!**',
-				`\n_El pirata ${member} entra de un portazo en la <#375828283704475649> sediento de una buena jarra de grog_ <:jarra:406906694766034947>`,
-				'\nhttp://gph.is/2Gd8vlD'
-			].join('\n'));
+			await channel.send(new MessageEmbed()
+				.setColor(0xA79A7A)
+				.setImage('https://media.giphy.com/media/3oEdU3NKj72cQr5iQo/giphy.gif')
+				.setDescription([
+					codeBlock('fix', '¡AHOY PIRATA!'),
+					'<:barco:406838651771682818> **¡Un nuevo barco acaba de atracar en el puerto!**',
+					`\n_El pirata ${member} entra de un portazo en la <#375828283704475649> sediento de una buena jarra de grog_ <:jarra:406906694766034947>`
+				].join('\n'))
+			);
 		}
 	}
 
