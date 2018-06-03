@@ -28,7 +28,7 @@ module.exports = class extends Command {
 			throw `La advertencia ${numero} no existe.`;
 
 		const descripciones = [data.desc1, data.desc2, data.desc3];
-		descripciones.splice(numero, 1);
+		descripciones.splice(numero - 1, 1);
 		descripciones.push(null);
 		await provider.update('strikes', usuario.id, { numero: data.numero - 1, desc1: descripciones[0], desc2: descripciones[1], desc3: descripciones[2] });
 
