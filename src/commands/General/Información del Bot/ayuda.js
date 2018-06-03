@@ -53,8 +53,10 @@ module.exports = class extends Command {
 		let i = 1;
 		const output = [
 			'< AYUDA: RESUMEN GENERAL >',
+			'',
 			'# Consejo',
-			'> Usa +ayuda <comando> para obtener más información de un comando específico, por ejemplo +ayuda estado.'
+			'> Usa +ayuda <comando> para obtener más información de un comando específico, por ejemplo +ayuda estado.',
+			''
 		];
 		for (const [category, commands] of categories) output.push(`${i++}. ${category.toUpperCase()} — ${commands.join(', ')}`);
 		return codeBlock('md', output.join('\n'));
