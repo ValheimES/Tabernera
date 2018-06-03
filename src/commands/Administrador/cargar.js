@@ -9,7 +9,7 @@ module.exports = class extends Command {
 			description: 'Carga un comando/inhibidor/monitor/finalizador.',
 			usage: '<Piece:piece>',
 			extendedHelp: '+carga encuesta',
-			comando: '+load <Módulo>'
+			comando: '+carga <Módulo>'
 		});
 		this.regExp = /\\\\?|\//g;
 	}

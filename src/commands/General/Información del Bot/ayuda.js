@@ -27,11 +27,11 @@ module.exports = class extends Command {
 		if (cmd) {
 			if (cmd.name === 'ayuda') return msg.sendMessage(`${codeBlock('fix', 'AYUDA: 2. SISTEMA — ¿AYUDA?')}\n${easterEgg[Math.floor((Math.random() * easterEgg.length) + 1)]}`);
 			return msg.sendMessage([
-				codeBlock('fix', `AYUDA: ${this.findCategory(cmd.category)}. ${cmd.category.toUpperCase()} — ${cmd.name.toUpperCase()}`), '\n',
+				codeBlock('fix', `AYUDA: ${this.findCategory(cmd.category)}. ${cmd.category.toUpperCase()} — ${cmd.name.toUpperCase()}\n`),
 				`${tabernera} **Comando:** \`\`${cmd.comando}\`\``,
 				`${tabernera} **Descripción:** ${isFunction(cmd.description) ? cmd.description(msg) : cmd.description}`,
 				`${tabernera} **Ejemplo de uso:** _${isFunction(cmd.extendedHelp) ? cmd.extendedHelp(msg) : cmd.extendedHelp}_`,
-				cmd.admins ? codeBlock('md', '* Función reservada sólo para administradores') : ''
+				cmd.admins ? `\n${codeBlock('md', '* Función reservada sólo para administradores')}` : ''
 			].join('\n'));
 		}
 

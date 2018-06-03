@@ -19,7 +19,7 @@ module.exports = class extends Command {
 		const provider = this.client.providers.default;
 
 		if (!await provider.has('strikes', usuario.id)) {
-			await provider.insert('strikes', usuario.id, { numero: 1, desc1: adv.join(' ') });
+			await provider.create('strikes', usuario.id, { numero: 1, desc1: adv.join(' ') });
 			msg.delete();
 			return msg.sendMessage('Se ha creado la primera advertencia.');
 		}
