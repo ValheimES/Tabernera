@@ -1,7 +1,5 @@
 const { Command, util: { codeBlock, isFunction } } = require('../../../index');
 
-const ayuda = '```md\n < AYUDA: RESUMEN GENERAL >\n\n# Consejo\n> Usa +ayuda <comando> para obtener más información de un comando específico, por ejemplo +ayuda estado. \n\n';
-
 const tabernera = '<:tabernera:406895006004281345>', jarra = '<:jarra:406906694766034947>', loro = '<:loro:375838594570649600>';
 const easterEgg = [
 	`${jarra} Sí, claramente necesitas ayuda.\nhttp://gph.is/16XYtwG`,
@@ -27,7 +25,7 @@ module.exports = class extends Command {
 
 	async run(msg, [cmd]) {
 		if (cmd) {
-			if (cmd.name === 'ayuda') return msg.sendMessage(`${codeBlock('fix', 'AYUDA: 2. SISTEMA — ¿AYUDA?')}\n${easterEgg[Math.floor((Math.random() * ayuda.length) + 1)]}`);
+			if (cmd.name === 'ayuda') return msg.sendMessage(`${codeBlock('fix', 'AYUDA: 2. SISTEMA — ¿AYUDA?')}\n${easterEgg[Math.floor((Math.random() * easterEgg.length) + 1)]}`);
 			return msg.sendMessage([
 				codeBlock('fix', `AYUDA: ${this.findCategory(cmd.category)}. ${cmd.category.toUpperCase()} — ${cmd.name.toUpperCase()}`), '\n',
 				`${tabernera} **Comando:** \`\`${cmd.comando}\`\``,
