@@ -17,7 +17,7 @@ new Client({
 	messageCacheMaxSize: 100,
 	messageSweepInterval: 120,
 	prefix: '+',
-	presence: { activity: { name: '+help', type: 'LISTENING' } },
+	presence: { activity: { name: '+ayuda', type: 'LISTENING' } },
 	customPromptDefaults: { quotedStringSupport: true, limit: 5 },
 	providers: { default: 'mysql', mysql: config.mysql },
 	typing: true
