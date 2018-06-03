@@ -7,6 +7,7 @@ module.exports = class extends Command {
 			permissionLevel: 5,
 			description: 'Elimina las advertencias de un usuario.',
 			usage: '<usuario:user> <todos|numero:number{1,3}>',
+			usageDelim: ' ',
 			extendedHelp: '+quitar-adv @Usuario 1',
 			comando: '+quitar-adv <Usuario> <Numero de advertencia>'
 		});
