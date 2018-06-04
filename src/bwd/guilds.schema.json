@@ -107,6 +107,14 @@
 			"min": null,
 			"max": null,
 			"configurable": true
+		},
+		"fundador": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
 		}
 	},
 	"disabledCommands": {
