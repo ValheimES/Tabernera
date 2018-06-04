@@ -1,4 +1,5 @@
 const { Monitor, util: { codeBlock } } = require('../index');
+const { MessageEmbed } = require('discord.js');
 
 const ROLES = {
 	REYPIRATA: '424585537035304962',
@@ -53,11 +54,13 @@ module.exports = class extends Monitor {
 
 		const canal = msg.guild.channels.get(msg.guild.configs.channels.actividad);
 		if (canal) {
-			await canal.send([
-				codeBlock('fix', 'SISTEMA DE NIVELES'),
-				`\n<:flechaarriba:406932788256702474> **${msg.author} ha subido de nivel.**`,
-				`\n<:garfio:407239812873977857> **Nivel ${rolename}`
-			].join('\n'));
+			await canal.send(new MessageEmbed()
+				.setColor(0x98A5DB)
+				.setDescription([
+					codeBlock('fix', 'SISTEMA DE NIVELES'),
+					`<:flechaarriba:406932788256702474> **${msg.author} ha subido de nivel.**`,
+					`\n<:garfio:407239812873977857> **Nivel ${rolename}`
+				].join('\n')));
 		}
 	}
 
