@@ -6,7 +6,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			runIn: ['text'],
-			permissionLevel: 6,
+			permissionLevel: 3,
 			description: 'Muestra una lista de los 10 mejores piratas de los 7 mares',
 			extendedHelp: '+top',
 			comando: '+top'
