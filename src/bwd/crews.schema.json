@@ -1,0 +1,26 @@
+{
+	"owner": {
+		"type": "user",
+		"default": null,
+		"min": null,
+		"max": null,
+		"array": false,
+		"configurable": true
+	},
+	"members": {
+		"type": "user",
+		"default": [],
+		"min": null,
+		"max": null,
+		"array": true,
+		"configurable": true
+	},
+	"role": {
+		"type": "role",
+		"default": null,
+		"min": null,
+		"max": null,
+		"array": false,
+		"configurable": false
+	}
+}
