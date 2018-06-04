@@ -8,7 +8,8 @@ module.exports = class extends Command {
 			runIn: ['text'],
 			permissionLevel: 6,
 			description: 'Muestra una lista de los 10 mejores piratas de los 7 mares',
-			extendedHelp: '+top'
+			extendedHelp: '+top',
+			comando: '+top'
 		});
 	}
 
