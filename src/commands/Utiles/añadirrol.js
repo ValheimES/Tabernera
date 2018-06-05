@@ -7,9 +7,9 @@ module.exports = class extends Command {
 			runIn: ['text'],
 			permissionLevel: 6,
 			usage: '<rol:role>',
-			description: 'Te permite incluír un rol en la lista de roles autoasignables',
+			description: 'Te permite incluír un rol en la lista de roles autoasignables.',
 			extendedHelp: '+añadirrol @Meta 2000 piratas conseguida',
-			comando: '+añadir <Rol>'
+			comando: '+añadirrol <Rol>'
 		});
 	}
 
@@ -20,7 +20,9 @@ module.exports = class extends Command {
 			if (autoRoles[i] === rol.id)
 				return msg.sendMessage('El rol ya fue añadido, revisa el diaro.');
 		}
-		return await msg.guild.configs.update('roles.autoRoles', rol.join(' '), msg.guild, { avoidUnconfigurable: true, action: 'add' });
+		await msg.guild.configs.update('roles.autoRoles', rol.join(' '), msg.guild, { avoidUnconfigurable: true, action: 'add' });
+
+		return msg.sendMessage('El rol ha sido añadido como autoasignable');
 	}
 
 };
