@@ -15,7 +15,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "discord.js": "github:discordjs/discord.js",
-    "klasa": "github:dirigeants/klasa#SGv2.2.0",
+    "klasa": "github:dirigeants/klasa",
     "mysql2": "^1.5.3"
   },
   "devDependencies": {

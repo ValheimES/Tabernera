@@ -12,7 +12,7 @@ module.exports = class extends Event {
 				.setDescription([
 					codeBlock('fix', 'DECIDIÓ NAVEGAR POR OTROS MARES LEJANOS'),
 					'<:barco:406838651771682818> **Su barco desaparece por el horizonte**',
-					`\n_El pirata ${member} se va de la <#375828283704475649> ¡partid con viento fresco!_ 👋🏽`
+					`\n_El pirata ${member.user.username} se va de la <#375828283704475649> ¡partid con viento fresco!_ 👋🏽`
 				].join('\n'))
 			);
 		}
