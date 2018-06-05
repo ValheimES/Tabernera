@@ -4,7 +4,7 @@
   "description": "Discord Bot built on Klasa",
   "main": "src/Tabernera",
   "scripts": {
-    "test": "eslint src"
+    "test": "eslint src --fix"
   },
   "keywords": [
     "discord.js",

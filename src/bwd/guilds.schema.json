@@ -107,6 +107,14 @@
 			"min": null,
 			"max": null,
 			"configurable": true
+		},
+		"autoRoles": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
 		}
 	},
 	"disabledCommands": {
