@@ -14,19 +14,21 @@ module.exports = class extends Command {
 			usage: '<numeros|letras> <parametros:str> [...]',
 			permissionLevel: 6,
 			extendedHelp: '+encuesta numeros | Elige un color | ¿Qué color te gusta más? | Azul | Rojo | Verde | Amarillo',
-			usageDelim: ' ',
+			usageDelim: '|',
 			comando: '+encuesta <numeros/letras> | <Título> | <Descripción> | <Opción1> | <Opción2>',
 			admins: true
 		});
 	}
 
-	async run(msg, [tipo, ...parametros]) {
+	async run(msg, [tipo, titulo, descripcion, ...partes]) {
+		if (!titulo) throw 'Tienes que definir un título para la encuesta.';
+		if (!descripcion) throw 'Tienes que definir una descripción para la encuesta.';
+		if (!partes.length) throw 'Tienes que definir al menos una opción.';
+
 		msg.delete(100);
 		const canal = msg.guild.channels.get(msg.guild.configs.channels.comunicados);
 		if (!canal || !canal.postable)
 			throw 'Por favor, reestablezca un canal de comunicados, ya que éste ha sido borrado o no puedo mandar mensajes en él.';
-
-		const [titulo, descripcion, ...partes] = parametros.join(' ').split('|');
 
 		if (tipo === 'numeros' && partes.length > 9) throw '¡No puedes seleccionar un número de opciones mayor de 9 cuando estás usando una encuesta con números!';
 
