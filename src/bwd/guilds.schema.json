@@ -115,6 +115,14 @@
 			"min": null,
 			"max": null,
 			"configurable": true
+		},
+		"pionero": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
 		}
 	},
 	"disabledCommands": {
