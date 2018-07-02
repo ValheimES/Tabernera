@@ -36,6 +36,7 @@ module.exports = class extends Event {
 		}
 
 		if (guild.id === 420911335187152909) {
+			const cuestionario = guild.channels.get(guild.configs.channels.cuestionario);
 			const miembro = guild.members.get(user.id);
 			const Usuario = 'Usuario';
 
@@ -46,7 +47,7 @@ module.exports = class extends Event {
 
 			for (let i = 0; i < menus.length; i++) {
 				this.añadir3Opciones(menus[i], opciones[i]);
-				await this.bucle(menus[i], correctos[i]);
+				await this.bucle(menus[i], correctos[i], await cuestionario.send('Cargando Cuestionario'));
 			}
 
 			miembro.roles.add(guild.configs.roles[Usuario]);
@@ -61,9 +62,9 @@ module.exports = class extends Event {
 		menu.addOption('3)', opc[2]);
 	}
 
-	async bucle(menu, numero) {
+	async bucle(menu, numero, mensaje) {
 		while (true) {
-			const collector = await menu.run();
+			const collector = await menu.run(mensaje);
 
 			const choice = await collector.selection;
 			if (choice === null)
