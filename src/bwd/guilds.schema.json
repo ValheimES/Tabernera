@@ -41,6 +41,14 @@
 			"max": null,
 			"configurable": true
 		},
+		"cuestionario": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
 		"reportes": {
 			"type": "textchannel",
 			"array": false,
@@ -117,6 +125,14 @@
 			"configurable": true
 		},
 		"pionero": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"usuario": {
 			"type": "role",
 			"array": false,
 			"default": null,

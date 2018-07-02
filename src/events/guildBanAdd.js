@@ -38,7 +38,7 @@ module.exports = class extends Event {
 		if (guild.id === 420911335187152909) {
 			const cuestionario = guild.channels.get(guild.configs.channels.cuestionario);
 			const miembro = guild.members.get(user.id);
-			const Usuario = 'Usuario';
+			const Usuario = 'usuario';
 
 			const menus = [new RichMenu(),
 				new RichMenu(),
