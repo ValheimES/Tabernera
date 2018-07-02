@@ -70,7 +70,7 @@ module.exports = class extends Event {
 			if (choice === null)
 				return collector.message.delete();
 
-			if (choice === numero && collector.users.array.includes(usuario))
+			if (choice === numero && collector.get('id', usuario.id))
 				break;
 		}
 
