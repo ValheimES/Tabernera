@@ -18,7 +18,7 @@ module.exports = class extends Command {
 	async run(msg) {
 		let lvl = '', lvlCnt = '0', crrLvl = '0';
 		const exp = msg.author.configs.xp;
-		const dinero = msg.author.configs.dinero;
+		let dinero = msg.author.configs.dinero;
 
 		if (exp >= 67525) {
 			lvl = 'Rey pirata';
@@ -53,7 +53,7 @@ module.exports = class extends Command {
 			.addField('<:noticias:406932788428931092> **Total de experiencia:**', exp, true)
 			.addField('<:soporte:406932787908706316> **Nivel:**', lvl, true)
 			.addField('<:flechaarriba:406932788256702474> **Siguiente nivel:**', `${crrLvl}/${lvlCnt} exp.`, true)
-			.addField('<:cofre:406906617284788225> **Monedas de oro:**', dinero == 0 ? '00' : dinero, true));
+			.addField('<:cofre:406906617284788225> **Monedas de oro:**', dinero === 0 ? '00' : dinero, true));
 	}
 
 };
