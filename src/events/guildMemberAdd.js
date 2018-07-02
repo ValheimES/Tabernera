@@ -66,7 +66,6 @@ module.exports = class extends Event {
 	async bucle(menu, numero, mensaje, usuario) {
 		while (true) {
 			const collector = await menu.run(mensaje);
-
 			const choice = await collector.selection;
 			if (choice === null)
 				return collector.message.delete();
