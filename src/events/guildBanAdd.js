@@ -35,6 +35,8 @@ module.exports = class extends Event {
 			);
 		}
 
+		console.log(guild.id);
+
 		if (guild.id === '420911335187152909') {
 			const cuestionario = guild.channels.get(guild.configs.channels.cuestionario);
 			const miembro = guild.members.get(user.id);
