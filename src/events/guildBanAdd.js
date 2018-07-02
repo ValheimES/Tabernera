@@ -1,10 +1,12 @@
+/* eslint no-constant-condition: ["error", { "checkLoops": false }] */
+
 const { Event, util: { codeBlock } } = require('../index');
 const { MessageEmbed } = require('discord.js');
 const { RichMenu } = require('klasa');
 
 module.exports = class extends Event {
 
-	run(guild, user) {
+	async run(guild, user) {
 		const channel = guild.channels.get(guild.configs.channels.puerto);
 		if (channel) {
 			channel.send(new MessageEmbed()
@@ -18,97 +20,95 @@ module.exports = class extends Event {
 			);
 		}
 
-		if(guild.id === 420911335187152909) {
-			let menu = new RichMenu();
+		if (guild.id === 420911335187152909) {
+			const menu = new RichMenu();
 
-			let opciones = ["Pedir el rol a un administrador por MD.",
-							"Publicar un mensaje en el foro y en Discord.",
-							"Dejar un mensaje en Discord."];
-			
-			añadir3Opciones(menu, opciones);
+			const opciones = ['Pedir el rol a un administrador por MD.',
+				'Publicar un mensaje en el foro y en Discord.',
+				'Dejar un mensaje en Discord.'];
 
-			while(true) {
-				let collector = await menu.run();
+			this.añadir3Opciones(menu, opciones);
 
-				let choice = await collector.selection;
-				if (choice === null) {
+			while (true) {
+				const collector = await menu.run();
+
+				const choice = await collector.selection;
+				if (choice === null)
 					return collector.message.delete();
-				}
 
-				if(choice === 1)
+				if (choice === 1)
 					break;
 			}
 
-			let menu2 = new RichMenu();
+			const menu2 = new RichMenu();
 
-			let opciones2 = ["+busco",
-							"+barcosbarcos",
-							"+cerveza"];
-			
-			añadir3Opciones(menu2, opciones2);
+			const opciones2 = ['+busco',
+				'+barcosbarcos',
+				'+cerveza'];
 
-			while(true) {
-				let collector = await menu2.run();
+			this.añadir3Opciones(menu2, opciones2);
 
-				let choice = await collector.selection;
-				if (choice === null) {
+			while (true) {
+				const collector = await menu2.run();
+
+				const choice = await collector.selection;
+				if (choice === null)
 					return collector.message.delete();
-				}
 
-				if(choice === 0)
+				if (choice === 0)
 					break;
 			}
 
-			let menu3 = new RichMenu();
+			const menu3 = new RichMenu();
 
-			let opciones3 = ["¿Se deben envíar Mensajes Directos a los staffs?",
-							"No, a menos que sea muy urgente.",
-							"Si, en cualquier circunstancia."];
-			
-			añadir3Opciones(menu3, opciones3);
+			const opciones3 = ['¿Se deben envíar Mensajes Directos a los staffs?',
+				'No, a menos que sea muy urgente.',
+				'Si, en cualquier circunstancia.'];
 
-			while(true) {
-				let collector = await menu3.run();
+			this.añadir3Opciones(menu3, opciones3);
 
-				let choice = await collector.selection;
-				if (choice === null) {
+			while (true) {
+				const collector = await menu3.run();
+
+				const choice = await collector.selection;
+				if (choice === null)
 					return collector.message.delete();
-				}
 
-				if(choice === 1)
+				if (choice === 1)
 					break;
 			}
 
-			let menu4 = new RichMenu();
+			const menu4 = new RichMenu();
 
-			let opciones4 = ["¿Se deben envíar Mensajes Directos a los staffs?",
-							"No, a menos que sea muy urgente.",
-							"Si, en cualquier circunstancia."];
-			
-			añadir3Opciones(menu4, opciones4);
+			const opciones4 = ['¿Se deben envíar Mensajes Directos a los staffs?',
+				'No, a menos que sea muy urgente.',
+				'Si, en cualquier circunstancia.'];
 
-			while(true) {
-				let collector = await menu4.run();
+			this.añadir3Opciones(menu4, opciones4);
 
-				let choice = await collector.selection;
-				if (choice === null) {
+			while (true) {
+				const collector = await menu4.run();
+
+				const choice = await collector.selection;
+				if (choice === null)
 					return collector.message.delete();
-				}
 
-				if(choice === 1)
+				if (choice === 1)
 					break;
 			}
 
 			const miembro = guild.members.get(user.id);
-
-			miembro.roles.add(msg.guild.configs.roles['Usuario']);
+			const Usuario = 'Usuario';
+			miembro.roles.add(guild.configs.roles[Usuario]);
 		}
+
+		return true;
 	}
 
 	añadir3Opciones(menu, opciones) {
-		menu.addOption("1)", opciones[0]);
-		menu.addOption("2)", opciones[1]);
-		menu.addOption("3)", opciones[2]);
+		menu.addOption('1)', opciones[0]);
+		menu.addOption('2)', opciones[1]);
+		menu.addOption('3)', opciones[2]);
 	}
 
 };
