@@ -4,6 +4,21 @@ const { Event, util: { codeBlock } } = require('../index');
 const { MessageEmbed } = require('discord.js');
 const { RichMenu } = require('klasa');
 
+const opciones = [['Pedir el rol a un administrador por MD.',
+	'Publicar un mensaje en el foro y en Discord.',
+	'Dejar un mensaje en Discord.'],
+['+busco',
+	'+barcosbarcos',
+	'+cerveza'],
+['¿Se deben envíar Mensajes Directos a los staffs?',
+	'No, a menos que sea muy urgente.',
+	'Si, en cualquier circunstancia.'],
+['¿Se deben envíar Mensajes Directos a los staffs?',
+	'No, a menos que sea muy urgente.',
+	'Si, en cualquier circunstancia.']];
+
+const correctos = [1, 0, 1, 1];
+
 module.exports = class extends Event {
 
 	async run(guild, user) {
@@ -21,94 +36,44 @@ module.exports = class extends Event {
 		}
 
 		if (guild.id === 420911335187152909) {
-			const menu = new RichMenu();
-
-			const opciones = ['Pedir el rol a un administrador por MD.',
-				'Publicar un mensaje en el foro y en Discord.',
-				'Dejar un mensaje en Discord.'];
-
-			this.añadir3Opciones(menu, opciones);
-
-			while (true) {
-				const collector = await menu.run();
-
-				const choice = await collector.selection;
-				if (choice === null)
-					return collector.message.delete();
-
-				if (choice === 1)
-					break;
-			}
-
-			const menu2 = new RichMenu();
-
-			const opciones2 = ['+busco',
-				'+barcosbarcos',
-				'+cerveza'];
-
-			this.añadir3Opciones(menu2, opciones2);
-
-			while (true) {
-				const collector = await menu2.run();
-
-				const choice = await collector.selection;
-				if (choice === null)
-					return collector.message.delete();
-
-				if (choice === 0)
-					break;
-			}
-
-			const menu3 = new RichMenu();
-
-			const opciones3 = ['¿Se deben envíar Mensajes Directos a los staffs?',
-				'No, a menos que sea muy urgente.',
-				'Si, en cualquier circunstancia.'];
-
-			this.añadir3Opciones(menu3, opciones3);
-
-			while (true) {
-				const collector = await menu3.run();
-
-				const choice = await collector.selection;
-				if (choice === null)
-					return collector.message.delete();
-
-				if (choice === 1)
-					break;
-			}
-
-			const menu4 = new RichMenu();
-
-			const opciones4 = ['¿Se deben envíar Mensajes Directos a los staffs?',
-				'No, a menos que sea muy urgente.',
-				'Si, en cualquier circunstancia.'];
-
-			this.añadir3Opciones(menu4, opciones4);
-
-			while (true) {
-				const collector = await menu4.run();
-
-				const choice = await collector.selection;
-				if (choice === null)
-					return collector.message.delete();
-
-				if (choice === 1)
-					break;
-			}
-
 			const miembro = guild.members.get(user.id);
 			const Usuario = 'Usuario';
+
+			const menus = [new RichMenu(),
+				new RichMenu(),
+				new RichMenu(),
+				new RichMenu()];
+
+			for (let i = 0; i < menus.length; i++) {
+				this.añadir3Opciones(menus[i], opciones[i]);
+				await this.bucle(menus[i], correctos[i]);
+			}
+
 			miembro.roles.add(guild.configs.roles[Usuario]);
 		}
 
 		return true;
 	}
 
-	añadir3Opciones(menu, opciones) {
-		menu.addOption('1)', opciones[0]);
-		menu.addOption('2)', opciones[1]);
-		menu.addOption('3)', opciones[2]);
+	añadir3Opciones(menu, opc) {
+		menu.addOption('1)', opc[0]);
+		menu.addOption('2)', opc[1]);
+		menu.addOption('3)', opc[2]);
+	}
+
+	async bucle(menu, numero) {
+		while (true) {
+			const collector = await menu.run();
+
+			const choice = await collector.selection;
+			if (choice === null)
+				return collector.message.delete();
+
+			if (choice === numero)
+				break;
+		}
+
+		return true;
 	}
 
 };
