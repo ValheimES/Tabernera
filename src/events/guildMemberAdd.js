@@ -58,13 +58,14 @@ module.exports = class extends Event {
 	}
 
 	añadir3Opciones(menu, opc) {
-		menu.addOption('1)', opc[0]);
-		menu.addOption('2)', opc[1]);
-		menu.addOption('3)', opc[2]);
+		menu.addOption(':', opc[0]);
+		menu.addOption(':', opc[1]);
+		menu.addOption(':', opc[2]);
 	}
 
 	async bucle(menu, numero, mensaje) {
 		while (true) {
+			mensaje.author = member.user;
 			const collector = await menu.run(mensaje);
 
 			const choice = await collector.selection;
