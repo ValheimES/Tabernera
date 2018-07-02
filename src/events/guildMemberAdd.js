@@ -17,11 +17,11 @@ const opciones = [['Pedir el rol a un administrador por MD.',
 	'No, a menos que sea muy urgente.',
 	'Si, en cualquier circunstancia.']];
 
-const correctos = [1, 0, 1, 1];
+	const correctos = [1, 0, 1, 1];
 
 module.exports = class extends Event {
 
-	async run(guild, member) {
+	async run(member) {
 		const role = member.guild.roles.get(member.guild.configs.roles.inicial[0]);
 		if (role) await member.roles.add(role);
 
@@ -37,8 +37,8 @@ module.exports = class extends Event {
 				].join('\n'))
 			);
 		}
-		if (guild.id === '420911335187152909') {
-			const cuestionario = guild.channels.get(guild.configs.channels.cuestionario);
+		if (member.guild.id === '420911335187152909') {
+			const cuestionario = member.guild.channels.get(member.guild.configs.channels.cuestionario);
 			const Usuario = 'usuario';
 
 			const menus = [new RichMenu(),
@@ -51,7 +51,7 @@ module.exports = class extends Event {
 				await this.bucle(menus[i], correctos[i], await cuestionario.send('Cargando Cuestionario'));
 			}
 
-			member.roles.add(guild.configs.roles[Usuario]);
+			member.roles.add(member.guild.configs.roles[Usuario]);
 		}
 
 		return true;
