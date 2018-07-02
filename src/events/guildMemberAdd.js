@@ -48,8 +48,7 @@ module.exports = class extends Event {
 
 			for (let i = 0; i < menus.length; i++) {
 				this.añadir3Opciones(menus[i], opciones[i]);
-				await this.bucle(menus[i], correctos[i], await cuestionario.send('Cargando Cuestionario'),
-				{filter: (reaction, user) => emojis.includes(reaction.emoji.name) && user === message.client.user && options.filter(reaction, user)});
+				await this.bucle(menus[i], correctos[i], await cuestionario.send('Cargando Cuestionario'));
 			}
 
 			member.roles.add(member.guild.configs.roles[Usuario]);
@@ -64,15 +63,15 @@ module.exports = class extends Event {
 		menu.addOption(':', opc[2]);
 	}
 
-	async bucle(menu, numero, mensaje, filtro) {
+	async bucle(menu, numero, mensaje) {
 		while (true) {
-			const collector = await menu.run(mensaje, filtro);
+			const collector = await menu.run(mensaje);
 
 			const choice = await collector.selection;
 			if (choice === null)
 				return collector.message.delete();
 
-			if (choice === numero)
+			if (choice === numero && collector.filter)
 				break;
 		}
 
