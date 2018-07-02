@@ -21,7 +21,7 @@ const correctos = [1, 0, 1, 1];
 
 module.exports = class extends Event {
 
-	async run(member) {
+	async run(guild, member) {
 		const role = member.guild.roles.get(member.guild.configs.roles.inicial[0]);
 		if (role) await member.roles.add(role);
 
@@ -39,7 +39,6 @@ module.exports = class extends Event {
 		}
 		if (guild.id === '420911335187152909') {
 			const cuestionario = guild.channels.get(guild.configs.channels.cuestionario);
-			const miembro = guild.members.get(user.id);
 			const Usuario = 'usuario';
 
 			const menus = [new RichMenu(),
@@ -52,7 +51,7 @@ module.exports = class extends Event {
 				await this.bucle(menus[i], correctos[i], await cuestionario.send('Cargando Cuestionario'));
 			}
 
-			miembro.roles.add(guild.configs.roles[Usuario]);
+			member.roles.add(guild.configs.roles[Usuario]);
 		}
 
 		return true;
