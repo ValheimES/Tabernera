@@ -38,7 +38,6 @@ module.exports = class extends Event {
 			);
 		}
 		if (member.guild.id === '420911335187152909') {
-			this.member = member;
 			const cuestionario = member.guild.channels.get(member.guild.configs.channels.cuestionario);
 			const Usuario = 'usuario';
 
@@ -49,7 +48,8 @@ module.exports = class extends Event {
 
 			for (let i = 0; i < menus.length; i++) {
 				this.añadir3Opciones(menus[i], opciones[i]);
-				await this.bucle(menus[i], correctos[i], await cuestionario.send('Cargando Cuestionario'));
+				await this.bucle(menus[i], correctos[i], await cuestionario.send('Cargando Cuestionario'),
+				{filter: (reaction, user) => emojis.includes(reaction.emoji.name) && user === message.client.user && options.filter(reaction, user)});
 			}
 
 			member.roles.add(member.guild.configs.roles[Usuario]);
@@ -64,10 +64,9 @@ module.exports = class extends Event {
 		menu.addOption(':', opc[2]);
 	}
 
-	async bucle(menu, numero, mensaje, member) {
+	async bucle(menu, numero, mensaje, filtro) {
 		while (true) {
-			mensaje.author = this.member;
-			const collector = await menu.run(mensaje);
+			const collector = await menu.run(mensaje, filtro);
 
 			const choice = await collector.selection;
 			if (choice === null)
