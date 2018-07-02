@@ -2,11 +2,6 @@ const { Event, util: { codeBlock } } = require('../index');
 const { MessageEmbed } = require('discord.js');
 const { RichMenu } = require('klasa');
 
-var menu1;
-var menu2;
-var menu3;
-var menu4;
-
 module.exports = class extends Event {
 
 	run(guild, user) {
@@ -24,16 +19,16 @@ module.exports = class extends Event {
 		}
 
 		if(guild.id === 420911335187152909) {
-			menu1 = new RichMenu();
+			let menu = new RichMenu();
 
 			let opciones = ["Pedir el rol a un administrador por MD.",
 							"Publicar un mensaje en el foro y en Discord.",
 							"Dejar un mensaje en Discord."];
 			
-			añadir3Opciones(menu1, opciones);
+			añadir3Opciones(menu, opciones);
 
 			while(true) {
-				let collector = await menu1.run();
+				let collector = await menu.run();
 
 				let choice = await collector.selection;
 				if (choice === null) {
@@ -44,7 +39,7 @@ module.exports = class extends Event {
 					break;
 			}
 
-			menu2 = new RichMenu();
+			let menu2 = new RichMenu();
 
 			let opciones2 = ["+busco",
 							"+barcosbarcos",
@@ -64,7 +59,7 @@ module.exports = class extends Event {
 					break;
 			}
 
-			menu3 = new RichMenu();
+			let menu3 = new RichMenu();
 
 			let opciones3 = ["¿Se deben envíar Mensajes Directos a los staffs?",
 							"No, a menos que sea muy urgente.",
@@ -84,7 +79,7 @@ module.exports = class extends Event {
 					break;
 			}
 
-			menu4 = new RichMenu();
+			let menu4 = new RichMenu();
 
 			let opciones4 = ["¿Se deben envíar Mensajes Directos a los staffs?",
 							"No, a menos que sea muy urgente.",
