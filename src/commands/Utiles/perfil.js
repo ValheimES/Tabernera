@@ -18,7 +18,7 @@ module.exports = class extends Command {
 	async run(msg) {
 		let lvl = '', lvlCnt = '0', crrLvl = '0';
 		const exp = msg.author.configs.xp;
-		let dinero = msg.author.configs.dinero;
+		const { dinero } = msg.author.configs;
 
 		if (exp >= 67525) {
 			lvl = 'Rey pirata';
