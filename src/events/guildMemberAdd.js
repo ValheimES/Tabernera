@@ -48,7 +48,7 @@ module.exports = class extends Event {
 
 			for (let i = 0; i < menus.length; i++) {
 				this.añadir3Opciones(menus[i], opciones[i]);
-				await this.bucle(menus[i], correctos[i], await cuestionario.send('Cargando Cuestionario'));
+				await this.bucle(menus[i], correctos[i], await cuestionario.send('Cargando Cuestionario', member));
 			}
 
 			member.roles.add(member.guild.configs.roles[Usuario]);
@@ -63,7 +63,7 @@ module.exports = class extends Event {
 		menu.addOption(':', opc[2]);
 	}
 
-	async bucle(menu, numero, mensaje) {
+	async bucle(menu, numero, mensaje, member) {
 		while (true) {
 			mensaje.author = member.user;
 			const collector = await menu.run(mensaje);
