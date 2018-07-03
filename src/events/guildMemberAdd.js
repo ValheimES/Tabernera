@@ -53,8 +53,8 @@ module.exports = class extends Event {
 			for (let i = 0; i < embedsMenus.length; i++)
 				embedsMenus[i].setColor(0x673AB7).setDescription(preguntas[i]).setTitle(tituloEmbed).setAuthor(member.user.username, member.user.avatarURL());
 
-			const menus = [new RichMenu(embedsMenus[0]), new RichMenu(embedsMenus[1]),
-				new RichMenu(embedsMenus[2]), new RichMenu(embedsMenus[3])];
+			const menus = [new RichMenuMod(embedsMenus[0]), new RichMenuMod(embedsMenus[1]),
+				new RichMenuMod(embedsMenus[2]), new RichMenuMod(embedsMenus[3])];
 
 			for (let i = 0; i < menus.length; i++) {
 				this.añadir3Opciones(menus[i], opciones[i]);
@@ -90,3 +90,20 @@ module.exports = class extends Event {
 	}
 
 };
+
+class RichMenuMod extends RichMenu {
+
+	_paginate() {
+		const page = this.pages.length;
+		if (this.paginated) return null;
+		super.addPage(embed => {
+			for (let i = 0, option = this.options[i + (page * 10)]; i + (page * 10) < this.options.length && i < 10; i++, option = this.options[i + (page * 10)])
+				embed.addField(option.name, option.body, option.inline);
+			return embed;
+		});
+		if (this.options.length > (page + 1) * 10) return this._paginate();
+		this.paginated = true;
+		return null;
+	}
+
+}
