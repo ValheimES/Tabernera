@@ -92,7 +92,62 @@ module.exports = class extends Event {
 };
 
 class RichMenuMod extends RichMenu {
+	/**
+	 * @since 0.4.0
+	 * @throws You cannot directly add pages in a RichMenu
+	 */
+	addPage() {
+		throw new Error('You cannot directly add pages in a RichMenu');
+	}
 
+	/**
+	 * Adds a MenuOption
+	 * @since 0.4.0
+	 * @param {string} name The name of the option
+	 * @param {string} body The description of the option
+	 * @param {boolean} [inline=false] Whether the option should be inline
+	 * @returns {this}
+	 * @chainable
+	 */
+	addOption(name, body, inline = false) {
+		this.options.push({ name, body, inline });
+		return this;
+	}
+
+	/**
+	 * Runs this RichMenu
+	 * @since 0.4.0
+	 * @param {KlasaMessage} message A message to edit or use to send a new message with
+	 * @param {RichMenuRunOptions} options The options to use with this RichMenu
+	 * @returns {ReactionHandler}
+	 */
+	async run(message, options = {}) {
+		if (!this.paginated) this._paginate();
+		return super.run(message, options);
+	}
+
+	/**
+	 * Determines the emojis to use in this menu
+	 * @since 0.4.0
+	 * @param {Emoji[]} emojis An array of emojis to use
+	 * @param {boolean} stop Whether the stop emoji should be included
+	 * @param {boolean} jump Whether the jump emoji should be included
+	 * @param {boolean} firstLast Whether the first & last emojis should be included
+	 * @returns {Emoji[]}
+	 * @private
+	 */
+	_determineEmojis(emojis, stop, jump, firstLast) {
+		emojis.push(this.emojis.zero, this.emojis.one, this.emojis.two, this.emojis.three, this.emojis.four, this.emojis.five, this.emojis.six, this.emojis.seven, this.emojis.eight, this.emojis.nine);
+		if (this.options.length < 10) emojis = emojis.slice(0, this.options.length);
+		return super._determineEmojis(emojis, stop, jump, firstLast);
+	}
+
+	/**
+	 * Converts MenuOptions into display pages
+	 * @since 0.4.0
+	 * @returns {void}
+	 * @private
+	 */
 	_paginate() {
 		const page = this.pages.length;
 		if (this.paginated) return null;
