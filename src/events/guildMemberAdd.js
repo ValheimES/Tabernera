@@ -10,14 +10,22 @@ const opciones = [['Pedir el rol a un administrador por MD.',
 ['+busco',
 	'+barcosbarcos',
 	'+cerveza'],
-['¿Se deben envíar Mensajes Directos a los staffs?',
+['Si, si es para pedir algo.',
 	'No, a menos que sea muy urgente.',
 	'Si, en cualquier circunstancia.'],
-['¿Se deben envíar Mensajes Directos a los staffs?',
-	'No, a menos que sea muy urgente.',
-	'Si, en cualquier circunstancia.']];
+['Enfadarme.',
+	'Envíar un MD a un Staff.',
+	'Utilizar el servidor para preguntar.']];
 
-	const correctos = [1, 0, 1, 1];
+const preguntas = ['¿Qué hay que hacer para verificarse?',
+	'¿Qué comando se utiliza para pedir tripulación?',
+	'¿Se deben enviar Mensajes Directos a los staffs?',
+	'Si tengo alguna duda o petición debo:'];
+
+const embedsMenus = [new MessageEmbed(), new MessageEmbed(),
+	new MessageEmbed(), new MessageEmbed()];
+
+const correctos = [1, 0, 1, 2];
 
 module.exports = class extends Event {
 
@@ -38,29 +46,31 @@ module.exports = class extends Event {
 			);
 		}
 		if (member.guild.id === '420911335187152909') {
+			const tituloEmbed = `Rellena este formulario para poder acceder a todos los canales.`;
 			const cuestionario = member.guild.channels.get(member.guild.configs.channels.cuestionario);
 			const Usuario = 'usuario';
 
-			const menus = [new RichMenu(),
-				new RichMenu(),
-				new RichMenu(),
-				new RichMenu()];
+			for (let i = 0; i < embedsMenus.length; i++)
+				embedsMenus[i].setColor(0x673AB7).setDescription(preguntas[i]).setTitle(tituloEmbed).setAuthor(member.user.username, member.user.avatarURL());
+
+			const menus = [new RichMenu(embedsMenus[0]), new RichMenu(embedsMenus[1]),
+				new RichMenu(embedsMenus[2]), new RichMenu(embedsMenus[3])];
 
 			for (let i = 0; i < menus.length; i++) {
 				this.añadir3Opciones(menus[i], opciones[i]);
-				await this.bucle(menus[i], correctos[i], await cuestionario.send('Cargando Cuestionario'), member.user);
+				await this.bucle(menus[i], correctos[i], await cuestionario.send(`Rellenalo ${member}`), member.user);
 			}
 
 			member.roles.add(member.guild.configs.roles[Usuario]);
+			cuestionario.send(`Ahora ${member}, ya tienes acceso a todos los canales y se te ha dado el rol ${member.guild.configs.roles[Usuario]}`);
 		}
 
 		return true;
 	}
 
 	añadir3Opciones(menu, opc) {
-		menu.addOption(':', opc[0]);
-		menu.addOption(':', opc[1]);
-		menu.addOption(':', opc[2]);
+		for (let i = 0; i < opc.length; i++)
+			menu.addOption(':', opc[i]);
 	}
 
 	async bucle(menu, numero, mensaje, usuario) {
@@ -70,8 +80,10 @@ module.exports = class extends Event {
 			if (choice === null)
 				return collector.message.delete();
 
-			if (choice === numero && collector.users.get('id', usuario.id) === usuario)
+			if (choice === numero && collector.users.get(usuario.id) === usuario) {
+				collector.message.delete();
 				break;
+			}
 		}
 
 		return true;
