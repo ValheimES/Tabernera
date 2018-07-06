@@ -15,7 +15,7 @@ module.exports = class extends Event {
 				.setDescription([
 					codeBlock('fix', '¡AHOY PIRATA!'),
 					'<:barco:406838651771682818> **¡Un nuevo barco acaba de atracar en el puerto!**',
-					`\n_El pirata ${member.user.username} entra de un portazo en la <#375828283704475649> sediento de una buena jarra de grog_ <:jarra:406906694766034947>`
+					`\n_El pirata ${member} entra de un portazo en la <#375828283704475649> sediento de una buena jarra de grog_ <:jarra:406906694766034947>`
 				].join('\n'))
 			);
 		}
