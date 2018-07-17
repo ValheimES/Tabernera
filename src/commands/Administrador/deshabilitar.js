@@ -4,7 +4,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			permissionLevel: 10,
+			permissionLevel: 9,
 			description: 'Re-deshabilita o deshabilita temporalmente un comando/inhibidor/monitor/finalizador/evento. El estado por defecto se restablece al reiniciar.',
 			usage: '<Piece:piece>',
 			extendedHelp: '+deshabilitar encuesta',

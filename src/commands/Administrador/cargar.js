@@ -4,7 +4,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			permissionLevel: 10,
+			permissionLevel: 9,
 			aliases: ['carga'],
 			description: 'Carga un comando/inhibidor/monitor/finalizador.',
 			usage: '<Piece:piece>',

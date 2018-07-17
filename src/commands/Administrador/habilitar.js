@@ -4,7 +4,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			permissionLevel: 10,
+			permissionLevel: 9,
 			description: 'Rehabilita o habilita temporalmente un comando/inhibidor/monitor/finalizador. El estado por defecto se restablece al reiniciar.',
 			usage: '<Piece:piece>',
 			extendedHelp: '+habilitar encuesta',

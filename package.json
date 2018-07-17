@@ -16,7 +16,7 @@
   "dependencies": {
     "discord.js": "github:discordjs/discord.js",
     "klasa": "github:dirigeants/klasa",
-    "mysql2": "^1.5.3"
+    "rethinkdbdash": "^2.3.31"
   },
   "devDependencies": {
     "eslint": "^4.19.1",

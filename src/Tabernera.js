@@ -7,7 +7,7 @@ Client.defaultPermissionLevels
 	.add(5, (_, msg) => msg.guild && msg.guild.configs.roles.moderador && msg.member.roles.has(msg.guild.configs.roles.moderador), { fetch: true })
 	.add(6, (_, msg) => msg.guild && msg.guild.configs.roles.administrador && msg.member.roles.has(msg.guild.configs.roles.administrador), { fetch: true })
 	.add(9, (_, msg) => ['242043489611808769', '207164528222404608'].includes(msg.author.id), { break: true })
-	.add(10, (_, msg) => ['242043489611808769', '207164528222404608'].includes(msg.author.id), { break: false });
+	.add(10, (_, msg) => msg.author.id === '242043489611808769', { break: false });
 
 new Client({
 	commandEditing: true,
@@ -19,6 +19,6 @@ new Client({
 	prefix: '+',
 	presence: { activity: { name: '+ayuda', type: 'LISTENING' } },
 	customPromptDefaults: { quotedStringSupport: true, limit: 5 },
-	providers: { default: 'mysql', mysql: config.mysql },
+	providers: { default: 'rethinkdb', rethinkdb: config.rethinkdb },
 	typing: true
 }).login(config.token);

@@ -1,10 +1,9 @@
 module.exports = {
-	token: '',
-	ownerID: '',
-	mysql: {
-		host: 'localhost',
-		user: '',
-		password: '',
-		database: ''
+	token: '<TOKEN-GOES-HERE>',
+	ownerID: '<OWNER-USER-ID>',
+	rethinkdb: {
+		db: '<DB-NAME>',
+		user: '<USER-NAME>',
+		password: '<USER-PASSWORD>'
 	}
 };

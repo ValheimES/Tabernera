@@ -6,7 +6,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			permissionLevel: 10,
+			permissionLevel: 9,
 			description: 'Transfiere un modulo principal a su respectiva carpeta',
 			usage: '<Piece:piece>',
 			extendedHelp: '+transferir ayuda',

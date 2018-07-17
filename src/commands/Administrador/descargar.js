@@ -5,7 +5,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['u'],
-			permissionLevel: 10,
+			permissionLevel: 9,
 			description: 'Descarga un modulo de Klasa.',
 			usage: '<Piece:piece>',
 			extendedHelp: '+descargar languages',
