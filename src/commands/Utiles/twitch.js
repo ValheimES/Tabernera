@@ -1,5 +1,4 @@
 const { Command } = require('../../index');
-const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Command {
 
@@ -18,17 +17,17 @@ module.exports = class extends Command {
 	async añadir(msg, [usuario, ...nombreCuentaTwitch]) {
 		const { errors, updated } = await msg.guild.configs.update('streamers', nombreCuentaTwitch.join(' '), msg.guild, { avoidUnconfigurable: true, action: 'add' });
 		if (errors.length) return msg.send('Ha ocurrido un error');
-        if (!updated.length) return msg.send('Ha ocurrido un error');
-        await msg.guild.members.get(usuario).roles.add(msg.guild.roles.get('407255950232256521'));
-		return msg.send('Actualizado');	
-    }
-    
-    async quitar(msg, [usuario, ...nombreCuentaTwitch]) {
+		if (!updated.length) return msg.send('Ha ocurrido un error');
+		await msg.guild.members.get(usuario).roles.add(msg.guild.roles.get('407255950232256521'));
+		return msg.send('Actualizado');
+	}
+
+	async quitar(msg, [usuario, ...nombreCuentaTwitch]) {
 		const { errors, updated } = await msg.guild.configs.update('streamers', nombreCuentaTwitch.join(' '), msg.guild, { avoidUnconfigurable: true, action: 'remove' });
 		if (errors.length) return msg.send('Ha ocurrido un error');
-        if (!updated.length) return msg.send('Ha ocurrido un error');
-        await msg.guild.members.get(usuario).roles.remove(msg.guild.roles.get('407255950232256521'));
-		return msg.send('Actualizado');	
+		if (!updated.length) return msg.send('Ha ocurrido un error');
+		await msg.guild.members.get(usuario).roles.remove(msg.guild.roles.get('407255950232256521'));
+		return msg.send('Actualizado');
 	}
 
 };
