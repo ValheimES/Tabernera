@@ -16,7 +16,7 @@ new Client({
 	messageCacheLifetime: 120,
 	messageCacheMaxSize: 100,
 	messageSweepInterval: 120,
-	prefix: '-',
+	prefix: '+',
 	presence: { activity: { name: '+ayuda', type: 'LISTENING' } },
 	customPromptDefaults: { quotedStringSupport: true, limit: 5 },
 	providers: { default: 'rethinkdb', rethinkdb: config.rethinkdb },
