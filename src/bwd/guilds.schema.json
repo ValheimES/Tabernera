@@ -56,6 +56,14 @@
 			"min": null,
 			"max": null,
 			"configurable": true
+		},
+		"actividad": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
 		}
 	},
 	"roles": {

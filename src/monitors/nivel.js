@@ -34,7 +34,7 @@ module.exports = class extends Monitor {
 			rolename = '5:** Pirata experto.';
 		} else if (next >= 11825) {
 			this.editRoles(memberRoles, ROLES.PIRATA);
-			rolename = '4:** Pirata.';
+			rolename = '4:** Pirata rufián.';
 		} else if (next >= 4675) {
 			this.editRoles(memberRoles, ROLES.GRUMETEGALLINA);
 			rolename = '3:** Grumete gallina.';
