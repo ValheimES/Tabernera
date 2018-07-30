@@ -27,9 +27,22 @@ module.exports = class extends Task {
 		const r = this.client.providers.default.db;
 
 		for (let i = 0; i < res.streams.length; i++) {
-			const createdAt = await r.table('streamers').get(res.streams[i]._id)('createdAt').default(-1);
-			if (createdAt !== -1) {
-				if (await r.table('streamers').get(res.streams[i]._id)('createdAt') !== res.streams[i].created_at) {
+			if (res.streams[i].game === 'Sea of Thieves') {
+				const createdAt = await r.table('streamers').get(res.streams[i]._id)('createdAt').default(-1);
+				if (createdAt !== -1) {
+					if (await r.table('streamers').get(res.streams[i]._id)('createdAt') !== res.streams[i].created_at) {
+						const embed = new MessageEmbed().setTitle(res.streams[i].channel.status)
+							.setAuthor(res.streams[i].channel.display_name, res.streams[i].channel.logo)
+							.setThumbnail(res.streams[i].channel.logo)
+							.setImage(res.streams[i].preview.large)
+							.addField('Game:', res.streams[i].game, true)
+							.addField('Viewers:', res.streams[i].viewers, true)
+							.setColor(7358401);
+						canal.send(embed);
+
+						await r.table('streamers').get(res.streams[i]._id).update({ id: res.streams[i]._id, createdAt: res.streams[i].created_at });
+					}
+				} else {
 					const embed = new MessageEmbed().setTitle(res.streams[i].channel.status)
 						.setAuthor(res.streams[i].channel.display_name, res.streams[i].channel.logo)
 						.setThumbnail(res.streams[i].channel.logo)
@@ -38,19 +51,8 @@ module.exports = class extends Task {
 						.addField('Viewers:', res.streams[i].viewers, true)
 						.setColor(7358401);
 					canal.send(embed);
-
-					await r.table('streamers').get(res.streams[i]._id).update({ id: res.streams[i]._id, createdAt: res.streams[i].created_at });
+					await r.table('streamers').insert({ id: res.streams[i]._id, createdAt: res.streams[i].created_at });
 				}
-			} else {
-				const embed = new MessageEmbed().setTitle(res.streams[i].channel.status)
-					.setAuthor(res.streams[i].channel.display_name, res.streams[i].channel.logo)
-					.setThumbnail(res.streams[i].channel.logo)
-					.setImage(res.streams[i].preview.large)
-					.addField('Game:', res.streams[i].game, true)
-					.addField('Viewers:', res.streams[i].viewers, true)
-					.setColor(7358401);
-				canal.send(embed);
-				await r.table('streamers').insert({ id: res.streams[i]._id, createdAt: res.streams[i].created_at });
 			}
 		}
 
