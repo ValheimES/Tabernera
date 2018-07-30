@@ -43,7 +43,7 @@ module.exports = class extends Command {
 		for (let i = 0; i < partes.length; i++) embed.addField('\u200b', `${emojiSet[i]} ${partes[i]}`);
 
 		const message = await canal.send('@everyone', embed);
-		for (let i = 0; i < partes.length; i++) await message.react(emojiSet);
+		for (let i = 0; i < partes.length; i++) await message.react(emojiSet[i]);
 
 		return message;
 	}
