@@ -80,6 +80,14 @@
 			"min": null,
 			"max": null,
 			"configurable": true
+		},
+		"general": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
 		}
 	},
 	"roles": {
@@ -155,15 +163,15 @@
 			"min": null,
 			"max": null,
 			"configurable": true
+		},
+		"streamer": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
 		}
-	},
-	"streamers": {
-		"type": "string",
-		"array": true,
-		"default": [],
-		"min": null,
-		"max": null,
-		"configurable": true
 	},
 	"disabledCommands": {
 		"type": "command",
