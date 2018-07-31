@@ -1,3 +1,4 @@
+/* eslint max-depth: ["error", 6]*/
 const { Task } = require('klasa');
 const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
@@ -23,9 +24,9 @@ module.exports = class extends Task {
 
 		let channels = '';
 
-		for (let i = 0; i < usuarios.length; i++) {
+		for (let i = 0; i < usuarios.length; i++)
 			channels += `,${usuarios[i].nombreCuentaTwitch}`;
-		}
+
 		console.log(channels);
 		url.search = new URLSearchParams([['channel', channels], ['stream_type', 'live'], ['game', 'Sea of Thieves'], ['client_id', 'radjtg8zklal4pt79x0xdxfucsk61z']]);
 		const result = await fetch(url);
@@ -39,12 +40,12 @@ module.exports = class extends Task {
 						const tabla = await r.table('streamers');
 						let imagen;
 						for (let j = 0; j < tabla.length; j++) {
-							if(tabla[i].nombreCuentaTwitch === res.streams[i].channel.display_name) {
+							if (tabla[i].nombreCuentaTwitch === res.streams[i].channel.display_name) {
 								imagen = await guild.members.get(tabla[i].id);
 								imagen = imagen.user.avatarURL();
 							}
 						}
-						
+
 						const embed = new MessageEmbed().setTitle(res.streams[i].channel.status)
 							.setAuthor(res.streams[i].channel.display_name, imagen)
 							.setThumbnail(res.streams[i].channel.logo)
@@ -60,7 +61,7 @@ module.exports = class extends Task {
 					const tabla = await r.table('streamers');
 					let imagen;
 					for (let j = 0; j < tabla.length; j++) {
-						if(tabla[i].nombreCuentaTwitch === res.streams[i].channel.display_name) {
+						if (tabla[i].nombreCuentaTwitch === res.streams[i].channel.display_name) {
 							imagen = await guild.members.get(tabla[i].id);
 							imagen = imagen.user.avatarURL();
 						}
