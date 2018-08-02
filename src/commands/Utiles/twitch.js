@@ -23,8 +23,11 @@ module.exports = class extends Command {
 		return msg.send(`<:tic:408639986934480908> La cuenta _${nombreCuentaTwitch}_ ha sido agregada correctamente a nuestra base de datos. ${usuario} ha recibido el rol de Streamer. Ahora cada vez que retransmita un vídeo de Sea of Thieves se publicará en <#407286482554847242>.`);
 	}
 
-	async quitar(msg, [usuario, ...nombreCuentaTwitch]) {
+	async quitar(msg, [usuario, nombreCuentaTwitch]) {
 		const r = this.client.providers.default.db;
+		const nombre = r.table('streamers').get(usuario.id)('nombreCuentaTwitch').default(null);
+		if (!nombre) throw `No existe en la base de datos`;
+
 		await r.table('streamers').get(usuario.id).delete();
 		return msg.send(`<:no:432891007366070272> La cuenta _${nombreCuentaTwitch}_ ha sido eliminada de nuestra base de datos y ${usuario} ahora ya no es Streamer.`);
 	}
@@ -32,21 +35,20 @@ module.exports = class extends Command {
 	async lista(msg) {
 		const r = this.client.providers.default.db;
 		const tabla = await r.table('streamers');
-		const embed = new MessageEmbed().setTitle('<:twitch:473533904457039872> Lista de streamers')
-			.setColor(8478656);
-		for (let i = 0; i < tabla.length; i++) {
-			const usuario = await msg.guild.members.get(tabla[i].id);
-			if (i === 0) {
-				embed
-					.addField('Cuenta:', `${i + 1}. ${tabla[i].nombreCuentaTwitch}`, true)
-					.addField('Usuario:', usuario.displayName, true);
-			} else {
-				embed
-					.addField('\u200B', `${i + 1}. ${tabla[i].nombreCuentaTwitch}`, true)
-					.addField('\u200B', usuario.displayName, true);
-			}
+		const cuentas = [], usuarios = [];
+		let i = 1;
+		for (const entrada of tabla) {
+			cuentas.push(`${i++}. ${entrada.nombreCuentaTwitch}`);
+			usuarios.push(await msg.guild.members.get(entrada.id)
+				.then(member => member.displayName)
+				.catch(() => entrada.id));
 		}
-		return msg.send(embed);
+
+		return msg.sendEmbed(new MessageEmbed()
+			.setTitle('<:twitch:473533904457039872> Lista de streamers')
+			.setColor(8478656)
+			.addField('Cuenta:', cuentas.join('\n'), true)
+			.addField('Usuario:', usuarios.join('\n'), true));
 	}
 
 };
