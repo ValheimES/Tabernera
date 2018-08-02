@@ -50,7 +50,7 @@ module.exports = class extends Task {
 					.setThumbnail(stream.channel.logo)
 					.setImage(stream.preview.large)
 					.addField('Juego:', stream.game, true)
-					.addField('Espectadores:', stream.viewers, true)
+					.addField('Seguidores:', stream.channel.followers, true)
 					.setColor(8478656));
 			}
 		}
