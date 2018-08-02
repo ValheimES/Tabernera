@@ -1,23 +1,23 @@
 const { Task } = require('klasa');
 const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
-const url = new URL('https://api.twitch.tv/kraken/streams/');
 
 // 375828283184513033 guild principal
 
 module.exports = class extends Task {
 
 	async run() {
+		const url = new URL('https://api.twitch.tv/kraken/streams/');
 		const guild = this.client.guilds.get('420911335187152909');
 		if (!guild) return false;
 
 		const r = this.client.providers.default.db;
 
 		const canal = guild.channels.get(guild.configs.channels.twitch);
-		if (!canal) throw `No existe el canal, por favor reconfigurelo`;
+		if (!canal) return false;
 
 		const usuarios = await r.table('streamers');
-		if (usuarios.length === 0) return false;
+		if (!usuarios.length) return false;
 
 		const channels = usuarios.map(usuario => usuario.nombreCuentaTwitch).join(',');
 
@@ -34,17 +34,12 @@ module.exports = class extends Task {
 				await r.table('streams').get(stream.id).insert(entry);
 			}
 
-			let imagen;
-			for (let j = 0; j < streamers.length; j++) {
-				if (streamers[j].nombreCuentaTwitch === stream.channel.display_name) {
-					imagen = await guild.members.fetch(entry.id)
-						.then(member => member.user.displayAvatarURL())
-						.catch(() => undefined);
-				}
-			}
-
 			if ((nuevo || entry.createdAt !== stream.created_at) && stream.game === 'Sea of Thieves') {
 				if (!nuevo) await r.table('streams').get(stream.id).update({ createdAt: stream.created_at });
+				const streamerProfile = streamers.find(streamer => streamer.nombreCuentaTwitch === stream.channel.display_name);
+				const imagen = streamerProfile ? await guild.members.fetch(streamerProfile.id)
+					.then(member => member.user.displayAvatarURL())
+					.catch(() => undefined) : undefined;
 				await canal.send(new MessageEmbed()
 					.setAuthor(stream.channel.display_name, imagen)
 					.setThumbnail(stream.channel.logo)
