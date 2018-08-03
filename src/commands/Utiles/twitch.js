@@ -11,9 +11,17 @@ module.exports = class extends Command {
 			subcommands: true,
 			description: 'Añade a un streamer',
 			extendedHelp: '+twitch añadir/quitar <@StartForKiller#8184> <StartForKiller>',
-			usage: '<añadir|quitar|lista> [usuario:user] [nombreCuentaTwitch:str]',
+			usage: '<añadir|quitar|lista> (usuario:usuario) (nombre:twitch)',
 			comando: '+twitch',
 			usageDelim: ' '
+		});
+
+		this.createCustomResolver('usuario', (arg, possible, msg, [type]) => {
+			if (type === 'lista') return undefined;
+			return this.client.arguments.get('user').run(arg, possible, msg);
+		}).createCustomResolver('twitch', (arg, possible, msg, [type]) => {
+			if (type !== 'añadir') return undefined;
+			return this.client.arguments.get('string').run(arg, possible, msg);
 		});
 	}
 
@@ -30,7 +38,7 @@ module.exports = class extends Command {
 			.send(`<:tic:408639986934480908> La cuenta _${nombreCuentaTwitch}_ ha sido agregada correctamente a nuestra base de datos. ${usuario} ha recibido el rol de Streamer. Ahora cada vez que retransmita un vídeo de Sea of Thieves se publicará en <#407286482554847242>.`);
 	}
 
-	async quitar(msg, [usuario, nombreCuentaTwitch]) {
+	async quitar(msg, [usuario]) {
 		const r = this.client.providers.default.db;
 		const { streamer } = msg.guild.configs.roles;
 		const { general } = msg.guild.configs.channels;
@@ -42,7 +50,7 @@ module.exports = class extends Command {
 		await msg.guild.members.get(usuario).roles
 			.remove(msg.guild.roles.get(streamer));
 		return msg.guild.channels.get(general)
-			.send(`<:no:432891007366070272> La cuenta _${nombreCuentaTwitch}_ ha sido eliminada de nuestra base de datos y ${usuario} ahora ya no es Streamer.`);
+			.send(`<:no:432891007366070272> La cuenta _${nombre}_ ha sido eliminada de nuestra base de datos y ${usuario} ahora ya no es Streamer.`);
 	}
 
 	async lista(msg) {
