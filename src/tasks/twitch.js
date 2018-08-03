@@ -43,8 +43,7 @@ module.exports = class extends Task {
 				const imagen = streamerProfile ? await guild.members.fetch(streamerProfile.id)
 					.then(member => member.user.displayAvatarURL())
 					.catch(() => undefined) : undefined;
-				await canal.send(`¡Arrr piratas!,${stream.channel.display_name} está ahora en vivo en ${stream.channel.url} ¡ve a comprobarlo! `);
-				await canal.send(new MessageEmbed()
+				await canal.send(`¡Arrr piratas!, ${stream.channel.display_name} está ahora en vivo en ${stream.channel.url} ¡ve a comprobarlo!`, new MessageEmbed()
 					.setAuthor(stream.channel.display_name, imagen)
 					.setURL(stream.channel.url)
 					.setThumbnail(stream.channel.logo)
