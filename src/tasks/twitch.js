@@ -46,6 +46,7 @@ module.exports = class extends Task {
 				await canal.send(`¡Arrr piratas!,${stream.channel.display_name} está ahora en vivo en ${stream.channel.url} ¡ve a comprobarlo! `);
 				await canal.send(new MessageEmbed()
 					.setAuthor(stream.channel.display_name, imagen)
+					.setURL(stream.channel.url)
 					.setThumbnail(stream.channel.logo)
 					.setImage(stream.preview.large)
 					.addField('Juego:', stream.game, true)
