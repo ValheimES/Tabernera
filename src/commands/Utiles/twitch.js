@@ -43,7 +43,7 @@ module.exports = class extends Command {
 		const r = this.client.providers.default.db;
 		const { streamer } = msg.guild.configs.roles;
 		const { general } = msg.guild.configs.channels;
-		const nombre = r.table('streamers').get(member.id)('nombreCuentaTwitch').default(null);
+		const nombre = await r.table('streamers').get(member.id)('nombreCuentaTwitch').default(null);
 		if (!nombre) throw `No existe en la base de datos`;
 
 		await r.table('streamers').get(member.id)
