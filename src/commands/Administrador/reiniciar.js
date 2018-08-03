@@ -1,17 +1,17 @@
-const { Command } = require('../../index');
+const { Command } = require('klasa');
 
 module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
 			permissionLevel: 9,
-			description: 'Reinicia el bot.',
-			extendedHelp: '+reiniciar'
+			guarded: true,
+			description: language => language.get('COMMAND_REBOOT_DESCRIPTION')
 		});
 	}
 
 	async run(message) {
-		await message.sendMessage(message.language.get('COMMAND_REBOOT')).catch(err => this.client.emit('error', err));
+		await message.sendLocale('COMMAND_REBOOT').catch(err => this.client.emit('error', err));
 		process.exit();
 	}
 

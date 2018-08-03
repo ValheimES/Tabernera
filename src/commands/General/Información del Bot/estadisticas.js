@@ -1,34 +1,46 @@
-const { Command, version: klasaVersion, Duration } = require('../../../index');
-const { version: discordVersion } = require('discord.js');
-const { uptime } = require('os');
+const { Command, Duration } = require('klasa');
+const { version } = require('discord.js');
+const { uptime, loadavg } = require('os');
 
 module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			aliases: ['estadísticas'],
+			aliases: ['estadísticas', 'stats', 'sts'],
 			guarded: true,
 			description: (message) => message.language.get('COMMAND_STATS_DESCRIPTION')
 		});
 	}
 
-	run(msg) {
-		return msg.sendCode('asciidoc', [
-			'= ESTADÍSTICAS =',
-			`• Usuarios      :: ${this.client.users.size.toLocaleString()}`,
-			`• Canales       :: ${this.client.channels.size.toLocaleString()}`,
-			`• Node.js       :: ${process.version}`,
-			`• Discord.js    :: v${discordVersion}`,
-			`• Klasa         :: v${klasaVersion}`,
-			'',
-			'= TIEMPO =',
-			`• Host          :: ${Duration.toNow(Date.now() - (uptime() * 1000))}`,
-			`• Total         :: ${Duration.toNow(Date.now() - (process.uptime() * 1000))}`,
-			'',
-			'= USO DEL HOST =',
-			`• Uso de la RAM :: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,
-			`• RAM +Node     :: ${(process.memoryUsage().heapTotal / 1024 / 1024).toFixed(2)} MB`
-		].join('\n'));
+	async run(msg) {
+		return msg.sendLocale('COMMAND_STATS', [this.STATS, this.UPTIME, this.USAGE], { code: 'asciidoc' });
+	}
+
+	get STATS() {
+		return {
+			USERS: this.client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString(),
+			GUILDS: this.client.guilds.size.toLocaleString(),
+			CHANNELS: this.client.channels.size.toLocaleString(),
+			VERSION: `v${version}`,
+			NODE_JS: process.version
+		};
+	}
+
+	get UPTIME() {
+		const now = Date.now();
+		return {
+			HOST: Duration.toNow(now - (uptime() * 1000), false),
+			TOTAL: Duration.toNow(now - (process.uptime() * 1000), false),
+			CLIENT: Duration.toNow(now - this.client.uptime, false)
+		};
+	}
+
+	get USAGE() {
+		return {
+			CPU_LOAD: `${Math.round(loadavg()[0] * 10000) / 100}%`,
+			RAM_TOTAL: `${Math.round(100 * (process.memoryUsage().heapTotal / 1048576)) / 100}MB`,
+			RAM_USED: `${Math.round(100 * (process.memoryUsage().heapUsed / 1048576)) / 100}MB`
+		};
 	}
 
 };

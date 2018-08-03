@@ -1,20 +1,20 @@
-const { Command } = require('../../index');
+const { Command } = require('klasa');
 
 module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
+			aliases: ['enable'],
 			permissionLevel: 9,
-			description: 'Rehabilita o habilita temporalmente un comando/inhibidor/monitor/finalizador. El estado por defecto se restablece al reiniciar.',
-			usage: '<Piece:piece>',
-			extendedHelp: '+habilitar encuesta',
-			comando: '+habilitar <Módulo>'
+			guarded: true,
+			description: language => language.get('COMMAND_ENABLE_DESCRIPTION'),
+			usage: '<Piece:piece>'
 		});
 	}
 
-	async run(msg, [piece]) {
+	async run(message, [piece]) {
 		piece.enable();
-		return msg.sendCode('diff', msg.language.get('COMMAND_ENABLE', piece.type, piece.name));
+		return message.sendCode('diff', message.language.get('COMMAND_ENABLE', piece.type, piece.name));
 	}
 
 };

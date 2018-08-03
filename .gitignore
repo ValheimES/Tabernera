@@ -1,3 +1,7 @@
 node_modules
 config.js
 src/bwd/providers
+
+# Package locks
+yarn.lock
+package-lock.json
