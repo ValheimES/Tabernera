@@ -18,36 +18,36 @@ module.exports = class extends Command {
 
 		this.createCustomResolver('usuario', (arg, possible, msg, [type]) => {
 			if (type === 'lista') return undefined;
-			return this.client.arguments.get('user').run(arg, possible, msg);
+			return this.client.arguments.get('member').run(arg, possible, msg);
 		}).createCustomResolver('twitch', (arg, possible, msg, [type]) => {
 			if (type !== 'añadir') return undefined;
 			return this.client.arguments.get('string').run(arg, possible, msg);
 		});
 	}
 
-	async añadir(msg, [usuario, nombreCuentaTwitch]) {
+	async añadir(msg, [member, nombreCuentaTwitch]) {
 		const r = this.client.providers.default.db;
 		const { streamer } = msg.guild.configs.roles;
 		const { general } = msg.guild.configs.channels;
 
 		await r.table('streamers')
-			.insert({ id: usuario.id, nombreCuentaTwitch: nombreCuentaTwitch });
-		await msg.guild.members.get(usuario.id).roles
+			.insert({ id: member.id, nombreCuentaTwitch: nombreCuentaTwitch });
+		await member.roles
 			.add(msg.guild.roles.get(streamer));
 		return msg.guild.channels.get(general)
 			.send(`<:tic:408639986934480908> La cuenta _${nombreCuentaTwitch}_ ha sido agregada correctamente a nuestra base de datos. ${usuario} ha recibido el rol de Streamer. Ahora cada vez que retransmita un vídeo de Sea of Thieves se publicará en <#407286482554847242>.`);
 	}
 
-	async quitar(msg, [usuario]) {
+	async quitar(msg, [member]) {
 		const r = this.client.providers.default.db;
 		const { streamer } = msg.guild.configs.roles;
 		const { general } = msg.guild.configs.channels;
-		const nombre = r.table('streamers').get(usuario.id)('nombreCuentaTwitch').default(null);
+		const nombre = r.table('streamers').get(member.id)('nombreCuentaTwitch').default(null);
 		if (!nombre) throw `No existe en la base de datos`;
 
-		await r.table('streamers').get(usuario.id)
+		await r.table('streamers').get(member.id)
 			.delete();
-		await msg.guild.members.get(usuario.id).roles
+		await member.roles
 			.remove(msg.guild.roles.get(streamer));
 		return msg.guild.channels.get(general)
 			.send(`<:no:432891007366070272> La cuenta _${nombre}_ ha sido eliminada de nuestra base de datos y ${usuario} ahora ya no es Streamer.`);
