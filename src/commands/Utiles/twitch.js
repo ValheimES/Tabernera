@@ -32,7 +32,7 @@ module.exports = class extends Command {
 
 		await r.table('streamers')
 			.insert({ id: usuario.id, nombreCuentaTwitch: nombreCuentaTwitch });
-		await msg.guild.members.get(usuario).roles
+		await msg.guild.members.get(usuario.id).roles
 			.add(msg.guild.roles.get(streamer));
 		return msg.guild.channels.get(general)
 			.send(`<:tic:408639986934480908> La cuenta _${nombreCuentaTwitch}_ ha sido agregada correctamente a nuestra base de datos. ${usuario} ha recibido el rol de Streamer. Ahora cada vez que retransmita un vídeo de Sea of Thieves se publicará en <#407286482554847242>.`);
@@ -47,7 +47,7 @@ module.exports = class extends Command {
 
 		await r.table('streamers').get(usuario.id)
 			.delete();
-		await msg.guild.members.get(usuario).roles
+		await msg.guild.members.get(usuario.id).roles
 			.remove(msg.guild.roles.get(streamer));
 		return msg.guild.channels.get(general)
 			.send(`<:no:432891007366070272> La cuenta _${nombre}_ ha sido eliminada de nuestra base de datos y ${usuario} ahora ya no es Streamer.`);
