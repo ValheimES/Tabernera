@@ -6,7 +6,6 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			runIn: ['text'],
-			permissionLevel: 6,
 			guarded: true,
 			subcommands: true,
 			description: 'Añade a un streamer',
@@ -26,6 +25,7 @@ module.exports = class extends Command {
 	}
 
 	async añadir(msg, [member, nombreCuentaTwitch]) {
+		if (!await msg.hasAtLeastPermissionLevel(6)) throw 'No tienes permiso para añadir streamers.';
 		const r = this.client.providers.default.db;
 		const { streamer } = msg.guild.configs.roles;
 		const { general } = msg.guild.configs.channels;
@@ -39,6 +39,7 @@ module.exports = class extends Command {
 	}
 
 	async quitar(msg, [member]) {
+		if (!await msg.hasAtLeastPermissionLevel(6)) throw 'No tienes permiso para quitar streamers.';
 		const r = this.client.providers.default.db;
 		const { streamer } = msg.guild.configs.roles;
 		const { general } = msg.guild.configs.channels;
@@ -56,6 +57,8 @@ module.exports = class extends Command {
 	async lista(msg) {
 		const r = this.client.providers.default.db;
 		const tabla = await r.table('streamers');
+		if (!tabla.length) throw `No hay ningún usuario definido como streamer en este servidor.`;
+
 		const cuentas = [], usuarios = [];
 		let i = 1;
 		for (const entrada of tabla) {
