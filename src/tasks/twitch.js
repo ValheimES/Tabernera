@@ -2,19 +2,20 @@ const { Task } = require('klasa');
 const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 
-// 375828283184513033 guild principal
-
 module.exports = class extends Task {
 
 	async run() {
-		const guild = this.client.guilds.get('420911335187152909');
-		if (!guild) return false;
+		for (const guild of this.client.guilds.values()) {
+			this.process(guild)
+				.catch(error => this.client.emit('wtf', error));
+		}
+	}
 
-		const r = this.client.providers.default.db;
-
+	async process(guild) {
 		const canal = guild.channels.get(guild.configs.channels.twitch);
 		if (!canal) return false;
 
+		const r = this.client.providers.default.db;
 		const streamers = await r.table('streamers').run();
 		if (!streamers.length) return false;
 
