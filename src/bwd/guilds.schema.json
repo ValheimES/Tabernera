@@ -57,7 +57,23 @@
 			"max": null,
 			"configurable": true
 		},
+		"twitch": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
 		"actividad": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"general": {
 			"type": "textchannel",
 			"array": false,
 			"default": null,
@@ -125,6 +141,14 @@
 			"configurable": true
 		},
 		"pionero": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"streamer": {
 			"type": "role",
 			"array": false,
 			"default": null,
