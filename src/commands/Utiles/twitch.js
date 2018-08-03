@@ -51,7 +51,7 @@ module.exports = class extends Command {
 		await member.roles
 			.remove(msg.guild.roles.get(streamer));
 		return msg.guild.channels.get(general)
-			.send(`<:no:432891007366070272> La cuenta _${nombre}_ ha sido eliminada de nuestra base de datos y ${member} ahora ya no es Streamer.`);
+			.send(`<:cruz:407160220624617484> La cuenta _${nombre}_ ha sido eliminada de nuestra base de datos y ${member} ahora ya no es Streamer.`);
 	}
 
 	async lista(msg) {
