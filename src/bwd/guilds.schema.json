@@ -57,6 +57,14 @@
 			"max": null,
 			"configurable": true
 		},
+		"twitter": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
 		"twitch": {
 			"type": "textchannel",
 			"array": false,
