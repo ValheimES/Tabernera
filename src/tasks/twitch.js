@@ -29,20 +29,21 @@ module.exports = class extends Task {
 		const body = await fetch(url).then(result => result.json());
 
 		for (const stream of body.streams) {
-			let entry = await r.table('streams').get(stream.id).run();
+			let entry = await r.table('streams').get(stream._id).run();
 			let nuevo = false;
 			if (!entry) {
 				nuevo = true;
-				entry = { id: stream.id, createdAt: stream.created_at };
-				await r.table('streams').get(stream.id).insert(entry);
+				entry = { id: stream._id, createdAt: stream.created_at };
+				await r.table('streams').insert(entry);
 			}
 
 			if ((nuevo || entry.createdAt !== stream.created_at) && stream.game === 'Sea of Thieves') {
-				if (!nuevo) await r.table('streams').get(stream.id).update({ createdAt: stream.created_at });
+				if (!nuevo) await r.table('streams').get(stream._id).update({ createdAt: stream.created_at });
 				const streamerProfile = streamers.find(streamer => streamer.nombreCuentaTwitch === stream.channel.display_name);
 				const imagen = streamerProfile ? await guild.members.fetch(streamerProfile.id)
 					.then(member => member.user.displayAvatarURL())
 					.catch(() => undefined) : undefined;
+        
 				await canal.send(`¡Arrr piratas!,${stream.channel.display_name} está ahora en vivo en ${stream.channel.url} ¡ve a comprobarlo!\n\n[<@&457852874739679240>]`);
 				await canal.send(new MessageEmbed()
 					.setAuthor(stream.channel.display_name, imagen)
