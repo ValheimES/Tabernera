@@ -1,0 +1,42 @@
+{
+	"owner": {
+		"type": "user",
+		"default": [],
+		"min": null,
+		"max": null,
+		"array": true,
+		"configurable": true
+	},
+	"members": {
+		"type": "user",
+		"default": [],
+		"min": null,
+		"max": null,
+		"array": true,
+		"configurable": true
+	},
+	"guests": {
+		"type": "user",
+		"default": [],
+		"min": null,
+		"max": null,
+		"array": true,
+		"configurable": true
+	},
+	"role": {
+		"type": "role",
+		"default": null,
+		"min": null,
+		"max": null,
+		"array": false,
+		"configurable": false
+    },
+    "guild": {
+        "type": "guild",
+        "default": null,
+        "min": null,
+        "max": null,
+        "array": false,
+        "configurable": false
+	}
+}

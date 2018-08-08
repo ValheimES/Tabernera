@@ -79,7 +79,7 @@
 			"default": null,
 			"min": null,
 			"max": null,
-			"configurable": true
+			"configurable": false
 		}
 	},
 	"roles": {

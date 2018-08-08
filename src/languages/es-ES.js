@@ -140,9 +140,9 @@ module.exports = class extends Language {
 			COMMAND_CONF_GET: (key, value) => `El valor para la clave **${key}** es: \`${value}\``,
 			COMMAND_CONF_RESET: (key, response) => `El valor para la clave **${key}** ha sido restaurada a: \`${response}\``,
 			COMMAND_CONF_SERVER_DESCRIPTION: 'Define la configuración por servidor.',
-			COMMAND_CONF_SERVER: (key, list) => `**Configuración del servidor${key}**\n${list}`,
+			COMMAND_CONF_SERVER: (key, list) => `**Configuración del servidor ${key}**\n${list}`,
 			COMMAND_CONF_USER_DESCRIPTION: 'Define la configuración por usuario.',
-			COMMAND_CONF_USER: (key, list) => `**Configuración del usuario${key}**\n${list}`,
+			COMMAND_CONF_USER: (key, list) => `**Configuración del usuario ${key}**\n${list}`,
 			COMMAND_STATS: (memUsage, uptime, users, servers, channels, klasaVersion, discordVersion, processVersion, msg) => [
 				'= STATISTICS =',
 				'',

@@ -9,7 +9,7 @@ Client.defaultPermissionLevels
 	.add(9, (_, msg) => ['242043489611808769', '207164528222404608'].includes(msg.author.id), { break: true })
 	.add(10, (_, msg) => msg.author.id === '242043489611808769', { break: false });
 
-new Client({
+const client = new Client({
 	commandEditing: true,
 	commandMessageLifetime: 120,
 	disabledCorePieces: ['commands'],
@@ -21,4 +21,49 @@ new Client({
 	customPromptDefaults: { quotedStringSupport: true, limit: 5 },
 	providers: { default: 'rethinkdb', rethinkdb: config.rethinkdb },
 	typing: true
-}).login(config.token);
+});
+
+client.gateways.register('crews', {
+	"owner": {
+		"type": "user",
+		"default": [],
+		"min": null,
+		"max": null,
+		"array": true,
+		"configurable": true
+	},
+	"members": {
+		"type": "user",
+		"default": [],
+		"min": null,
+		"max": null,
+		"array": true,
+		"configurable": true
+	},
+	"guests": {
+		"type": "user",
+		"default": [],
+		"min": null,
+		"max": null,
+		"array": true,
+		"configurable": true
+	},
+	"role": {
+		"type": "role",
+		"default": null,
+		"min": null,
+		"max": null,
+		"array": false,
+		"configurable": false
+    },
+    "guild": {
+        "type": "guild",
+        "default": null,
+        "min": null,
+        "max": null,
+        "array": false,
+        "configurable": false
+	}
+});
+
+client.login(config.token);
