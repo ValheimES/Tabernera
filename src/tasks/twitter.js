@@ -25,11 +25,11 @@ module.exports = class extends Task {
 		const usuarios = await r.table('twitter').run();
 		if (!usuarios.length) return false;
 
-		for (usuario of usuarios) {
+		for (const usuario of usuarios) {
 			// eslint-disable-next-line camelcase
 			const body = await app.get('statuses/user_timeline', { params: { screen_name: usuario.id } }).then(result => result);
 
-			for (post of body) {
+			for (const post of body) {
 				let entry = await r.table('tweets').get(post.id_str).run();
 				let nuevo = false;
 				if (!entry) {
@@ -40,7 +40,7 @@ module.exports = class extends Task {
 
 				if (nuevo || entry.createdAt !== post.created_at) {
 					if (!nuevo) await r.table('tweets').get(post.id_str).update({ createdAt: post.created_at });
-					await canal.send(`<:twitter:406776059334492160> **TWEET RECIBIDO**\n\n[<@&406836360243052545>]\n\nhttps://twitter.com/statuses/${body[j].id_str}`);
+					await canal.send(`<:twitter:406776059334492160> **TWEET RECIBIDO**\n\n[<@&406836360243052545>]\n\nhttps://twitter.com/statuses/${post.id_str}`);
 				}
 			}
 		}
