@@ -17,7 +17,7 @@ module.exports = class extends Command {
 		});
 
 		this.createCustomResolver('twitter', (arg, possible, msg, [type]) => {
-			if (type !== 'añadir' && type !== 'quitar') return undefined;
+			if (type === 'lista') return undefined;
 			return this.client.arguments.get('string').run(arg, possible, msg);
 		});
 	}
@@ -32,7 +32,7 @@ module.exports = class extends Command {
 
 	async quitar(msg, [nombre]) {
 		const r = this.client.providers.default.db;
-		const name = r.table('twitter').get(nombre)('id').default(null);
+		const name = await r.table('twitter').get(nombre)('id').default(null);
 		if (!name) throw `No existe en la base de datos`;
 
 		await r.table('twitter').get(nombre)

@@ -1,6 +1,8 @@
 module.exports = {
 	token: '<TOKEN-GOES-HERE>',
 	ownerID: '<OWNER-USER-ID>',
+	consumerKey: '',
+	consumerSecret: '',
 	rethinkdb: {
 		db: '<DB-NAME>',
 		user: '<USER-NAME>',
