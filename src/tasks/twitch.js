@@ -30,23 +30,23 @@ module.exports = class extends Task {
 
 		for (const stream of body.streams) {
 			let entry = await r.table('streams').get(stream._id).run();
+			const streamerProfile = streamers.find(streamer => streamer.nombreCuentaTwitch === stream.channel.display_name);
+			const fecha = new Date();
 			let nuevo = false;
 			if (!entry) {
 				nuevo = true;
-				entry = { id: stream._id, createdAt: stream.created_at };
+				entry = { id: stream._id, createdAt: stream.created_at, dateMinutes: fecha.getMinutes() };
 				await r.table('streams').insert(entry);
 			}
 
-			if ((nuevo || entry.createdAt !== stream.created_at) && stream.game === 'Sea of Thieves') {
-				if (!nuevo) await r.table('streams').get(stream._id).update({ createdAt: stream.created_at });
-				const streamerProfile = streamers.find(streamer => streamer.nombreCuentaTwitch === stream.channel.display_name);
+			if ((nuevo || entry.createdAt !== stream.created_at) && stream.game === 'Sea of Thieves' && (streamerProfile.dateMinutes >= fecha.getMinutes() ? (streamerProfile.dateMinutes - 10) >= fecha.getMinutes() : (60 - streamerProfile.dateMinutes) + fecha.getMinutes() >= 10)) {
+				if (!nuevo) await r.table('streams').get(stream._id).update({ createdAt: stream.created_at, dateMinutes: fecha.getMinutes() });
 				const imagen = streamerProfile ? await guild.members.fetch(streamerProfile.id)
 					.then(member => member.user.displayAvatarURL())
 					.catch(() => undefined) : undefined;
-
-				await canal.send(`¡Arrr piratas!, ${stream.channel.display_name} está ahora en vivo en ${stream.channel.url} ¡ve a comprobarlo!\n\n[<@&457852874739679240>]`, new MessageEmbed()
-					.setAuthor(stream.channel.display_name, imagen)
+				await canal.send(`¡Arrr piratas!, ${stream.channel.display_name} está ahora en vivo en ${stream.channel.url} ¡ve a comprobarlo!`, new MessageEmbed()
 					.setTitle(stream.channel.status)
+					.setAuthor(stream.channel.display_name, imagen)
 					.setURL(stream.channel.url)
 					.setThumbnail(stream.channel.logo)
 					.setImage(stream.preview.large)
