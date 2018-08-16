@@ -35,12 +35,13 @@ module.exports = class extends Task {
 			let nuevo = false;
 			if (!entry) {
 				nuevo = true;
-				entry = { id: stream._id, createdAt: stream.created_at, dateMinutes: fecha.getMinutes() };
+				entry = { id: stream._id, createdAt: stream.created_at };
 				await r.table('streams').insert(entry);
 			}
 
-			if ((nuevo || entry.createdAt !== stream.created_at) && stream.game === 'Sea of Thieves' && (streamerProfile.dateMinutes >= fecha.getMinutes() ? (streamerProfile.dateMinutes - 10) >= fecha.getMinutes() : (60 - streamerProfile.dateMinutes) + fecha.getMinutes() >= 10)) {
-				if (!nuevo) await r.table('streams').get(stream._id).update({ createdAt: stream.created_at, dateMinutes: fecha.getMinutes() });
+			if ((nuevo || entry.createdAt !== stream.created_at) && stream.game === 'Sea of Thieves' && (streamerProfile.dateMinutes >= fecha.getMinutes() ? (streamerProfile.dateMinutes - 10) >= fecha.getMinutes() : (60 - streamerProfile.dateMinutes) + fecha.getMinutes() >= 10 || !streamerProfile.dateMinutes)) {
+				await r.table('streamers').get(streamerProfile.id).update({ dateMinutes: fecha.getMinutes() });
+				if (!nuevo) await r.table('streams').get(stream._id).update({ createdAt: stream.created_at });
 				const imagen = streamerProfile ? await guild.members.fetch(streamerProfile.id)
 					.then(member => member.user.displayAvatarURL())
 					.catch(() => undefined) : undefined;
