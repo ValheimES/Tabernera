@@ -1,25 +1,24 @@
-const { Command, util: { codeBlock, isFunction } } = require('../../../index');
+const { Command, util: { codeBlock, isFunction } } = require('klasa');
+const { constants: { EMOJIS: { TABERNERA, JARRA, LORO } } } = require('../../../index');
 
-const tabernera = '<:tabernera:406895006004281345>', jarra = '<:jarra:406906694766034947>', loro = '<:loro:375838594570649600>';
 const easterEgg = [
-	`${jarra} Sí, claramente necesitas ayuda.\nhttp://gph.is/16XYtwG`,
-	`${jarra} ¿En serio acabas de poner +ayuda ayuda?`,
-	`${jarra} Alguien ha tenido un día duro.\nhttp://gph.is/1bz7LSn`,
-	`**Contraseña incorrecta.**\nHas llegado al sótano secreto de GamedevES. Aquí es donde jugamos a las cartas con parches de pirata.\nDesgraciadamente no puedes pasar. ${loro}`,
-	`¿Y quién creó al creador?...\n¿Y quién creó al creador que creó al creador?...\n¿Y quién creó al creador que creó al creador que creó al creador?... ${jarra}`,
-	`${jarra} Error. Has creado un bucle espacio-temporal.\nhttp://gph.is/1NnJLmb`,
-	`${jarra} Te puedo ayudar una vez pero si son dos veces, merezco propina.`
+	`${JARRA} Sí, claramente necesitas ayuda.\nhttp://gph.is/16XYtwG`,
+	`${JARRA} ¿En serio acabas de poner +ayuda ayuda?`,
+	`${JARRA} Alguien ha tenido un día duro.\nhttp://gph.is/1bz7LSn`,
+	`**Contraseña incorrecta.**\nHas llegado al sótano secreto de GamedevES. Aquí es donde jugamos a las cartas con parches de pirata.\nDesgraciadamente no puedes pasar. ${LORO}`,
+	`¿Y quién creó al creador?...\n¿Y quién creó al creador que creó al creador?...\n¿Y quién creó al creador que creó al creador que creó al creador?... ${JARRA}`,
+	`${JARRA} Error. Has creado un bucle espacio-temporal.\nhttp://gph.is/1NnJLmb`,
+	`${JARRA} Te puedo ayudar una vez pero si son dos veces, merezco propina.`
 ];
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['comandos'],
 			description: 'Enseña la ayuda de un comando.',
 			usage: '[Command:cmd]',
-			extendedHelp: '+ayuda encuesta',
-			comando: '+ayuda [comando]'
+			extendedHelp: '+ayuda encuesta'
 		});
 	}
 
@@ -28,9 +27,9 @@ module.exports = class extends Command {
 			if (cmd.name === 'ayuda') return msg.sendMessage(`${codeBlock('fix', 'AYUDA: 2. SISTEMA — ¿AYUDA?')}\n${easterEgg[Math.floor((Math.random() * easterEgg.length) + 1)]}`);
 			return msg.sendMessage([
 				codeBlock('fix', `AYUDA: ${this.findCategory(cmd.category)}. ${cmd.category.toUpperCase()} — ${cmd.name.toUpperCase()}\n`),
-				`${tabernera} **Comando:** \`\`${cmd.comando}\`\``,
-				`${tabernera} **Descripción:** ${isFunction(cmd.description) ? cmd.description(msg) : cmd.description}`,
-				`${tabernera} **Ejemplo de uso:** _${isFunction(cmd.extendedHelp) ? cmd.extendedHelp(msg) : cmd.extendedHelp}_`,
+				`${TABERNERA} **Comando:** \`\`${cmd.comando}\`\``,
+				`${TABERNERA} **Descripción:** ${isFunction(cmd.description) ? cmd.description(msg) : cmd.description}`,
+				`${TABERNERA} **Ejemplo de uso:** _${isFunction(cmd.extendedHelp) ? cmd.extendedHelp(msg) : cmd.extendedHelp}_`,
 				cmd.admins ? `\n${codeBlock('md', '* Función reservada sólo para administradores')}` : ''
 			].join('\n'));
 		}
