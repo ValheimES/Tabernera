@@ -12,7 +12,8 @@ module.exports = class extends Command {
 			description: 'Permite administrar tripulaciones.',
 			usage: '<listar|detalles|reclutar|expulsar|abandonar|establecer|crear|moderar|borrar> (pirata:pirata) (tripulacion:tripulacion) [...]',
 			usageDelim: '|',
-			extendedHelp: ['',
+			extendedHelp: [
+				'',
 				'+tripulacion listar: Muestra un listado con todas las tripulaciones',
 				'+tripulacion detalles | <nombre de tripulación>: Muestra una ficha con información detallada sobre una tripulación',
 				'+tripulacion reclutar | <pirata>: Invita a un pirata a tu tripulación [sólo para capitanes]',
