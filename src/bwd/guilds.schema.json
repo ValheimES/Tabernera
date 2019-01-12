@@ -157,6 +157,89 @@
 			"configurable": true
 		}
 	},
+	"crews": {
+		"type": "Folder",
+		"roleColor": {
+			"type": "integer",
+			"array": false,
+			"default": 0,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"roleBelow": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"channelParentText": {
+			"type": "categorychannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"channelParentVoice": {
+			"type": "categorychannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"channelKickedVoice": {
+			"type": "voicechannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"invitationExpirationSeconds": {
+			"type": "integer",
+			"array": false,
+			"default": 300,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"emojiCrewDetail": {
+			"type": "string",
+			"array": false,
+			"default": "",
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"emojiAccept": {
+			"type": "string",
+			"array": false,
+			"default": "👍",
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"emojiReject": {
+			"type": "string",
+			"array": false,
+			"default": "👎",
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"channelReportAdmin": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		}
+	},
 	"disabledCommands": {
 		"type": "command",
 		"array": true,
