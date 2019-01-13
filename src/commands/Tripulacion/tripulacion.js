@@ -22,8 +22,8 @@ module.exports = class extends Command {
 				'+tripulacion establecer | <logo|historia|imagen> | <texto>: Solicita cambios en la ficha de tripulación [sólo para capitanes]',
 				'+tripulacion crear | <pirata> | <nombre de tripulación>: Crea una tripulación al mando del capitán pirata seleccionado [sólo para administradores]',
 				'+tripulacion moderar | [nombre de tripulación]: Revisa cambios en las fichas de tripulación [sólo para administradores]',
-				'+tripulacion borrar | <nombre de tripulación>: Borra a una tripulación y expulsa a sus miembros [sólo para administradores]',
-			].join("\n"),
+				'+tripulacion borrar | <nombre de tripulación>: Borra a una tripulación y expulsa a sus miembros [sólo para administradores]'
+			].join('\n'),
 			comando: '+tripulacion <listar|detalles|reclutar|expulsar|abandonar|establecer|crear|moderar|borrar> | (argumentos)'
 		});
 
@@ -32,16 +32,17 @@ module.exports = class extends Command {
 				if (['listar', 'abandonar'].includes(type)) return undefined;
 
 				if (['detalles', 'borrar'].includes(type)) {
-					const customPossible = new Possible([undefined, "nombre de tripulación", "string", 1]);
+					const customPossible = new Possible([undefined, 'nombre de tripulación', 'string', 1]);
 					if (!arg) arg = '';
 
 					return this.client.arguments.get('string').run(arg, customPossible, msg);
 				}
 
 				if (['moderar'].includes(type)) {
-					if (!arg) return undefined; // Without args, show a list of pending requests
+					// Without args, shows a list of pending requests
+					if (!arg) return undefined;
 
-					const customPossible = new Possible([undefined, "nombre de tripulación", "string", 1]);
+					const customPossible = new Possible([undefined, 'nombre de tripulación', 'string', 1]);
 					return this.client.arguments.get('string').run(arg, customPossible, msg);
 				}
 
@@ -50,7 +51,7 @@ module.exports = class extends Command {
 
 					arg = arg.toLowerCase();
 					if (!['logo', 'historia', 'imagen'].includes(arg))
-						throw "Debes elegir una de estas opciones: (logo, historia, imagen)";
+						throw 'Debes elegir una de estas opciones: (logo, historia, imagen)';
 
 					return arg;
 				}
@@ -59,14 +60,14 @@ module.exports = class extends Command {
 			})
 			.createCustomResolver('tripulacion', (arg, possible, msg, [type]) => {
 				if (['crear'].includes(type)) {
-					const customPossible = new Possible([undefined, "nombre de tripulación", "string", 1]);
+					const customPossible = new Possible([undefined, 'nombre de tripulación', 'string', 1]);
 					if (!arg) arg = '';
 
 					return this.client.arguments.get('string').run(arg, customPossible, msg);
 				}
 
 				if (['establecer'].includes(type)) {
-					const customPossible = new Possible([undefined, "texto", "string", 1]);
+					const customPossible = new Possible([undefined, 'texto', 'string', 1]);
 					if (!arg) arg = '';
 
 					return this.client.arguments.get('string').run(arg, customPossible, msg);
@@ -76,9 +77,9 @@ module.exports = class extends Command {
 			});
 	}
 
-	async listar(msg, []) {
+	async listar(msg) {
 		// Gather general crew config vars
-		const crews = this.client.gateways.crews;
+		const { crews } = this.client.gateways;
 		await crews.sync();
 
 		// Get sorted list of crews
@@ -86,12 +87,12 @@ module.exports = class extends Command {
 
 		// Early out if there aren't crews
 		if (sortedList.size <= 0)
-			throw "¡Yarr! Aún no hay ninguna tripulación mítica por estos mares...";
+			throw '¡Yarr! Aún no hay ninguna tripulación mítica por estos mares...';
 
 		const embed = new MessageEmbed()
 			.setTitle('⚓ TRIPULACIONES MÍTICAS')
 			.setColor(0x2b9d98)
-			.setThumbnail("https://i.imgur.com/gVs4OQ5.png");
+			.setThumbnail('https://i.imgur.com/gVs4OQ5.png');
 		sortedList.forEach(crew => embed.addField(crew.id, this.generateCrewShort(crew)));
 
 		return msg.sendEmbed(embed);
@@ -107,7 +108,7 @@ module.exports = class extends Command {
 			['filibustero', 'filibusteros', 'odioso'],
 			['lobo de mar', 'lobos de mar', 'renombrado'],
 			['marinero', 'marineros', 'sanguinario'],
-			['pirata', 'piratas', 'sucio'],
+			['pirata', 'piratas', 'sucio']
 		];
 
 		const ownerConstant = SnowflakeUtil.deconstruct(crew.owner).timestamp;
@@ -116,30 +117,27 @@ module.exports = class extends Command {
 		let companionsIndex = Math.trunc(ownerConstant / 8) % 8;
 		const adjectiveIndex = Math.trunc(ownerConstant / 64) % 8;
 
-		if (companionsIndex == captainIndex)
-			companionsIndex = (companionsIndex + 1) % companionsFunnyNames.length;
+		if (companionsIndex === captainIndex)
+			companionsIndex = (companionsIndex + 1) % funnyNames.length;
 
 		const numCompanions = crew.members.length;
-		if (numCompanions == 1) {
+		if (numCompanions === 1)
 			return `del ${funnyNames[adjectiveIndex][2]} ${funnyNames[captainIndex][0]} <@${crew.owner}>`;
-		}
-		else if(numCompanions == 2) {
+		else if (numCompanions === 2)
 			return `del ${funnyNames[adjectiveIndex][2]} ${funnyNames[captainIndex][0]} <@${crew.owner}> y otro ${funnyNames[companionsIndex][0]}`;
-		}
-		else {
+		else
 			return `del ${funnyNames[adjectiveIndex][2]} ${funnyNames[captainIndex][0]} <@${crew.owner}> y ${numCompanions - 1} ${funnyNames[companionsIndex][1]} más`;
-		}
 	}
 
 	async detalles(msg, [crewName]) {
 		// Gather general crew config vars
-		const crews = this.client.gateways.crews;
+		const { crews } = this.client.gateways;
 		await crews.sync();
 
 		// Make sure the crew exists
 		const crew = crews.get(crewName);
 		if (!crew)
-			throw "Mmmm... no recuerdo ninguna tripulación mítica con ese nombre... ¡Ah, sí! Son los que fueron a buscar pollos a Paradise Spring y se perdieron, ¿no?";
+			throw 'Mmmm... no recuerdo ninguna tripulación mítica con ese nombre... ¡Ah, sí! Son los que fueron a buscar pollos a Paradise Spring y se perdieron, ¿no?';
 
 		// Generate crew details
 		const embed = this.generateCrewDetails(msg.guild, crew, false);
@@ -152,11 +150,11 @@ module.exports = class extends Command {
 
 		let { crewDescription, crewLogo, crewImage } = crew;
 		if (!crewDescription)
-			crewDescription = "Es una tripulación misteriosa de la que se conoce poco más que la desagradable halitosis de su capitán.";
+			crewDescription = 'Es una tripulación misteriosa de la que se conoce poco más que la desagradable halitosis de su capitán.';
 		if (!crewLogo)
-			crewLogo = "https://i.imgur.com/INxHGkP.png";
+			crewLogo = 'https://i.imgur.com/INxHGkP.png';
 		if (!crewImage)
-			crewImage = "https://i.imgur.com/qS3B18t.jpg";
+			crewImage = 'https://i.imgur.com/qS3B18t.jpg';
 
 		if (usePendingData) {
 			if (crew.pendingCrewImage)
@@ -169,11 +167,11 @@ module.exports = class extends Command {
 
 		const embed = new MessageEmbed()
 			.setTitle(`${emojiCrewDetail} Ficha de ${crew.id}`)
-			.setDescription("Si quieres unirte a esta tripulación contacta con su capitán.")
+			.setDescription('Si quieres unirte a esta tripulación contacta con su capitán.')
 			.setThumbnail(crewLogo)
-			.addField("Miembros", crew.members.map(memberID => `- <@${memberID}>${memberID === captain.id ? " 👑" : ""}`).join("\n"))
-			.addField("Historia", crewDescription)
-			.addField("Foto del grupo", "📸")
+			.addField('Miembros', crew.members.map(memberID => `- <@${memberID}>${memberID === captain.id ? ' 👑' : ''}`).join('\n'))
+			.addField('Historia', crewDescription)
+			.addField('Foto del grupo', '📸')
 			.setImage(crewImage)
 			.setFooter(`Capitán de la tripulación: ${captain.displayName}`, captain.user.displayAvatarURL())
 		;
@@ -183,7 +181,7 @@ module.exports = class extends Command {
 	async reclutar(msg, [member]) {
 		// Gather general crew config vars
 		const { invitationExpirationSeconds, emojiAccept, emojiReject } = msg.guild.configs.crews;
-		const crews = this.client.gateways.crews;
+		const { crews } = this.client.gateways;
 		await crews.sync();
 
 		// Get user's crew and make sure they're a crew captain
@@ -204,16 +202,18 @@ module.exports = class extends Command {
 
 		// Send invitation
 		const message = await msg.sendMessage(`¡Ojo al parche, ${member}! ¡${msg.author} quiere que te unas a su tripulación, <@&${userCrew.role}>! ¿Aceptas?`);
-		const reactionAccept = emojiAccept ? emojiAccept : '👍';
-		const reactionReject = emojiReject ? emojiReject : '👎';
+
+		const reactionAccept = emojiAccept || '👍';
+		const reactionReject = emojiReject || '👎';
 		const validReactions = [reactionAccept, reactionReject];
+
 		await message.react(reactionAccept);
 		await message.react(reactionReject);
 
 		// Wait for a response
 		const reacts = await message.awaitReactions(
 			(reaction, user) => member.user.id === user.id && (validReactions.includes(reaction.emoji.id) || validReactions.includes(reaction.emoji.name)),
-			{ max: 1, time: (invitationExpirationSeconds ? invitationExpirationSeconds : 300) * 1000 });
+			{ max: 1, time: (invitationExpirationSeconds || 300) * 1000 });
 
 		// Delete invitation
 		message.delete();
@@ -229,7 +229,8 @@ module.exports = class extends Command {
 		await crews.sync();
 		const joinedCrew = crews.cache.find(crew => crew.members.includes(member.id));
 		if (joinedCrew) {
-			if (joinedCrew.role === userCrew.role) return; // Don't show any message if the crew the target has already joined is ours
+			if (joinedCrew.role === userCrew.role)
+				return msg.channel.send(`¡Vaya, vaya! Capitán ${msg.author}, ${member} ha intentado alistarse otra vez a tu tripulación. ¡Éste quería cobrar el doble de botín!`);
 			return msg.channel.send(`¡Alto ahí! Capitán ${msg.author}, ${member} se había unido a escondidas a <@&${joinedCrew.role}>. ¡Qué pillastre!`);
 		}
 
@@ -244,7 +245,7 @@ module.exports = class extends Command {
 	async expulsar(msg, [member]) {
 		// Gather general crew config vars
 		const { channelKickedVoice } = msg.guild.configs.crews;
-		const crews = this.client.gateways.crews;
+		const { crews } = this.client.gateways;
 		await crews.sync();
 
 		// Get user's crew and make sure they're a crew captain
@@ -271,10 +272,10 @@ module.exports = class extends Command {
 		return msg.sendMessage(`¡Por las barbas de Merrick, ${member} ha sido expulsado de <@&${userCrew.role}>! No te preocupes, ¡la próxima ronda es gratis! ¡Quédate en mi taberna bebiendo grog del bueno hasta que otro te recoja en su barco!`);
 	}
 
-	async abandonar(msg, []) {
+	async abandonar(msg) {
 		// Gather general crew config vars
 		const { channelKickedVoice } = msg.guild.configs.crews;
-		const crews = this.client.gateways.crews;
+		const { crews } = this.client.gateways;
 		await crews.sync();
 
 		// Get user's crew and make sure they're part of a crew
@@ -302,7 +303,7 @@ module.exports = class extends Command {
 	async establecer(msg, [option, text]) {
 		// Gather general crew config vars
 		const { channelReportAdmin } = msg.guild.configs.crews;
-		const crews = this.client.gateways.crews;
+		const { crews } = this.client.gateways;
 		await crews.sync();
 
 		// Get user's crew and make sure they're a crew captain
@@ -322,19 +323,19 @@ module.exports = class extends Command {
 		if (crew._syncStatus) await crew._syncStatus;
 		switch (option) {
 			case 'logo':
-			await crew.update('pendingCrewLogo', text);
-			break;
+				await crew.update('pendingCrewLogo', text);
+				break;
 
 			case 'historia':
-			await crew.update('pendingCrewDescription', text);
-			break;
+				await crew.update('pendingCrewDescription', text);
+				break;
 
 			case 'imagen':
-			await crew.update('pendingCrewImage', text);
-			break;
+				await crew.update('pendingCrewImage', text);
+				break;
 
 			default:
-			throw '¡Diantres! ¡No entiendo la opción que has elegido!';
+				throw '¡Diantres! ¡No entiendo la opción que has elegido!';
 		}
 
 		// Report at admin channel
@@ -354,7 +355,7 @@ module.exports = class extends Command {
 
 		// Gather general crew config vars
 		const { roleColor, roleBelow: roleBelowID, channelParentText, channelParentVoice } = msg.guild.configs.crews;
-		const crews = this.client.gateways.crews;
+		const { crews } = this.client.gateways;
 		await crews.sync();
 
 		// Check whether the crew already exists
@@ -368,15 +369,17 @@ module.exports = class extends Command {
 
 		// Create crew role and assign it to the player
 		const roleBelow = msg.guild.roles.get(roleBelowID);
-		const newRolePosition = roleBelow ? (roleBelow.position + 1) : 1;
+		const newRolePosition = (roleBelow ? roleBelow.position : 0) + 1;
 
-		const role = await msg.guild.roles.create({ data: {
-			name: crewName,
-			color: roleColor,
-			position: newRolePosition,
-			hoist: true,
-			mentionable: true
-		}});
+		const role = await msg.guild.roles.create({
+			data: {
+				name: crewName,
+				color: roleColor,
+				position: newRolePosition,
+				hoist: true,
+				mentionable: true
+			}
+		});
 
 		await member.roles.add(role);
 
@@ -415,7 +418,7 @@ module.exports = class extends Command {
 
 		// Gather general crew config vars
 		const { channelReportAdmin, emojiAccept, emojiReject } = msg.guild.configs.crews;
-		const crews = this.client.gateways.crews;
+		const { crews } = this.client.gateways;
 		await crews.sync();
 
 		// Confirm there's an admin channel for interaction
@@ -430,21 +433,21 @@ module.exports = class extends Command {
 
 			// Early out if there aren't crews with pending changes
 			if (pendingCrews.size <= 0)
-				throw "¡Salud! No hay cambios pendientes de revisar...";
+				throw '¡Salud! No hay cambios pendientes de revisar...';
 
 			const embed = new MessageEmbed()
 				.setTitle('⚓ TRIPULACIONES MÍTICAS - CAMBIOS PENDIENTES')
 				.setColor(0x2b9d98)
-				.setThumbnail("https://i.imgur.com/gVs4OQ5.png");
+				.setThumbnail('https://i.imgur.com/gVs4OQ5.png');
 
 			pendingCrews.forEach(crew => {
 				let pending = [];
-				if (crew.pendingCrewLogo) pending.push("Logo");
-				if (crew.pendingCrewDescription) pending.push("Historia");
-				if (crew.pendingCrewImage) pending.push("Imagen");
-				pending = pending.join(" + ");
+				if (crew.pendingCrewLogo) pending.push('Logo');
+				if (crew.pendingCrewDescription) pending.push('Historia');
+				if (crew.pendingCrewImage) pending.push('Imagen');
+				pending = pending.join(' + ');
 
-				embed.addField(crew.id, pending)
+				embed.addField(crew.id, pending);
 			});
 
 			if (reportChannel !== msg.channel) {
@@ -460,10 +463,10 @@ module.exports = class extends Command {
 		// Make sure the crew exists and has pending changes
 		const crew = crews.get(crewName);
 		if (!crew)
-			throw "¡Argh! Deje el grog, señor, pues no existe ninguna tripulación con tal nombre.";
+			throw '¡Argh! Deje el grog, señor, pues no existe ninguna tripulación con tal nombre.';
 
 		if (!crew.pendingCrewLogo && !crew.pendingCrewDescription && !crew.pendingCrewImage)
-			throw "Esa tripulación no tiene cambios pendientes de aprobación, señor.";
+			throw 'Esa tripulación no tiene cambios pendientes de aprobación, señor.';
 
 		// Generate crew details
 		if (reportChannel !== msg.channel) {
@@ -476,98 +479,96 @@ module.exports = class extends Command {
 		await reportChannel.sendEmbed(embed);
 
 		// Ask interactive responses
-		const reactionAccept = emojiAccept ? emojiAccept : '👍';
-		const reactionReject = emojiReject ? emojiReject : '👎';
+		const reactionAccept = emojiAccept || '👍';
+		const reactionReject = emojiReject || '👎';
 		const validReactions = [reactionAccept, reactionReject];
 
 		const crewChannel = crew.channelText ? msg.guild.channels.find(channel => channel.id === crew.channelText) : undefined;
 
-		if(crew.pendingCrewLogo) {
-			const message = await reportChannel.sendMessage("¿Acepta el cambio de logo, señor?");
+		const promises = [];
+
+		if (crew.pendingCrewLogo) {
+			const message = await reportChannel.sendMessage('¿Acepta el cambio de logo, señor?');
 			await message.react(reactionAccept);
 			await message.react(reactionReject);
 
-			message.awaitReactions(
+			promises.push(message.awaitReactions(
 				(reaction, user) => msg.author.id === user.id && (validReactions.includes(reaction.emoji.id) || validReactions.includes(reaction.emoji.name)),
-				{ max: 1, time: (300) * 1000 })
-			.then(async (reacts) => {
-				if (reacts.has(reactionReject)) {
-					await crew.update("pendingCrewLogo", null);
-					message.edit("La solicitud de cambio de logo ha sido rechazada.");
-					message.reactions.removeAll();
-					if (crewChannel) crewChannel.sendMessage("La solicitud de cambio de logo ha sido rechazada.");
-				}
-				else if (!reacts.has(reactionAccept)) {
-					message.edit("La operación de moderación ha caducado.");
-					message.reactions.removeAll();
-				}
-				else {
-					await crew.update("crewLogo", crew.pendingCrewLogo);
-					await crew.update("pendingCrewLogo", null);
-					message.edit("La solicitud de cambio de logo ha sido aprobada.");
-					message.reactions.removeAll();
-					if (crewChannel) crewChannel.sendMessage("La solicitud de cambio de logo ha sido aprobada.");
-				}
-			});
+				{ max: 1, time: 300 * 1000 })
+				.then(async (reacts) => {
+					if (reacts.has(reactionReject)) {
+						await crew.update('pendingCrewLogo', null);
+						message.edit('La solicitud de cambio de logo ha sido rechazada.');
+						message.reactions.removeAll();
+						if (crewChannel) crewChannel.sendMessage('La solicitud de cambio de logo ha sido rechazada.');
+					} else if (!reacts.has(reactionAccept)) {
+						message.edit('La operación de moderación ha caducado.');
+						message.reactions.removeAll();
+					} else {
+						await crew.update('crewLogo', crew.pendingCrewLogo);
+						await crew.update('pendingCrewLogo', null);
+						message.edit('La solicitud de cambio de logo ha sido aprobada.');
+						message.reactions.removeAll();
+						if (crewChannel) crewChannel.sendMessage('La solicitud de cambio de logo ha sido aprobada.');
+					}
+				}));
 		}
 
-		if(crew.pendingCrewDescription) {
-			const message = await reportChannel.sendMessage("¿Acepta el cambio de historia, señor?");
+		if (crew.pendingCrewDescription) {
+			const message = await reportChannel.sendMessage('¿Acepta el cambio de historia, señor?');
 			await message.react(reactionAccept);
 			await message.react(reactionReject);
 
-			message.awaitReactions(
+			promises.push(message.awaitReactions(
 				(reaction, user) => msg.author.id === user.id && (validReactions.includes(reaction.emoji.id) || validReactions.includes(reaction.emoji.name)),
-				{ max: 1, time: (300) * 1000 })
-			.then(async (reacts) => {
-				if (reacts.has(reactionReject)) {
-					await crew.update("pendingCrewDescription", null);
-					message.edit("La solicitud de cambio de historia ha sido rechazada.");
-					message.reactions.removeAll();
-					if (crewChannel) crewChannel.sendMessage("La solicitud de cambio de historia ha sido rechazada.");
-				}
-				else if (!reacts.has(reactionAccept)) {
-					message.edit("La operación de moderación ha caducado.");
-					message.reactions.removeAll();
-				}
-				else {
-					await crew.update("crewDescription", crew.pendingCrewDescription);
-					await crew.update("pendingCrewDescription", null);
-					message.edit("La solicitud de cambio de historia ha sido aprobada.");
-					message.reactions.removeAll();
-					if (crewChannel) crewChannel.sendMessage("La solicitud de cambio de historia ha sido aprobada.");
-				}
-			});
+				{ max: 1, time: 300 * 1000 })
+				.then(async (reacts) => {
+					if (reacts.has(reactionReject)) {
+						await crew.update('pendingCrewDescription', null);
+						message.edit('La solicitud de cambio de historia ha sido rechazada.');
+						message.reactions.removeAll();
+						if (crewChannel) crewChannel.sendMessage('La solicitud de cambio de historia ha sido rechazada.');
+					} else if (!reacts.has(reactionAccept)) {
+						message.edit('La operación de moderación ha caducado.');
+						message.reactions.removeAll();
+					} else {
+						await crew.update('crewDescription', crew.pendingCrewDescription);
+						await crew.update('pendingCrewDescription', null);
+						message.edit('La solicitud de cambio de historia ha sido aprobada.');
+						message.reactions.removeAll();
+						if (crewChannel) crewChannel.sendMessage('La solicitud de cambio de historia ha sido aprobada.');
+					}
+				}));
 		}
 
-		if(crew.pendingCrewImage) {
-			const message = await reportChannel.sendMessage("¿Acepta el cambio de imagen, señor?");
+		if (crew.pendingCrewImage) {
+			const message = await reportChannel.sendMessage('¿Acepta el cambio de imagen, señor?');
 			await message.react(reactionAccept);
 			await message.react(reactionReject);
 
-			message.awaitReactions(
+			promises.push(message.awaitReactions(
 				(reaction, user) => msg.author.id === user.id && (validReactions.includes(reaction.emoji.id) || validReactions.includes(reaction.emoji.name)),
-				{ max: 1, time: (300) * 1000 })
-			.then(async (reacts) => {
-				if (reacts.has(reactionReject)) {
-					await crew.update("pendingCrewImage", null);
-					message.edit("La solicitud de cambio de imagen ha sido rechazada.");
-					message.reactions.removeAll();
-					if (crewChannel) crewChannel.sendMessage("La solicitud de cambio de imagen ha sido rechazada.");
-				}
-				else if (!reacts.has(reactionAccept)) {
-					message.edit("La operación de moderación ha caducado.");
-					message.reactions.removeAll();
-				}
-				else {
-					await crew.update("crewImage", crew.pendingCrewImage);
-					await crew.update("pendingCrewImage", null);
-					message.edit("La solicitud de cambio de imagen ha sido aprobada.");
-					message.reactions.removeAll();
-					if (crewChannel) crewChannel.sendMessage("La solicitud de cambio de imagen ha sido aprobada.");
-				}
-			});
+				{ max: 1, time: 300 * 1000 })
+				.then(async (reacts) => {
+					if (reacts.has(reactionReject)) {
+						await crew.update('pendingCrewImage', null);
+						message.edit('La solicitud de cambio de imagen ha sido rechazada.');
+						message.reactions.removeAll();
+						if (crewChannel) crewChannel.sendMessage('La solicitud de cambio de imagen ha sido rechazada.');
+					} else if (!reacts.has(reactionAccept)) {
+						message.edit('La operación de moderación ha caducado.');
+						message.reactions.removeAll();
+					} else {
+						await crew.update('crewImage', crew.pendingCrewImage);
+						await crew.update('pendingCrewImage', null);
+						message.edit('La solicitud de cambio de imagen ha sido aprobada.');
+						message.reactions.removeAll();
+						if (crewChannel) crewChannel.sendMessage('La solicitud de cambio de imagen ha sido aprobada.');
+					}
+				}));
 		}
+
+		return Promise.all(promises);
 	}
 
 	async borrar(msg, [crewName]) {
@@ -577,13 +578,13 @@ module.exports = class extends Command {
 			throw msg.language.get('INHIBITOR_PERMISSIONS');
 
 		// Gather general crew config vars
-		const crews = this.client.gateways.crews;
+		const { crews } = this.client.gateways;
 		await crews.sync();
 
 		// Make sure the crew exists
 		const crew = crews.get(crewName);
 		if (!crew)
-			throw "¡Argh! Deje el grog, señor, pues no existe ninguna tripulación con tal nombre.";
+			throw '¡Argh! Deje el grog, señor, pues no existe ninguna tripulación con tal nombre.';
 
 		// Delete channels and role
 		const textChannel = msg.guild.channels.get(crew.channelText);
@@ -603,4 +604,5 @@ module.exports = class extends Command {
 
 		return msg.sendMessage(`La tripulación de ${crewName} ha sido disuelta por orden del Señor de los Piratas, ¡esos indeseables serán pasados por la quilla!`);
 	}
+
 };
