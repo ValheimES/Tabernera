@@ -13,21 +13,18 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		const insider = msg.guild.roles.get(msg.guild.configs.roles.insider);
-		if (!insider) throw 'El rol de Insiders no está configurado o no existe.';
-
-		const verificado = msg.guild.roles.get(msg.guild.configs.roles.verificado);
-		if (!verificado) throw 'El rol de Verificado no está configurado o no existe.';
+		const usuario = msg.guild.roles.get(msg.guild.configs.roles.inicial[0]);
+		if (!usuario) throw 'El rol de Usuario no está configurado o no existe.';
 
 		let number = 0;
 		for (const member of msg.guild.members.values()) {
-			if (member.roles.has(insider.id) && !member.roles.has(verificado.id)) {
-				await member.roles.add(verificado);
+			if (!member.roles.has(usuario.id)) {
+				await member.roles.add(usuario);
 				number++;
 			}
 		}
 
-		return msg.sendMessage(`Operación completada, se ha añadido el rol ${verificado.name} a ${number} usuario${number !== 1 ? 's' : ''}.`);
+		return msg.sendMessage(`Operación completada, se ha añadido el rol ${usuario.name} a ${number} usuario${number !== 1 ? 's' : ''}.`);
 	}
 
 };
