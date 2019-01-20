@@ -1,50 +1,6 @@
 const { Command, Possible } = require('../../index');
 const { MessageEmbed, SnowflakeUtil } = require('discord.js');
-
-const EMBED_TITLE_LIST = '⚓ TRIPULACIONES MÍTICAS';
-const EMBED_COLOR_LIST = 0x2B9D98;
-const EMBED_THUMB_LIST = 'https://i.imgur.com/gVs4OQ5.png';
-
-const EMBED_TITLE_MODERATE = '⚓ TRIPULACIONES MÍTICAS - CAMBIOS PENDIENTES';
-const EMBED_COLOR_MODERATE = 0x2B9D98;
-const EMBED_THUMB_MODERATE = 'https://i.imgur.com/gVs4OQ5.png';
-
-const EMBED_COLOR_CREWDETAILS = 0x2B9D98;
-const EMBED_DEFAULT_LOGO_CREWDETAILS = 'https://i.imgur.com/INxHGkP.png';
-const EMBED_DEFAULT_IMAGE_CREWDETAILS = 'https://i.imgur.com/qS3B18t.jpg';
-
-const CREWSHORT_NAMES_SINGULAR = [
-	'bucanero',
-	'caballero de fortuna',
-	'corsario',
-	'criminal',
-	'filibustero',
-	'lobo de mar',
-	'marinero',
-	'pirata'
-];
-
-const CREWSHORT_NAMES_PLURAL = [
-	'bucaneros',
-	'caballeros de fortuna',
-	'corsarios',
-	'criminales',
-	'filibusteros',
-	'lobos de mar',
-	'marineros',
-	'piratas'
-];
-
-const CREWSHORT_ADJECTIVES = [
-	'alegre',
-	'experto',
-	'legendario',
-	'maestro',
-	'odioso',
-	'renombrado',
-	'sanguinario',
-	'sucio'
-];
+const CrewsConstants = require('../../lib/util/CrewsConstants.js');
 
 module.exports = class extends Command {
 
@@ -74,27 +30,18 @@ module.exports = class extends Command {
 
 		this
 			.createCustomResolver('pirata', (arg, possible, msg, [type]) => {
-				if (['listar', 'abandonar'].includes(type)) return undefined;
+				if (type === 'listar' || type === 'abandonar') return undefined;
 
-				if (['detalles', 'borrar'].includes(type)) {
+				if (type === 'detalles' || type === 'borrar') {
 					const customPossible = new Possible([undefined, 'nombre de tripulación', 'string', 1]);
-					if (!arg) arg = '';
-
-					return this.client.arguments.get('string').run(arg, customPossible, msg);
+					return this.client.arguments.get('string').run(arg || '', customPossible, msg);
 				}
 
-				if (['moderar'].includes(type)) {
-					// Without args, shows a list of pending requests
-					if (!arg) return undefined;
+				if (type === 'moderar')
+					return arg || undefined;
 
-					const customPossible = new Possible([undefined, 'nombre de tripulación', 'string', 1]);
-					return this.client.arguments.get('string').run(arg, customPossible, msg);
-				}
-
-				if (['establecer'].includes(type)) {
-					if (!arg) arg = '';
-
-					arg = arg.toLowerCase();
+				if (type === 'establecer') {
+					arg = (arg || '').toLowerCase();
 					if (!['logo', 'historia', 'imagen'].includes(arg))
 						throw 'Debes elegir una de estas opciones: (logo, historia, imagen)';
 
@@ -104,18 +51,14 @@ module.exports = class extends Command {
 				return this.client.arguments.get('member').run(arg, possible, msg);
 			})
 			.createCustomResolver('tripulacion', (arg, possible, msg, [type]) => {
-				if (['crear'].includes(type)) {
+				if (type === 'crear') {
 					const customPossible = new Possible([undefined, 'nombre de tripulación', 'string', 1]);
-					if (!arg) arg = '';
-
-					return this.client.arguments.get('string').run(arg, customPossible, msg);
+					return this.client.arguments.get('string').run(arg || '', customPossible, msg);
 				}
 
-				if (['establecer'].includes(type)) {
+				if (type === 'establecer') {
 					const customPossible = new Possible([undefined, 'texto', 'string', 1]);
-					if (!arg) arg = '';
-
-					return this.client.arguments.get('string').run(arg, customPossible, msg);
+					return this.client.arguments.get('string').run(arg || '', customPossible, msg);
 				}
 
 				return undefined;
@@ -123,10 +66,8 @@ module.exports = class extends Command {
 	}
 
 	async listar(msg) {
-		// Gather general crew config vars
-		const { crews } = this.client.gateways;
-
 		// Get sorted list of crews
+		const { crews } = this.client.gateways;
 		const sortedList = crews.cache.sort();
 
 		// Early out if there aren't crews
@@ -134,10 +75,11 @@ module.exports = class extends Command {
 			throw '¡Yarr! Aún no hay ninguna tripulación mítica por estos mares...';
 
 		const embed = new MessageEmbed()
-			.setTitle(EMBED_TITLE_LIST)
-			.setColor(EMBED_COLOR_LIST)
-			.setThumbnail(EMBED_THUMB_LIST);
-		sortedList.forEach(crew => embed.addField(crew.id, this.generateCrewShort(crew)));
+			.setTitle(CrewsConstants.EMBED_TITLE_LIST)
+			.setColor(CrewsConstants.EMBED_COLOR_LIST)
+			.setThumbnail(CrewsConstants.EMBED_THUMB_LIST);
+		for (const [crewID, crew] of sortedList)
+			embed.addField(crewID, this.generateCrewShort(crew));
 
 		return msg.sendEmbed(embed);
 	}
@@ -152,10 +94,10 @@ module.exports = class extends Command {
 		if (companionsIndex === captainIndex)
 			companionsIndex = (companionsIndex + 1) % 8;
 
-		const captainName = CREWSHORT_NAMES_SINGULAR[captainIndex];
-		const captainAdjective = CREWSHORT_ADJECTIVES[adjectiveIndex];
-		const companionsSingular = CREWSHORT_NAMES_SINGULAR[companionsIndex];
-		const companionsPlural = CREWSHORT_NAMES_PLURAL[companionsIndex];
+		const captainName = CrewsConstants.CREWSHORT_NAMES_SINGULAR[captainIndex];
+		const captainAdjective = CrewsConstants.CREWSHORT_ADJECTIVES[adjectiveIndex];
+		const companionsSingular = CrewsConstants.CREWSHORT_NAMES_SINGULAR[companionsIndex];
+		const companionsPlural = CrewsConstants.CREWSHORT_NAMES_PLURAL[companionsIndex];
 
 		const numCompanions = crew.members.length;
 		if (numCompanions === 1)
@@ -167,10 +109,8 @@ module.exports = class extends Command {
 	}
 
 	async detalles(msg, [crewName]) {
-		// Gather general crew config vars
-		const { crews } = this.client.gateways;
-
 		// Make sure the crew exists
+		const { crews } = this.client.gateways;
 		const crew = crews.get(crewName);
 		if (!crew)
 			throw 'Mmmm... no recuerdo ninguna tripulación mítica con ese nombre... ¡Ah, sí! Son los que fueron a buscar pollos a Paradise Spring y se perdieron, ¿no?';
@@ -181,16 +121,14 @@ module.exports = class extends Command {
 	}
 
 	generateCrewDetails(guild, crew, usePendingData) {
-		const { emojiCrewDetail } = guild.configs.crews;
-		const captain = guild.member(crew.owner);
-
 		let { crewDescription, crewLogo, crewImage } = crew;
+
 		if (!crewDescription)
 			crewDescription = 'Es una tripulación misteriosa de la que se conoce poco más que la desagradable halitosis de su capitán.';
 		if (!crewLogo)
-			crewLogo = EMBED_DEFAULT_LOGO_CREWDETAILS;
+			crewLogo = CrewsConstants.EMBED_DEFAULT_LOGO_CREWDETAILS;
 		if (!crewImage)
-			crewImage = EMBED_DEFAULT_IMAGE_CREWDETAILS;
+			crewImage = CrewsConstants.EMBED_DEFAULT_IMAGE_CREWDETAILS;
 
 		if (usePendingData) {
 			if (crew.pendingCrewImage)
@@ -201,9 +139,12 @@ module.exports = class extends Command {
 				crewDescription = crew.pendingCrewDescription;
 		}
 
+		const { emojiCrewDetail } = guild.configs.crews;
+		const captain = guild.member(crew.owner);
+
 		return new MessageEmbed()
 			.setTitle(`${emojiCrewDetail} Ficha de ${crew.id}`)
-			.setColor(EMBED_COLOR_CREWDETAILS)
+			.setColor(CrewsConstants.EMBED_COLOR_CREWDETAILS)
 			.setDescription('Si quieres unirte a esta tripulación contacta con su capitán.')
 			.setThumbnail(crewLogo)
 			.addField('Miembros', crew.members.map(memberID => `- <@${memberID}>${memberID === captain.id ? ' 👑' : ''}`).join('\n'))
@@ -214,11 +155,8 @@ module.exports = class extends Command {
 	}
 
 	async reclutar(msg, [member]) {
-		// Gather general crew config vars
-		const { invitationExpirationSeconds, emojiAccept, emojiReject } = msg.guild.configs.crews;
-		const { crews } = this.client.gateways;
-
 		// Get user's crew and make sure they're a crew captain
+		const { crews } = this.client.gateways;
 		const userCrew = crews.cache.find(crew => crew.owner === msg.author.id);
 		if (!userCrew)
 			throw '¡Impostor! ¡No eres capitán de ninguna tripulación!';
@@ -237,6 +175,7 @@ module.exports = class extends Command {
 		// Send invitation
 		const message = await msg.sendMessage(`¡Ojo al parche, ${member}! ¡${msg.author} quiere que te unas a su tripulación, ${userCrew.id}! ¿Aceptas?`);
 
+		const { invitationExpirationSeconds, emojiAccept, emojiReject } = msg.guild.configs.crews;
 		const reactionAccept = emojiAccept || '👍';
 		const reactionReject = emojiReject || '👎';
 		const validReactions = [reactionAccept, reactionReject];
@@ -276,11 +215,8 @@ module.exports = class extends Command {
 	}
 
 	async expulsar(msg, [member]) {
-		// Gather general crew config vars
-		const { channelKickedVoice } = msg.guild.configs.crews;
-		const { crews } = this.client.gateways;
-
 		// Get user's crew and make sure they're a crew captain
+		const { crews } = this.client.gateways;
 		const userCrew = crews.cache.find(crew => crew.owner === msg.author.id);
 		if (!userCrew)
 			throw '¡Impostor! ¡No eres capitán de ninguna tripulación!';
@@ -297,6 +233,7 @@ module.exports = class extends Command {
 		await crews.get(userCrew.id).update('members', member.user);
 
 		// If the target is connected to the crew's voice channel, kick them
+		const { channelKickedVoice } = msg.guild.configs.crews;
 		if (member.voiceChannel && member.voiceChannel.id === userCrew.channelVoice)
 			await member.setVoiceChannel(channelKickedVoice);
 
@@ -305,11 +242,8 @@ module.exports = class extends Command {
 	}
 
 	async abandonar(msg) {
-		// Gather general crew config vars
-		const { channelKickedVoice } = msg.guild.configs.crews;
-		const { crews } = this.client.gateways;
-
 		// Get user's crew and make sure they're part of a crew
+		const { crews } = this.client.gateways;
 		const userCrew = crews.cache.find(crew => crew.members.includes(msg.author.id));
 		if (!userCrew)
 			throw '¡Truhán! ¡No eres parte de ninguna tripulación!';
@@ -324,6 +258,7 @@ module.exports = class extends Command {
 		await crews.get(userCrew.id).update('members', member.user);
 
 		// If the user is connected to the crew's voice channel, kick them
+		const { channelKickedVoice } = msg.guild.configs.crews;
 		if (member.voiceChannel && member.voiceChannel.id === userCrew.channelVoice)
 			await member.setVoiceChannel(channelKickedVoice);
 
@@ -332,40 +267,33 @@ module.exports = class extends Command {
 	}
 
 	async establecer(msg, [option, text]) {
-		// Gather general crew config vars
-		const { channelReportAdmin } = msg.guild.configs.crews;
-		const { crews } = this.client.gateways;
-
 		// Get user's crew and make sure they're a crew captain
+		const { crews } = this.client.gateways;
 		const userCrew = crews.cache.find(crew => crew.owner === msg.author.id);
 		if (!userCrew)
 			throw '¡Impostor! ¡No eres capitán de ninguna tripulación!';
 
 		// Validate image URL if option is logo or image
-		if (['logo', 'imagen'].includes(option)) {
+		if (option === 'logo' || option === 'imagen') {
 			const imageURL = new URL(text);
 			if (!/\.(png|jpg|jpeg|gif|bmp|webp)$/.test(imageURL.pathname))
 				throw 'El texto introducido no parece un URL de imagen válido.';
 		}
 
 		// Store in DB
-		const crew = crews.get(userCrew.id, true);
-		if (crew._syncStatus) await crew._syncStatus;
-		switch (option) {
-			case 'logo':
-				await crew.update('pendingCrewLogo', text);
-				break;
-			case 'historia':
-				await crew.update('pendingCrewDescription', text);
-				break;
-			case 'imagen':
-				await crew.update('pendingCrewImage', text);
-				break;
-			default:
-				throw '¡Diantres! ¡No entiendo la opción que has elegido!';
-		}
+		const dbKeys = {
+			logo: 'pendingCrewLogo',
+			historia: 'pendingCrewDescription',
+			imagen: 'pendingCrewImage'
+		};
+		const crew = crews.get(userCrew.id);
+		if (option in dbKeys)
+			await crew.update(dbKeys[option], text);
+		else
+			throw '¡Diantres! ¡No entiendo la opción que has elegido!';
 
 		// Report at admin channel
+		const { channelReportAdmin } = msg.guild.configs.crews;
 		const reportChannel = channelReportAdmin ? msg.guild.channels.find(channel => channel.id === channelReportAdmin) : null;
 		if (reportChannel)
 			reportChannel.sendMessage(`[TRIPULACIONES] El capitán de ${crew.id} ha solicitado cambios en la ficha de tripulación que requieren aprobación.`);
@@ -380,11 +308,8 @@ module.exports = class extends Command {
 		if (!permission)
 			throw msg.language.get('INHIBITOR_PERMISSIONS');
 
-		// Gather general crew config vars
-		const { roleColor, roleBelow: roleBelowID, channelParentText, channelParentVoice } = msg.guild.configs.crews;
-		const { crews } = this.client.gateways;
-
 		// Check whether the crew already exists
+		const { crews } = this.client.gateways;
 		if (crews.cache.has(crewName))
 			throw `¡Argh! ¡Me parece haber visto esta tripulación antes en esta taberna! ¡Sea más original, señor!`;
 
@@ -394,9 +319,11 @@ module.exports = class extends Command {
 			throw `${member} ya es miembro de ${memberCrew.id}, ¡estar en tantas tripulaciones a la vez sería demasiada diversión!`;
 
 		// Create crew role and assign it to the player
+		const { roleBelow: roleBelowID } = msg.guild.configs.crews;
 		const roleBelow = msg.guild.roles.get(roleBelowID);
 		const newRolePosition = (roleBelow ? roleBelow.position : 0) + 1;
 
+		const { roleColor } = msg.guild.configs.crews;
 		const role = await msg.guild.roles.create({
 			data: {
 				name: crewName,
@@ -410,18 +337,20 @@ module.exports = class extends Command {
 		await member.roles.add(role);
 
 		// Create crew channels
-		const textChannel = await msg.guild.channels.create(crewName, {
-			type: 'text',
-			parent: channelParentText,
-			overwrites: [{ id: msg.guild.id, denied: ['VIEW_CHANNEL'] }, { id: role.id, allowed: ['VIEW_CHANNEL'] }]
-		});
-
-		const voiceChannel = await msg.guild.channels.create(crewName, {
-			type: 'voice',
-			parent: channelParentVoice,
-			userLimit: 10,
-			overwrites: [{ id: msg.guild.id, denied: ['CONNECT'] }, { id: role.id, allowed: ['CONNECT'] }]
-		});
+		const { channelParentText, channelParentVoice } = msg.guild.configs.crews;
+		const [textChannel, voiceChannel] = await Promise.all([
+			msg.guild.channels.create(crewName, {
+				type: 'text',
+				parent: channelParentText,
+				overwrites: [{ id: msg.guild.id, denied: ['VIEW_CHANNEL'] }, { id: role.id, allowed: ['VIEW_CHANNEL'] }]
+			}),
+			msg.guild.channels.create(crewName, {
+				type: 'voice',
+				parent: channelParentVoice,
+				userLimit: 10,
+				overwrites: [{ id: msg.guild.id, denied: ['CONNECT'] }, { id: role.id, allowed: ['CONNECT'] }]
+			})
+		]);
 
 		// Create the crew in the database, and store initial data
 		const crew = crews.get(crewName, true);
@@ -443,14 +372,13 @@ module.exports = class extends Command {
 		if (!permission)
 			throw msg.language.get('INHIBITOR_PERMISSIONS');
 
-		// Gather general crew config vars
-		const { channelReportAdmin, emojiAccept, emojiReject } = msg.guild.configs.crews;
-		const { crews } = this.client.gateways;
-
 		// Confirm there's an admin channel for interaction
+		const { channelReportAdmin } = msg.guild.configs.crews;
 		const reportChannel = channelReportAdmin ? msg.guild.channels.find(channel => channel.id === channelReportAdmin) : null;
 		if (!reportChannel)
 			throw '¡Maldición! ¿Por qué no crea un canal de administración donde podamos hablar en privado, señor?';
+
+		const { crews } = this.client.gateways;
 
 		// List mode
 		if (!crewName) {
@@ -462,18 +390,19 @@ module.exports = class extends Command {
 				throw '¡Salud! No hay cambios pendientes de revisar...';
 
 			const embed = new MessageEmbed()
-				.setTitle(EMBED_TITLE_MODERATE)
-				.setColor(EMBED_COLOR_MODERATE)
-				.setThumbnail(EMBED_THUMB_MODERATE);
+				.setTitle(CrewsConstants.EMBED_TITLE_MODERATE)
+				.setColor(CrewsConstants.EMBED_COLOR_MODERATE)
+				.setThumbnail(CrewsConstants.EMBED_THUMB_MODERATE);
 
-			pendingCrews.forEach(crew => {
+			for (const [crewID, crew] of pendingCrews) {
 				const pending = [];
+
 				if (crew.pendingCrewLogo) pending.push('Logo');
 				if (crew.pendingCrewDescription) pending.push('Historia');
 				if (crew.pendingCrewImage) pending.push('Imagen');
 
-				embed.addField(crew.id, pending.join(' + '));
-			});
+				embed.addField(crewID, pending.join(' + '));
+			}
 
 			if (reportChannel !== msg.channel) {
 				await msg.sendMessage(`Hablemos en privado, ${msg.author}.`);
@@ -504,6 +433,7 @@ module.exports = class extends Command {
 		await reportChannel.sendEmbed(embed);
 
 		// Ask interactive responses
+		const { emojiAccept, emojiReject } = msg.guild.configs.crews;
 		const reactionAccept = emojiAccept || '👍';
 		const reactionReject = emojiReject || '👎';
 		const validReactions = [reactionAccept, reactionReject];
@@ -559,10 +489,8 @@ module.exports = class extends Command {
 		if (!permission)
 			throw msg.language.get('INHIBITOR_PERMISSIONS');
 
-		// Gather general crew config vars
-		const { crews } = this.client.gateways;
-
 		// Make sure the crew exists
+		const { crews } = this.client.gateways;
 		const crew = crews.get(crewName);
 		if (!crew)
 			throw '¡Argh! Deje el grog, señor, pues no existe ninguna tripulación con tal nombre.';
