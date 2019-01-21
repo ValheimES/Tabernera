@@ -5,7 +5,7 @@
 		"min": null,
 		"max": null,
 		"array": false,
-		"configurable": true
+		"configurable": false
 	},
 	"members": {
 		"type": "user",
@@ -13,10 +13,74 @@
 		"min": null,
 		"max": null,
 		"array": true,
-		"configurable": true
+		"configurable": false
 	},
 	"role": {
 		"type": "role",
+		"default": null,
+		"min": null,
+		"max": null,
+		"array": false,
+		"configurable": false
+	},
+	"channelText": {
+		"type": "textchannel",
+		"default": null,
+		"min": null,
+		"max": null,
+		"array": false,
+		"configurable": false
+	},
+	"channelVoice": {
+		"type": "voicechannel",
+		"default": null,
+		"min": null,
+		"max": null,
+		"array": false,
+		"configurable": false
+	},
+	"crewDescription": {
+		"type": "string",
+		"default": null,
+		"min": null,
+		"max": null,
+		"array": false,
+		"configurable": false
+	},
+	"crewLogo": {
+		"type": "url",
+		"default": null,
+		"min": null,
+		"max": null,
+		"array": false,
+		"configurable": false
+	},
+	"crewImage": {
+		"type": "url",
+		"default": null,
+		"min": null,
+		"max": null,
+		"array": false,
+		"configurable": false
+	},
+	"pendingCrewDescription": {
+		"type": "string",
+		"default": null,
+		"min": null,
+		"max": null,
+		"array": false,
+		"configurable": false
+	},
+	"pendingCrewLogo": {
+		"type": "url",
+		"default": null,
+		"min": null,
+		"max": null,
+		"array": false,
+		"configurable": false
+	},
+	"pendingCrewImage": {
+		"type": "url",
 		"default": null,
 		"min": null,
 		"max": null,

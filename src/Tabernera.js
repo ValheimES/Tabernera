@@ -23,22 +23,6 @@ const client = new Client({
 	typing: true
 });
 
-client.gateways.register('crews', {
-	owner: {
-		type: 'user',
-		array: false,
-		default: null
-	},
-	role: {
-		type: 'role',
-		array: false,
-		default: null
-	},
-	members: {
-		type: 'user',
-		array: true,
-		default: []
-	}
-});
+client.gateways.register('crews');
 
 client.login(config.token);
