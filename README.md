@@ -6,7 +6,7 @@
 ![Este texto salta cuando la imagen falla](https://trello-attachments.s3.amazonaws.com/5a9400d6416e09446aa28138/5a9d2aa5a5ffb2ecee551770/40787c1f26bf5d404fc5b3f751e3ef91/Avatar_-_Tabernera.png)
 
 ## ¿Qué es?
-Tabernera es un bot para Discord, por el momento sus funciones son de carácter administrativo, más adelante se le iran añadiendo diferentes minijuegos. El bot actualmente se desarrolla mediante [discord.js](https://discord.js.org/#/) y [klasa.js](https://klasa.js.org/#/).
+Tabernera es un bot para Discord pensado para la comunidad hispanohablante orientada al videojuego Sea of Thieves, de temática pirata. Busca facilitar algunas interaciones sociales y la administración del servidor. El bot actualmente se desarrolla mediante [discord.js](https://discord.js.org/#/) y [klasa.js](https://klasa.js.org/#/).
 
 ## Comandos:
 ### Administración:
@@ -17,11 +17,15 @@ Tabernera es un bot para Discord, por el momento sus funciones son de carácter 
 - `+encuesta`: Genera una encuesta en el canal predefinido.
 - `+estado`: Cambia el estado del bot.
 - `+verificar`: Añade el rol correspondiente al usuario.
+- `+comunicado`:  Enviar comunicados al servidor siguiendo el formato utilizado. Parámetro opcional para añadir archivos adjuntos mediante un enlace. Posibilidad de adjuntar el archivo directamente.
+
 
 ### Usuario:
 - `+sugerencia`: Añade una sugerencia en el canal predefinido.
 - `+reporte`: Avisa a moderación de que hay un fallo o un usuario ha incumplido las normas.
 - `+ver advertencias`: Muestras las advertencias del usuario mencionado.
+- `+busco`: Pide que se unan a tu tripulación, con el parámetro opcional de descripción, puedes añadir más información.
+- `+tripulacion <listar|detalles|reclutar|expulsar|abandonar|establecer|crear|moderar|borrar> | (argumentos)`: Permite administrar tripulaciones.
 
 ## Únete a nuesta comunidad.
-Si estás interesado en un chat de voz donde se publican noticias y además puedes pasarte un buen rato. ¿A qué esperas? Unete haciendo click [aquí](https://discord.gg/enjYrQt). 
+Si estás interesado en un chat de voz donde se publican noticias y además puedes pasarte un buen rato. ¿A qué esperas? Unete haciendo click [aquí](https://discord.gg/SeaOfThievesES). 
