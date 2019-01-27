@@ -25,7 +25,7 @@ module.exports = class extends Command {
 
 		const { url } = await voiceChannel.createInvite();
 		
-		const alianza = usuariosNecesarios <= 0 ? true : false;
+		const alianza = usuariosNecesarios <= 0;
 
 		const embedBarco = new MessageEmbed()
 			.setTitle('Click aqui para zarpar')
