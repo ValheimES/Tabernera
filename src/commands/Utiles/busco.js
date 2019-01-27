@@ -24,14 +24,17 @@ module.exports = class extends Command {
 		const canal = msg.guild.channels.get(msg.guild.configs.channels.busco);
 
 		const { url } = await voiceChannel.createInvite();
+		
+		const alianza = usuariosNecesarios <= 0;
 
 		const embedBarco = new MessageEmbed()
 			.setTitle('Click aqui para zarpar')
 			.setAuthor(msg.member.displayName, msg.author.displayAvatarURL())
 			.setURL(url)
-			.setColor(0x00ced1)
-			.setDescription(`Busco **${usuariosNecesarios}** ${usuariosNecesarios === 1 ? 'pirata' : 'piratas'} en el barco **${voiceChannel.name}** para zarpar.`);
+			.setColor(0x00ced1);
 
+		if (!alianza) embedBarco.setDescription(`Busco **${usuariosNecesarios}** ${usuariosNecesarios === 1 ? 'pirata' : 'piratas'} en el barco **${voiceChannel.name}** para zarpar.`);
+		else embedBarco.setDescription(`Busco piratas en el barco **${voiceChannel.name}** para zarpar.`);
 		if (descripcion) embedBarco.addField('Descripción', `_${descripcion}_`);
 
 		msg.delete(1000);
