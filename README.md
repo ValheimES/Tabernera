@@ -8,8 +8,8 @@
 ## ¿Qué es?
 Tabernera es un bot para Discord pensado para la comunidad hispanohablante orientada al videojuego Sea of Thieves, de temática pirata. Busca facilitar algunas interaciones sociales y la administración del servidor. El bot actualmente se desarrolla mediante [discord.js](https://discord.js.org/#/) y [klasa.js](https://klasa.js.org/#/).
 
-## Comandos:
-### Administración:
+## Comandos
+#### Administración:
 - `+aceptar`: Responde a una sugerencia.
 - `+advertir`: Añade un aviso al usuario mencionado e infractor de alguna normativa impuesta por el servidor.
 - `+quitar-adv`: Elimina un aviso al usuario mencionado.
@@ -20,12 +20,12 @@ Tabernera es un bot para Discord pensado para la comunidad hispanohablante orien
 - `+comunicado`:  Enviar comunicados al servidor siguiendo el formato utilizado. Parámetro opcional para añadir archivos adjuntos mediante un enlace. Posibilidad de adjuntar el archivo directamente.
 
 
-### Usuario:
+#### Usuario:
 - `+sugerencia`: Añade una sugerencia en el canal predefinido.
 - `+reporte`: Avisa a moderación de que hay un fallo o un usuario ha incumplido las normas.
 - `+ver advertencias`: Muestras las advertencias del usuario mencionado.
 - `+busco`: Pide que se unan a tu tripulación, con el parámetro opcional de descripción, puedes añadir más información.
 - `+tripulacion <listar|detalles|reclutar|expulsar|abandonar|establecer|crear|moderar|borrar> | (argumentos)`: Permite administrar tripulaciones.
 
-## Únete a nuesta comunidad.
+#### Únete a nuesta comunidad.
 Si estás interesado en Sea of Thieves y quieres encontrar piratas con los que jugar, además de tener un lugar donde consultar todas las novedades y noticias haz click [aquí](https://discord.gg/SeaOfThievesES). 
