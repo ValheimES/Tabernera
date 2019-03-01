@@ -28,4 +28,4 @@ Tabernera es un bot para Discord pensado para la comunidad hispanohablante orien
 - `+tripulacion <listar|detalles|reclutar|expulsar|abandonar|establecer|crear|moderar|borrar> | (argumentos)`: Permite administrar tripulaciones.
 
 ## Únete a nuesta comunidad.
-Si estás interesado en un chat de voz donde se publican noticias y además puedes pasarte un buen rato. ¿A qué esperas? Unete haciendo click [aquí](https://discord.gg/SeaOfThievesES). 
+Si estás interesado en Sea of Thieves y quieres encontrar piratas con los que jugar, además de tener un lugar donde consultar todas las novedades y noticias haz click [aquí](https://discord.gg/SeaOfThievesES). 
