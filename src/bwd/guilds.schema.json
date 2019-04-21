@@ -80,6 +80,14 @@
 			"min": null,
 			"max": null,
 			"configurable": true
+		},
+		"verificacion": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
 		}
 	},
 	"roles": {
@@ -133,14 +141,6 @@
 			"configurable": true
 		},
 		"fundador": {
-			"type": "role",
-			"array": false,
-			"default": null,
-			"min": null,
-			"max": null,
-			"configurable": true
-		},
-		"pionero": {
 			"type": "role",
 			"array": false,
 			"default": null,

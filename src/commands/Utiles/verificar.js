@@ -16,8 +16,8 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [user, rol, ...nombre]) {
-		const taberna = msg.guild.channels.get(msg.guild.configs.channels.administrador);
-		if (!taberna) throw 'El canal de Administradores no ha sido configurado o no existe en el servidor.';
+		const verificationChannel = msg.guild.channels.get(msg.guild.configs.channels.verificacion);
+		if (!verificationChannel) throw 'El canal de verificación no ha sido configurado o no existe en el servidor.';
 
 		const member = await msg.guild.members.fetch(user.id)
 			.catch(() => { throw 'El usuario no parece estar en el servidor, ¿viste fantasmas?'; });
@@ -25,15 +25,12 @@ module.exports = class extends Command {
 		const roles = [];
 		rol = rol.toLowerCase();
 		switch (rol) {
-			case 'pionero':
-				roles.push(this.getRole(msg, 'pionero'));
-				// falls through
 			case 'fundador':
-				roles.push(this.getRole(msg, 'fundador'));
-				// falls through
+				roles.push(this.getRole(msg, 'fundador'), this.getRole(msg, 'verificado'));
+				break;
 			case 'insider':
-				roles.push(this.getRole(msg, 'insider'));
-				// falls through
+				roles.push(this.getRole(msg, 'insider'), this.getRole(msg, 'verificado'));
+				break;
 			case 'verificado':
 				roles.push(this.getRole(msg, 'verificado'));
 				break;
@@ -41,13 +38,13 @@ module.exports = class extends Command {
 				throw 'Has escrito mal el nombre del rol.';
 		}
 
-		msg.delete();
+		await msg.delete();
 
 		if (roles.length) await member.roles.add(roles);
 		await member.setNickname(nombre.join(' '));
 		await this.client.providers.default.create('verificacion', user.id, { rango: rol });
 
-		return taberna.send(`<:tic:408639986934480908> **¡Cuenta verificada!:** _${member}, ahora puedes disfrutar de las ventajas de la verificación. Haz click aquí­ para más <#542383308760416287>._`);
+		return verificationChannel.send(`<:tic:408639986934480908> **¡Cuenta verificada!:** _${member}, ahora puedes disfrutar de las ventajas de la verificación. Haz click aquí para más <#542383308760416287>._`);
 	}
 
 	getRole(msg, rolename) {
