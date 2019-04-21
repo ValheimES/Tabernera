@@ -20,7 +20,7 @@ module.exports = class extends Command {
 				'+tripulacion reclutar | <pirata>: Invita a un pirata a tu tripulación [sólo para capitanes]',
 				'+tripulacion expulsar | <pirata>: Expulsa a un pirata de tu tripulación [sólo para capitanes]',
 				'+tripulacion abandonar: Abandona la tripulación de la que formas parte [sólo para miembros]',
-				'+tripulacion establecer | <logo|historia|imagen> | <texto>: Solicita cambios en la ficha de tripulación [sólo para capitanes]',
+				'+tripulacion establecer | <logo|historia|foto> | <texto>: Solicita cambios en la ficha de tripulación [sólo para capitanes]',
 				'+tripulacion crear | <pirata> | <nombre de tripulación>: Crea una tripulación al mando del capitán pirata seleccionado [sólo para administradores]',
 				'+tripulacion moderar | [nombre de tripulación]: Revisa cambios en las fichas de tripulación [sólo para administradores]',
 				'+tripulacion borrar | <nombre de tripulación>: Borra a una tripulación y expulsa a sus miembros [sólo para administradores]'
@@ -42,8 +42,8 @@ module.exports = class extends Command {
 
 				if (type === 'establecer') {
 					arg = (arg || '').toLowerCase();
-					if (!['logo', 'historia', 'imagen'].includes(arg))
-						throw 'Debes elegir una de estas opciones: (logo, historia, imagen)';
+					if (!['logo', 'historia', 'foto'].includes(arg))
+						throw 'Debes elegir una de estas opciones: (logo, historia, foto)';
 
 					return arg;
 				}
@@ -278,7 +278,7 @@ module.exports = class extends Command {
 			throw 'Zzzz... Fascinante, pero podrías abreviar un poco, ¿no crees?';
 
 		// Validate image URL if option is logo or image
-		if (option === 'logo' || option === 'imagen') {
+		if (option === 'logo' || option === 'foto') {
 			const imageURL = new URL(text);
 			if (!/\.(png|jpg|jpeg|gif|bmp|webp)$/.test(imageURL.pathname))
 				throw 'El texto introducido no parece un URL de imagen válido.';
@@ -288,7 +288,7 @@ module.exports = class extends Command {
 		const dbKeys = {
 			logo: 'pendingCrewLogo',
 			historia: 'pendingCrewDescription',
-			imagen: 'pendingCrewImage'
+			foto: 'pendingCrewImage'
 		};
 		const crew = crews.get(userCrew.id);
 		if (option in dbKeys)
@@ -403,7 +403,7 @@ module.exports = class extends Command {
 
 				if (crew.pendingCrewLogo) pending.push('Logo');
 				if (crew.pendingCrewDescription) pending.push('Historia');
-				if (crew.pendingCrewImage) pending.push('Imagen');
+				if (crew.pendingCrewImage) pending.push('Foto');
 
 				embed.addField(crewID, pending.join(' + '));
 			}
@@ -482,7 +482,7 @@ module.exports = class extends Command {
 
 		promises.push(moderationOption('logo', 'pendingCrewLogo', 'crewLogo'));
 		promises.push(moderationOption('historia', 'pendingCrewDescription', 'crewDescription'));
-		promises.push(moderationOption('imagen', 'pendingCrewImage', 'crewImage'));
+		promises.push(moderationOption('foto', 'pendingCrewImage', 'crewImage'));
 
 		return Promise.all(promises);
 	}
