@@ -273,6 +273,10 @@ module.exports = class extends Command {
 		if (!userCrew)
 			throw '¡Impostor! ¡No eres capitán de ninguna tripulación!';
 
+		// Check text isn't too long
+		if (text.length > 1000)
+			throw 'Zzzz... Fascinante, pero podrías abreviar un poco, ¿no crees?';
+
 		// Validate image URL if option is logo or image
 		if (option === 'logo' || option === 'imagen') {
 			const imageURL = new URL(text);
