@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "10"
+
+script:
+  - npm run test
+
+after_success:
+  - chmod +x discord.sh
+  - ./discord.sh success $WEBHOOK_URL
+
+after_failure:
+  - chmod +x discord.sh
+  - ./discord.sh failure $WEBHOOK_URL

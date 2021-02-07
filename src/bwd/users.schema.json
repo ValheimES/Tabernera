@@ -1,0 +1,18 @@
+{
+	"xp": {
+		"type": "integer",
+		"array": false,
+		"default": 0,
+		"min": 0,
+		"max": null,
+		"configurable": true
+	},
+	"dinero": {
+		"type": "integer",
+		"array": false,
+		"default": 0,
+		"min": 0,
+		"max": null,
+		"configurable": true
+	}
+}

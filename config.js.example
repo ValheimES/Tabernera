@@ -1,0 +1,9 @@
+module.exports = {
+	token: '<TOKEN-GOES-HERE>',
+	ownerID: '<OWNER-USER-ID>',
+	rethinkdb: {
+		db: '<DB-NAME>',
+		user: '<USER-NAME>',
+		password: '<USER-PASSWORD>'
+	}
+};

@@ -1,0 +1,275 @@
+{
+	"channels": {
+		"type": "Folder",
+		"activados": {
+			"type": "textchannel",
+			"array": true,
+			"default": [],
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"administrador": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"busco": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"comunicados": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"puerto": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"reportes": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"sugerencias": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"twitch": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"actividad": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"general": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		}
+	},
+	"roles": {
+		"type": "Folder",
+		"administrador": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"inicial": {
+			"type": "role",
+			"array": true,
+			"default": [],
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"insider": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"moderador": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"verificado": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"verificador": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"fundador": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"pionero": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"streamer": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		}
+	},
+	"crews": {
+		"type": "Folder",
+		"roleColor": {
+			"type": "integer",
+			"array": false,
+			"default": 0,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"roleBelow": {
+			"type": "role",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"channelParentText": {
+			"type": "categorychannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"channelParentVoice": {
+			"type": "categorychannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"channelKickedVoice": {
+			"type": "voicechannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"invitationExpirationSeconds": {
+			"type": "integer",
+			"array": false,
+			"default": 300,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"emojiCrewDetail": {
+			"type": "string",
+			"array": false,
+			"default": "",
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"emojiAccept": {
+			"type": "string",
+			"array": false,
+			"default": "👍",
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"emojiReject": {
+			"type": "string",
+			"array": false,
+			"default": "👎",
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
+		"channelReportAdmin": {
+			"type": "textchannel",
+			"array": false,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		}
+	},
+	"disabledCommands": {
+		"type": "command",
+		"array": true,
+		"default": [],
+		"min": null,
+		"max": null,
+		"configurable": true
+	},
+	"disableNaturalPrefix": {
+		"type": "boolean",
+		"array": false,
+		"default": false,
+		"min": null,
+		"max": null,
+		"configurable": false
+	},
+	"language": {
+		"type": "language",
+		"array": false,
+		"default": "en-US",
+		"min": null,
+		"max": null,
+		"configurable": true
+	},
+	"prefix": {
+		"type": "string",
+		"array": false,
+		"default": "+",
+		"min": null,
+		"max": 10,
+		"configurable": true
+	}
+}
