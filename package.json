@@ -16,7 +16,8 @@
   "dependencies": {
     "discord.js": "github:discordjs/discord.js",
     "klasa": "github:dirigeants/klasa",
-    "rethinkdbdash": "^2.3.31"
+    "rethinkdbdash": "^2.3.31",
+    "twitterer.js": "0.0.6"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
